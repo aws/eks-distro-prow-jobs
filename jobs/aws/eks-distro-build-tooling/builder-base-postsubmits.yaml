@@ -1,0 +1,56 @@
+postsubmits:
+  aws/eks-distro-build-tooling:
+  - name: builder-base-postsubmit
+    always_run: false
+    run_if_changed: "builder-base/.*"
+    max_concurrency: 10
+    cluster: "prow-jobs-cluster"
+    branches:
+    - ^main$
+    skip_report: false
+    decoration_config:
+      gcs_configuration:
+        bucket: s3://prowdataclusterstack-316-prowpostsubmitsbucket526-ut9o51ly3595
+        path_strategy: explicit
+      s3_credentials_secret: s3-credentials
+    clone_uri: "git@github.com:aws/eks-distro-build-tooling.git"
+    labels:
+      image-build: "true"
+    spec:
+      serviceaccountName: postsubmits-build-account
+      containers:
+      - name: build-container
+        image: 137112412989.dkr.ecr.us-west-2.amazonaws.com/amazonlinux:2
+        command:
+        - bash
+        - -c
+        - >
+          ./builder-base/install.sh
+          &&
+          make release -C builder-base DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
+          &&
+          touch /status/done
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - date +%s > /status/pending
+          periodSeconds: 10
+      - name: buildkitd
+        image: moby/buildkit:master-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+          periodSeconds: 15
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+
