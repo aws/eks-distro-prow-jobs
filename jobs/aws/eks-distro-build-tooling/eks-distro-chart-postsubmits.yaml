@@ -1,0 +1,26 @@
+postsubmits:
+  aws/eks-distro-build-tooling:
+  - name: eks-distro-chart-postsubmit
+    always_run: false
+    run_if_changed: "eks-distro-chart/*"
+    cluster: "prow-jobs-cluster"
+    max_concurrency: 10
+    branches:
+    - ^main$
+    skip_report: false
+    decoration_config:
+      gcs_configuration:
+        bucket: s3://prowdataclusterstack-316-prowpostsubmitsbucket526-ut9o51ly3595
+        path_strategy: explicit
+      s3_credentials_secret: s3-credentials
+    clone_uri: "git@github.com:aws/eks-distro-build-tooling.git"
+    spec:
+      serviceaccountName: charts-build-account
+      containers:
+      - image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:51f42f4402f38946eb23884a32a2541b8ac6edca
+        command:
+        - bash
+        - -c
+        - >
+          make release -C eks-distro-chart
+

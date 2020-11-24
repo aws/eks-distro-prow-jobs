@@ -42,7 +42,4 @@ presets:
     emptyDir: {}
   - name: status
     emptyDir: {}
-#- env:
-#  name: GOPROXY
-#  value: http://athens-proxy.default.svc.cluster.local
 
