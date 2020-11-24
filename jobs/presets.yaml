@@ -1,0 +1,48 @@
+presets:
+- labels:
+    image-build: "true"
+  env:
+  - name: AWS_SDK_LOAD_CONFIG
+    value: true
+  - name: AWS_STS_REGIONAL_ENDPOINTS
+    value: regional
+  - name: AWS_ROLE_SESSION_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
+  volumeMounts:
+  - name: docker-registry-config
+    readOnly: true
+    mountPath: /root/.docker
+  - name: run-buildkit
+    readOnly: false
+    mountPath: /run/buildkit
+  - name: entrypoint
+    readOnly: false
+    mountPath: /script
+  - name: status
+    readOnly: false
+    mountPath: /status
+  volumes:
+  # The files in this repo update the respective configmaps
+  # via the config-updater plugin in plugins.yaml for hook
+  - name: docker-registry-config
+    configMap:
+      name: build-setup
+      items:
+      - key: docker-ecr-config.json
+        path: config.json
+  - name: entrypoint
+    configMap:
+      name: buildkitd-entrypoint
+      items:
+      - key: buildkitd-entrypoint.sh
+        path: entrypoint.sh
+  - name: run-buildkit
+    emptyDir: {}
+  - name: status
+    emptyDir: {}
+#- env:
+#  name: GOPROXY
+#  value: http://athens-proxy.default.svc.cluster.local
+
