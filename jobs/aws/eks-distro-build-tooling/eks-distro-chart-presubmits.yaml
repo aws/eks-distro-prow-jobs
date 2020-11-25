@@ -5,8 +5,6 @@ presubmits:
     run_if_changed: "eks-distro-chart/*"
     cluster: "prow-jobs-cluster"
     max_concurrency: 10
-    branches:
-    - ^main$
     skip_report: false
     decoration_config:
       gcs_configuration:
