@@ -20,5 +20,5 @@ presubmits:
         - bash
         - -c
         - >
-          make verify -C eks-distro-chart
+          make verify -C helm-charts
 

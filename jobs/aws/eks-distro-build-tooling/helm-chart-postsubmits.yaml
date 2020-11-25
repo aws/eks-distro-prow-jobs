@@ -22,5 +22,5 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C eks-distro-chart
+          make release -C helm-charts
 
