@@ -1,0 +1,57 @@
+postsubmits:
+  aws/eks-distro:
+  - name: kubernetes-1-18-postsubmit
+    always_run: false
+    # TODO: tweak to only run if Makefile, build, release branch files change
+    run_if_changed: "projects/kubernetes/kubernetes/.*"
+    max_concurrency: 10
+    cluster: "prow-jobs-cluster"
+    branches:
+    - ^main$
+    skip_report: false
+    decoration_config:
+      gcs_configuration:
+        bucket: s3://prowdataclusterstack-316-prowpostsubmitsbucket526-ut9o51ly3595
+        path_strategy: explicit
+      s3_credentials_secret: s3-credentials
+    clone_uri: "git@github.com:aws/eks-distro.git"
+    labels:
+      image-build: "true"
+    spec:
+      serviceaccountName: postsubmits-build-account
+      containers:
+      - name: build-container
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:51f42f4402f38946eb23884a32a2541b8ac6edca
+        command:
+        - bash
+        - -c
+        - >
+          make release -C projects/kubernetes/kubernetes DEVELOPMENT=false RELEASE_BRANCH=1-18 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'
+          &&
+          mv ./projects/kubernetes/kubernetes/_output/1-18/* /logs/artifacts
+          &&
+          touch /status/done
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - date +%s > /status/pending
+          periodSeconds: 10
+      - name: buildkitd
+        image: moby/buildkit:master-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+          periodSeconds: 15
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+
