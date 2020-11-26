@@ -18,13 +18,13 @@ postsubmits:
     always_run: false
     run_if_changed: "projects/kubernetes-sigs/aws-iam-authenticator/.*"
     max_concurrency: 10
-    cluster: "prow-jobs-cluster"
+    cluster: "prow-postsubmits-cluster"
     branches:
     - ^main$
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316-prowpostsubmitsbucket526-ut9o51ly3595
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     clone_uri: "git@github.com:aws/eks-distro.git"
