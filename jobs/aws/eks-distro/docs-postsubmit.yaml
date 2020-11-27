@@ -29,11 +29,10 @@ postsubmits:
       s3_credentials_secret: s3-credentials
     clone_uri: "git@github.com:aws/eks-distro.git"
     spec:
-      # TODO update service account
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: release-build-account
       containers:
       - name: build-container
-        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:51f42f4402f38946eb23884a32a2541b8ac6edca
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:4ac068ea9b78d3e2909e325ebfc272e5b31b1c37
         command:
         - bash
         - -c
