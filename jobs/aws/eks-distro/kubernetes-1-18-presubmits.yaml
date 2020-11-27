@@ -52,10 +52,10 @@ presubmits:
           periodSeconds: 10
         resources:
           requests:
-            memory: "27Gi"
+            memory: "26Gi"
             cpu: "3584m"
           limits:
-            memory: "27Gi"
+            memory: "26Gi"
             cpu: "3584m"
       - name: buildkitd
         image: moby/buildkit:master-rootless
@@ -76,7 +76,7 @@ presubmits:
         resources:
           requests:
             memory: "1Gi"
-            cpu: "512m"
+            cpu: "256m"
           limits:
             memory: "1Gi"
-            cpu: "512m"
+            cpu: "256m"
