@@ -49,6 +49,13 @@ presubmits:
             - -c
             - date +%s > /status/pending
           periodSeconds: 10
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "2048m"
+          limits:
+            memory: "8Gi"
+            cpu: "2048m"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:
@@ -65,4 +72,11 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "2048m"
+          limits:
+            memory: "8Gi"
+            cpu: "2048m"
 
