@@ -37,4 +37,10 @@ presubmits:
           make release -C projects/containernetworking/plugins
           &&
           mv ./projects/containernetworking/plugins/_output/tar/* /logs/artifacts
-
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
+          limits:
+            memory: "2Gi"
+            cpu: "1024m"

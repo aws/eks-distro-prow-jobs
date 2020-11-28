@@ -35,4 +35,11 @@ presubmits:
         - -c
         - >
           make verify -C helm-charts
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "512m"
+          limits:
+            memory: "2Gi"
+            cpu: "512m"
 
