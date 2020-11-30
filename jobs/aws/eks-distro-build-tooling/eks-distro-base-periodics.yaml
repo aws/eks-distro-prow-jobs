@@ -1,0 +1,83 @@
+periodics:
+- name: eks-distro-base-periodic
+  labels:
+    image-build: "true"
+  # Runs every weekday (M-F) at 10am PST
+  cron: "* 18 * * 1-5"
+  cluster: "prow-postsubmits-cluster"
+  decoration_config:
+    gcs_configuration:
+      bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+      path_strategy: explicit
+    s3_credentials_secret: s3-credentials
+  extra_refs:
+  - org: eks-distro-bot
+    repo: eks-distro-build-tooling
+    base_ref: main
+    clone_uri: git@github.com:eks-distro-bot/eks-distro-build-tooling.git
+  - org: eks-distro-bot
+    repo: eks-distro
+    base_ref: main
+    clone_uri: git@github.com:eks-distro-bot/eks-distro.git
+  - org: eks-distro-bot
+    repo: eks-distro-prow-jobs
+    base_ref: main
+    clone_uri: git@github.com:eks-distro-bot/eks-distro-prow-jobs.git
+  spec:
+    serviceaccountName: postsubmits-build-account
+    containers:
+    - name: build-container
+      image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/base:26f234d9da8bc4423bacb539caaece931808d28b
+      command:
+      - bash
+      - -c
+      - >
+        ./eks-distro-base/check_and_update.sh
+        &&
+        touch /status/done;
+      volumeMounts:
+      - name: job-containers-ssh-key
+        mountPath: /secrets/ssh/ssh-secret
+        readOnly: true
+      - name: github-auth
+        mountPath: /secrets/github/
+        readOnly: true
+      livenessProbe:
+        exec:
+          command:
+          - bash
+          - -c
+          - date +%s > /status/pending
+        periodSeconds: 10
+    - name: buildkitd
+      image: moby/buildkit:master-rootless
+      command:
+      - sh
+      args:
+      - /script/entrypoint.sh
+      volumeMounts:
+      - name: job-containers-ssh-key
+        mountPath: /secrets/ssh/ssh-secret
+        readOnly: true
+      - name: github-auth
+        mountPath: /secrets/github/
+        readOnly: true
+      livenessProbe:
+        exec:
+          command:
+          - sh
+          - -c
+          - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+        periodSeconds: 15
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+    volumes:
+    - name: job-containers-ssh-key
+      secret:
+        defaultMode: 256
+        secretName: ssh-secret
+    - name: github-auth
+      secret:
+        defaultMode: 256
+        secretName: github-token
