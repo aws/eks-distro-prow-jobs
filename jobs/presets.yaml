@@ -26,7 +26,7 @@ presets:
         fieldPath: metadata.name
   volumeMounts:
   - name: docker-registry-config
-    readOnly: true
+    readOnly: false
     mountPath: /root/.docker
   - name: run-buildkit
     readOnly: false
