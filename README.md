@@ -1,17 +1,25 @@
-## My Project
+# EKS Distro Prow Jobs
 
-TODO: Fill this README out!
+This repository contains Prow Job configuration for the EKS installation of
+Prow, which is available at https://prow.eks.amazonaws.com/.
 
-Be sure to:
+For more info on how to write a prow job, read the [test-infra
+introduction](https://github.com/kubernetes/test-infra/blob/master/prow/jobs.md)
+to prow jobs.
 
-* Change the title in this README
-* Edit your repository description on GitHub
+## Contributing
+
+Please read our [CONTRIBUTING](CONTRIBUTING.md) guide before making a pull
+request.
 
 ## Security
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+If you discover a potential security issue in this project, or think you may
+have discovered a security issue, we ask that you notify AWS Security via our
+[vulnerability reporting
+page](http://aws.amazon.com/security/vulnerability-reporting/). Please do
+**not** create a public GitHub issue.
 
 ## License
 
 This project is licensed under the Apache-2.0 License.
-
