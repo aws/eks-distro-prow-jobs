@@ -35,6 +35,10 @@ presubmits:
         - -c
         - >
           make verify -C helm-charts
+        volumeMounts:
+        - name: job-containers-ssh-key
+          mountPath: /secrets/ssh/ssh-secret
+          readOnly: true
         resources:
           requests:
             memory: "2Gi"
@@ -42,4 +46,8 @@ presubmits:
           limits:
             memory: "2Gi"
             cpu: "512m"
-
+      volumes:
+      - name: job-containers-ssh-key
+        secret:
+          defaultMode: 256
+          secretName: ssh-secret
