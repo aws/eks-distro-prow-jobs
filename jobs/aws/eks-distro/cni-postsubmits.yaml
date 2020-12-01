@@ -27,7 +27,6 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    clone_uri: "git@github.com:aws/eks-distro.git"
     spec:
       serviceaccountName: postsubmits-build-account
       containers:
@@ -39,4 +38,3 @@ postsubmits:
           make release -C projects/containernetworking/plugins
           &&
           mv ./projects/containernetworking/plugins/_output/tar/* /logs/artifacts
-
