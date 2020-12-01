@@ -25,7 +25,6 @@ presubmits:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    clone_uri: "git@github.com:aws/eks-distro.git"
     labels:
       image-build: "true"
     spec:
@@ -70,4 +69,3 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-
