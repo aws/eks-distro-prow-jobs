@@ -13,7 +13,7 @@
 # limitations under the License.
 
 postsubmits:
-  abhay-krishna/eks-distro-build-tooling:
+  aws/eks-distro-build-tooling:
   - name: eks-distro-base-postsubmit
     always_run: false
     run_if_changed: "eks-distro-base/.*"
@@ -24,7 +24,7 @@ postsubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prow-data-devstack-prowbucket7c73355c-1flfof7v6wr2s
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -33,7 +33,7 @@ postsubmits:
       serviceaccountName: postsubmits-build-account
       containers:
       - name: build-container
-        image: 319341287998.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:latest
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e35d4971088ca37db784caf525373f7342126bf3
         command:
         - bash
         - -c
