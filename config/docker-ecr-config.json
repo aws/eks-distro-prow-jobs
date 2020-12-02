@@ -1,5 +1,6 @@
 {
     "credHelpers": {
+        "319341287998.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",
         "316434458148.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",
         "862665599504.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",
         "137112412989.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",
