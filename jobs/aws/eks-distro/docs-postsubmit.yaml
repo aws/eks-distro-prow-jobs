@@ -28,7 +28,7 @@ postsubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     spec:
-      serviceaccountName: release-build-account
+      serviceaccountName: docs-build-account
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e35d4971088ca37db784caf525373f7342126bf3
