@@ -16,8 +16,8 @@ periodics:
 - name: eks-distro-base-periodic
   labels:
     image-build: "true"
-  # Runs every weekday (M-F) at 10am PST
-  cron: "* 18 * * 1-5"
+  # Runs every weekday (M-F) at 11am PST
+  cron: "0 19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   decoration_config:
     gcs_configuration:
