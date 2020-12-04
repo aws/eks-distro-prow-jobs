@@ -17,7 +17,7 @@ periodics:
   labels:
     image-build: "true"
   # Runs every weekday (M-F) at 11am PST
-  cron: "30 19 * * 1-5"
+  cron: "*/10 * * * 1-5"
   cluster: "prow-postsubmits-cluster"
   decoration_config:
     gcs_configuration:
