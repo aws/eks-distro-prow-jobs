@@ -40,7 +40,7 @@ periodics:
       - bash
       - -c
       - >
-        ./eks-distro-base/check_and_update.sh
+        ./eks-distro-base/check_update.sh
         &&
         touch /status/done;
       volumeMounts:
