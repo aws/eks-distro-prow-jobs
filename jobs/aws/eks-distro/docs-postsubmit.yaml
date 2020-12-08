@@ -32,6 +32,13 @@ postsubmits:
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e35d4971088ca37db784caf525373f7342126bf3
+        env:
+        - name: AWS_STS_REGIONAL_ENDPOINTS
+          value: regional
+        - name: AWS_ROLE_SESSION_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         command:
         - bash
         - -c
