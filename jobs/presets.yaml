@@ -17,7 +17,7 @@ presets:
     image-build: "true"
   env:
   - name: AWS_SDK_LOAD_CONFIG
-    value: true
+    value: "true"
   - name: AWS_STS_REGIONAL_ENDPOINTS
     value: regional
   - name: AWS_ROLE_SESSION_NAME
