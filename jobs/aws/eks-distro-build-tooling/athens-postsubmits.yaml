@@ -14,7 +14,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: athens-postsubmit
+  - name: athens-tooling-postsubmit
     always_run: false
     run_if_changed: "projects/gomods/athens/*"
     cluster: "prow-postsubmits-cluster"

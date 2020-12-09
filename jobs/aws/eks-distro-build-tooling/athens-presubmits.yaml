@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: athens-presubmit
+  - name: athens-tooling-presubmit
     always_run: false
     run_if_changed: "projects/gomods/athens/*"
     cluster: "prow-presubmits-cluster"

@@ -12,33 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-presubmits:
+postsubmits:
   aws/eks-distro-build-tooling:
-  - name: builder-base-tooling-presubmit
+  - name: amazon-eks-pod-identity-webhook-tooling-postsubmit
     always_run: false
-    run_if_changed: "builder-base/.*"
+    run_if_changed: "projects/aws/amazon-eks-pod-identity-webhook/.*"
     max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    cluster: "prow-postsubmits-cluster"
+    branches:
+    - ^main$
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       containers:
       - name: build-container
-        image: 137112412989.dkr.ecr.us-west-2.amazonaws.com/amazonlinux:2
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e35d4971088ca37db784caf525373f7342126bf3
         command:
         - bash
         - -c
         - >
-          ./builder-base/install.sh
-          &&
-          make build -C builder-base DEVELOPMENT=false
+          make release -C projects/aws/amazon-eks-pod-identity-webhook DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done
         livenessProbe:
@@ -48,13 +48,6 @@ presubmits:
             - -c
             - date +%s > /status/pending
           periodSeconds: 10
-        resources:
-          requests:
-            memory: "8Gi"
-            cpu: "1536m"
-          limits:
-            memory: "8Gi"
-            cpu: "1536m"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:
@@ -71,10 +64,3 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-        resources:
-          requests:
-            memory: "8Gi"
-            cpu: "1536m"
-          limits:
-            memory: "8Gi"
-            cpu: "1536m"
