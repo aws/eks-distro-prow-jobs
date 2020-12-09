@@ -14,7 +14,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-postsubmit
+  - name: eks-distro-base-tooling-postsubmit
     always_run: false
     run_if_changed: "eks-distro-base/.*"
     max_concurrency: 10

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 periodics:
-- name: eks-distro-base-periodic
+- name: eks-distro-base-tooling-periodic
   labels:
     image-build: "true"
   # Runs every weekday (M-F) at 10am PST

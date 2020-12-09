@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: builder-base-presubmit
+  - name: builder-base-tooling-presubmit
     always_run: false
     run_if_changed: "builder-base/.*"
     max_concurrency: 10

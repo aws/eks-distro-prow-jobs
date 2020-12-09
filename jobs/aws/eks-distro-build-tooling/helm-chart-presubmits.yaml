@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: helm-chart-presubmit
+  - name: helm-chart-tooling-presubmit
     always_run: false
     run_if_changed: "helm-charts/*"
     cluster: "prow-presubmits-cluster"
