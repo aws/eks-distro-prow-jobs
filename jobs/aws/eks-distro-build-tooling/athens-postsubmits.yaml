@@ -38,7 +38,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/gomods/athens
+          make release -C projects/gomods/athens IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done
         livenessProbe:
