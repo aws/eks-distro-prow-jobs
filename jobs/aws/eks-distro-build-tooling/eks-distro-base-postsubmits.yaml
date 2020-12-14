@@ -21,6 +21,13 @@ postsubmits:
     cluster: "prow-postsubmits-cluster"
     branches:
     - ^main$
+    extra_refs:
+    - org: eks-distro-pr-bot
+      repo: eks-distro-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-distro
+      base_ref: main
     skip_report: false
     decoration_config:
       gcs_configuration:
@@ -38,7 +45,9 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C eks-distro-base DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
+          export DATE_EPOCH=$(date "+%F-%s")
+          &&
+          make release -C eks-distro-base DEVELOPMENT=false IMAGE_TAG=${DATE_EPOCH}
           &&
           touch /status/done
         livenessProbe:
