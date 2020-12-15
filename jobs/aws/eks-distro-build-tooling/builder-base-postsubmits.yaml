@@ -21,6 +21,13 @@ postsubmits:
     cluster: "prow-postsubmits-cluster"
     branches:
     - ^main$
+    extra_refs:
+    - org: eks-distro-pr-bot
+      repo: eks-distro-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-distro-prow-jobs
+      base_ref: main
     skip_report: false
     decoration_config:
       gcs_configuration:
