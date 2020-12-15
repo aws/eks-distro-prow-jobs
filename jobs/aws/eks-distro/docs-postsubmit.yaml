@@ -27,6 +27,8 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+    annotations:
+      eks.amazonaws.com/token-expiration: "3600"
     spec:
       serviceaccountName: docs-build-account
       containers:

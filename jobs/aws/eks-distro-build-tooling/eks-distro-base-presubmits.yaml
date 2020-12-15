@@ -34,6 +34,8 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+    annotations:
+      eks.amazonaws.com/token-expiration: "3600"
     spec:
       serviceaccountName: presubmits-build-account
       containers:

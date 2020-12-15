@@ -24,6 +24,8 @@ periodics:
       bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
+  annotations:
+    eks.amazonaws.com/token-expiration: "3600"
   extra_refs:
   - org: eks-distro-pr-bot
     repo: eks-distro-build-tooling
