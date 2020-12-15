@@ -24,8 +24,6 @@ presets:
     valueFrom:
       fieldRef:
         fieldPath: metadata.name
-  - name: GOPROXY
-    value: "http://athens-proxy.default.svc.cluster.local"
   volumeMounts:
   - name: docker-registry-config
     readOnly: false
