@@ -50,6 +50,13 @@ postsubmits:
           make release -C builder-base DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done
+        volumeMounts:
+        - name: ssh-auth
+          mountPath: /secrets/ssh-secrets
+          readOnly: true
+        - name: github-auth
+          mountPath: /secrets/github-secrets
+          readOnly: true
         livenessProbe:
           exec:
             command:
@@ -63,6 +70,13 @@ postsubmits:
         - sh
         args:
         - /script/entrypoint.sh
+        volumeMounts:
+        - name: ssh-auth
+          mountPath: /secrets/ssh-secrets
+          readOnly: true
+        - name: github-auth
+          mountPath: /secrets/github-secrets
+          readOnly: true
         livenessProbe:
           exec:
             command:
@@ -73,3 +87,12 @@ postsubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+      volumes:
+      - name: ssh-auth
+        secret:
+          defaultMode: 256
+          secretName: pr-bot-ssh-secret
+      - name: github-auth
+        secret:
+          defaultMode: 256
+          secretName: pr-bot-github-token
