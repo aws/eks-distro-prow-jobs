@@ -19,6 +19,13 @@ presubmits:
     run_if_changed: "eks-distro-base/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
+    extra_refs:
+    - org: eks-distro-pr-bot
+      repo: eks-distro-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-distro
+      base_ref: main
     skip_report: false
     decoration_config:
       gcs_configuration:
