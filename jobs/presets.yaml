@@ -18,8 +18,6 @@ presets:
   env:
   - name: AWS_SDK_LOAD_CONFIG
     value: "true"
-  - name: AWS_STS_REGIONAL_ENDPOINTS
-    value: regional
   - name: AWS_ROLE_SESSION_NAME
     valueFrom:
       fieldRef:
