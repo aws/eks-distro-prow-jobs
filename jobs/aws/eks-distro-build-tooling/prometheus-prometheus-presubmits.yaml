@@ -13,10 +13,10 @@
 # limitations under the License.
 
 presubmits:
-  vignesh-goutham/eks-distro:
-  - name: node-driver-registrar-presubmit
+  vignesh-goutham/eks-distro-build-tooling:
+  - name: prometheus-prometheus-presubmit
     always_run: false
-    run_if_changed: "projects/kubernetes-csi/node-driver-registrar/.*"
+    run_if_changed: "projects/prometheus/prometheus/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -36,7 +36,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/node-driver-registrar DEVELOPMENT=false
+          make build -C projects/prometheus/prometheus
           &&
           touch /status/done
         livenessProbe:
@@ -69,3 +69,10 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1024m"
+          limits:
+            memory: "4Gi"
+            cpu: "1024m"

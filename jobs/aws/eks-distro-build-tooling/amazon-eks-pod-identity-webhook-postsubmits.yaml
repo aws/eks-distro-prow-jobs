@@ -13,10 +13,10 @@
 # limitations under the License.
 
 postsubmits:
-  aws/eks-distro-build-tooling:
+  vignesh-goutham/eks-distro-build-tooling:
   - name: amazon-eks-pod-identity-webhook-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/aws/amazon-eks-pod-identity-webhook/.*"
+    run_if_changed: "projects/vignesh-goutham/amazon-eks-pod-identity-webhook/.*"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -24,7 +24,7 @@ postsubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-vtugt5nnvs26
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -38,7 +38,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/aws/amazon-eks-pod-identity-webhook DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
+          make release -C projects/vignesh-goutham/amazon-eks-pod-identity-webhook DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done
         livenessProbe:

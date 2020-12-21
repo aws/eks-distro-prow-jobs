@@ -13,7 +13,7 @@
 # limitations under the License.
 
 presubmits:
-  aws/eks-distro:
+  vignesh-goutham/eks-distro:
   - name: external-provisioner-presubmit
     always_run: false
     run_if_changed: "projects/kubernetes-csi/external-provisioner/.*"
@@ -22,7 +22,7 @@ presubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prow-data-presubmits-devstack-prowbucket7c73355c-s1n9dan0yprp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:

@@ -21,7 +21,7 @@ periodics:
   cluster: "prow-postsubmits-cluster"
   decoration_config:
     gcs_configuration:
-      bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+      bucket: s3://prow-data-devstack-prowbucket7c73355c-vtugt5nnvs26
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   extra_refs:
