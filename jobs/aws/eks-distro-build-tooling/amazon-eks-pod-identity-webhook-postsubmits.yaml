@@ -13,7 +13,7 @@
 # limitations under the License.
 
 postsubmits:
-  aws/eks-distro-build-tooling:
+  abhinavmpandey08/eks-distro-build-tooling:
   - name: amazon-eks-pod-identity-webhook-tooling-postsubmit
     always_run: false
     run_if_changed: "projects/aws/amazon-eks-pod-identity-webhook/.*"
@@ -24,7 +24,7 @@ postsubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-12b4jofqn4se4
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
