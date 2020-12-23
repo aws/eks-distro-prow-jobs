@@ -1,0 +1,66 @@
+# Copyright 2020 Amazon.com Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+postsubmits:
+  aws/eks-distro-build-tooling:
+  - name: github-exporter-tooling-postsubmit
+    always_run: false
+    run_if_changed: "projects/infinityworks/github-exporter/.*"
+    max_concurrency: 10
+    cluster: "prow-postsubmits-cluster"
+    branches:
+    - ^main$
+    skip_report: false
+    decoration_config:
+      gcs_configuration:
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        path_strategy: explicit
+      s3_credentials_secret: s3-credentials
+    labels:
+      image-build: "true"
+    spec:
+      serviceaccountName: postsubmits-build-account
+      containers:
+      - name: build-container
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e35d4971088ca37db784caf525373f7342126bf3
+        command:
+        - bash
+        - -c
+        - >
+          make release -C projects/infinityworks/github-exporter DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
+          &&
+          touch /status/done
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - date +%s > /status/pending
+          periodSeconds: 10
+      - name: buildkitd
+        image: moby/buildkit:master-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+          periodSeconds: 15
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
