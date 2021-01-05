@@ -25,6 +25,9 @@ periodics:
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   extra_refs:
+  - org: aws
+    repo: eks-distro-build-tooling
+    base_ref: main
   - org: eks-distro-pr-bot
     repo: eks-distro-build-tooling
     base_ref: main
@@ -43,6 +46,9 @@ periodics:
         make update -C eks-distro-base
         &&
         touch /status/done;
+      env:
+      - name: REPO_OWNER
+        value: "aws"
       volumeMounts:
       - name: ssh-auth
         mountPath: /secrets/ssh-secrets
