@@ -14,9 +14,9 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: docs-postsubmit
+  - name: kops-build-postsubmit
     always_run: false
-    run_if_changed: "docs/.*"
+    run_if_changed: ".*"
     max_concurrency: 1
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -28,8 +28,7 @@ postsubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     spec:
-      serviceaccountName: docs-build-account
-      automountServiceAccountToken: false
+      serviceaccountName: test-build-account
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:89f14256cd7775881251aeb85900cf7835f711a4
@@ -37,6 +36,4 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C docs
-          &&
-          mv ./docs/site/* /logs/artifacts
+          sh development/kops/run_all.sh
