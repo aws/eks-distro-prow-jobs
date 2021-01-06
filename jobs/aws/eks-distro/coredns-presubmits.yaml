@@ -19,16 +19,16 @@ presubmits:
     run_if_changed: "projects/coredns/coredns/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
-    skip_report: false
+    skip_report: true
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:89f14256cd7775881251aeb85900cf7835f711a4

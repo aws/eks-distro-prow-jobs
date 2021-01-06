@@ -18,7 +18,7 @@ postsubmits:
     always_run: false
     run_if_changed: "projects/kubernetes-sigs/aws-iam-authenticator/.*"
     max_concurrency: 10
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     branches:
     - ^main$
     skip_report: false
@@ -38,7 +38,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/kubernetes-sigs/aws-iam-authenticator DEVELOPMENT=false IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'
+          make build -C projects/kubernetes-sigs/aws-iam-authenticator DEVELOPMENT=false IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
           &&
