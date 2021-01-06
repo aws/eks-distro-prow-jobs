@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: prometheus-helm-chart-tooling-postsubmit
     always_run: false
-    run_if_changed: 'helm-charts/.*|projects/prometheus-community/helm-charts/.*'
+    run_if_changed: 'projects/prometheus-community/helm-charts/.*'
     cluster: "prow-postsubmits-cluster"
     max_concurrency: 10
     branches:
