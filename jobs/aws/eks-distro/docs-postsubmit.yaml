@@ -29,6 +29,7 @@ postsubmits:
       s3_credentials_secret: s3-credentials
     spec:
       serviceaccountName: docs-build-account
+      automountServiceAccountToken: false
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:89f14256cd7775881251aeb85900cf7835f711a4
