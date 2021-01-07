@@ -36,7 +36,7 @@ presubmits:
         - bash
         - -c
         - >
-          go run scripts/lint_prowjobs.go
+          go run scripts/lint_prowjobs/main.go
         resources:
           requests:
             memory: "4Gi"
