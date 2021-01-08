@@ -150,12 +150,18 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
-		if strings.Contains(presubmitConfig.JobBase.Name, "cni") && jobMakeTarget != jc.CniMakeTarget {
-			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.CniMakeTarget)
-		} else if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") && jobMakeTarget != jc.HelmMakeTarget {
-			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.HelmMakeTarget)
-		} else if strings.Contains(presubmitConfig.JobBase.Name, "release-tooling") && jobMakeTarget != jc.ReleaseToolingMakeTarget {
-			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
+		if strings.Contains(presubmitConfig.JobBase.Name, "cni") {
+			if jobMakeTarget != jc.CniMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.CniMakeTarget)
+			}
+		} else if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
+			if jobMakeTarget != jc.HelmMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.HelmMakeTarget)
+			}
+		} else if strings.Contains(presubmitConfig.JobBase.Name, "release-tooling") {
+			if jobMakeTarget != jc.ReleaseToolingMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
+			}
 		} else if jobMakeTarget != jc.DefaultMakeTarget {
 			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
 		}
@@ -165,6 +171,9 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 
 func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(postsubmitConfig.JobBase.Name, "kops") {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
@@ -216,11 +225,11 @@ func displayConfigErrors(fileErrorMap map[string][]string) bool {
 	for file, configErrors := range fileErrorMap {
 		if len(configErrors) > 0 {
 			errorsExist = true
-		}
-		fmt.Println()
-		fmt.Printf("\n%s:\n", file)
-		for _, errorString := range configErrors {
-			fmt.Fprintln(w, errorString)
+			fmt.Println()
+			fmt.Printf("\n%s:\n", file)
+			for _, errorString := range configErrors {
+				fmt.Fprintln(w, errorString)
+			}
 		}
 	}
 	w.Flush()
