@@ -1,12 +1,22 @@
-reviewers:
-- abhay-krishna
-- micahhausler
-- sostheim
-- vignesh-goutham
-- vivek-koppuru
 approvers:
 - abhay-krishna
+- abhinavmpandey08
+- bnrjee
+- jaxesn
+- kschumy
 - micahhausler
 - sostheim
+- TerryHowe
+- vignesh-goutham
+- vivek-koppuru
+reviewers:
+- abhay-krishna
+- abhinavmpandey08
+- bnrjee
+- jaxesn
+- kschumy
+- micahhausler
+- sostheim
+- TerryHowe
 - vignesh-goutham
 - vivek-koppuru
