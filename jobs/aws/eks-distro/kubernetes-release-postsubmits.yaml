@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro:
   - name: kubernetes-release-postsubmit
     always_run: false
-    run_if_changed: "projects/kubernetes/release/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes/release/.*"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:

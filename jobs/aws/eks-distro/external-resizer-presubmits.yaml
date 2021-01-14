@@ -16,7 +16,7 @@ presubmits:
   aws/eks-distro:
   - name: external-resizer-presubmit
     always_run: false
-    run_if_changed: "projects/kubernetes-csi/external-resizer/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-csi/external-resizer/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
