@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro:
   - name: external-attacher-postsubmit
     always_run: false
-    run_if_changed: "projects/kubernetes-csi/external-attacher/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-csi/external-attacher/.*"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:

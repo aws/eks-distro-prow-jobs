@@ -16,7 +16,7 @@ presubmits:
   aws/eks-distro:
   - name: main-presubmit
     always_run: false
-    run_if_changed: "^Makefile$"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^Makefile$"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
