@@ -32,13 +32,14 @@ import (
 )
 
 type JobConstants struct {
-	Bucket                   string
-	Cluster                  string
-	ServiceAccountName       string
-	DefaultMakeTarget        string
-	CniMakeTarget            string
-	HelmMakeTarget           string
-	ReleaseToolingMakeTarget string
+	Bucket                          string
+	Cluster                         string
+	ServiceAccountName              string
+	DefaultMakeTarget               string
+	CniMakeTarget                   string
+	HelmMakeTarget                  string
+	ReleaseToolingMakeTarget        string
+	PostsubmitConformanceMakeTarget string
 }
 
 type UnmarshaledJobConfig struct {
@@ -56,6 +57,7 @@ func (jc *JobConstants) Init(jobType string) {
 		jc.Bucket = "s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm"
 		jc.Cluster = "prow-postsubmits-cluster"
 		jc.DefaultMakeTarget = "release"
+		jc.PostsubmitConformanceMakeTarget = "postsubmit-conformance"
 	} else if jobType == "presubmit" {
 		jc.Bucket = "s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp"
 		jc.Cluster = "prow-presubmits-cluster"
@@ -147,7 +149,7 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 		if strings.Contains(presubmitConfig.JobBase.Name, "lint") {
 			return true, 0, ""
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
 		if strings.Contains(presubmitConfig.JobBase.Name, "cni") {
@@ -174,10 +176,14 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if strings.Contains(postsubmitConfig.JobBase.Name, "kops") {
 			return true, 0, ""
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
-		if jobMakeTarget != jc.DefaultMakeTarget {
+		if strings.Contains(postsubmitConfig.JobBase.Name, "main") {
+			if jobMakeTarget != jc.PostsubmitConformanceMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.PostsubmitConformanceMakeTarget)
+			}
+		} else if jobMakeTarget != jc.DefaultMakeTarget {
 			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
 		}
 		return true, 0, ""
@@ -205,6 +211,9 @@ func getFilesChanged(gitRoot string, pullBaseSha string, pullPullSha string) ([]
 }
 
 func unmarshalJobFile(filePath string, jobConfig *config.JobConfig) (*UnmarshaledJobConfig, error, error) {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return nil, nil, nil
+	}
 	unmarshaledJobConfig := new(UnmarshaledJobConfig)
 	unmarshaledJobConfig.GithubRepo = strings.Replace(filepath.Dir(filePath), "jobs/", "", 1)
 	unmarshaledJobConfig.FileName = filepath.Base(filePath)
@@ -277,6 +286,10 @@ func main() {
 
 	for _, presubmitFile := range presubmitFiles {
 		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(presubmitFile, &jobConfig)
+		// Skip linting if file is not found
+		if unmarshaledJobConfig == nil {
+			continue
+		}
 		if fileReadError != nil {
 			log.Fatalf("Error reading contents of %s: %v", presubmitFile, fileReadError)
 		}
@@ -303,6 +316,10 @@ func main() {
 
 	for _, postsubmitFile := range postsubmitFiles {
 		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(postsubmitFile, &jobConfig)
+		// Skip linting if file is not found
+		if unmarshaledJobConfig == nil {
+			continue
+		}
 		if fileReadError != nil {
 			log.Fatalf("Error reading contents of %s: %v", postsubmitFile, fileReadError)
 		}
