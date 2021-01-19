@@ -14,7 +14,7 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: main-postsubmit
+  - name: main-1-18-postsubmit
     always_run: false
     run_if_changed: ".*"
     max_concurrency: 10
@@ -30,7 +30,7 @@ postsubmits:
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: release-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
