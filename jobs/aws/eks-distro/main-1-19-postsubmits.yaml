@@ -14,10 +14,9 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: kubernetes-1-19-postsubmit
+  - name: main-1-19-postsubmit
     always_run: false
-    # TODO: tweak to only run if Makefile, build, release branch files change
-    run_if_changed: "projects/kubernetes/kubernetes/.*"
+    run_if_changed: ".*"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -40,9 +39,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/kubernetes/kubernetes DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'
-          &&
-          mv ./projects/kubernetes/kubernetes/_output/1-19/* /logs/artifacts
+          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)' ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
           &&
           touch /status/done
         livenessProbe:
