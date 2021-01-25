@@ -31,7 +31,7 @@ postsubmits:
       serviceaccountName: charts-build-account
       automountServiceAccountToken: false
       containers:
-      - image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:fc2af3d852304949aae7c4dc681b3a30a9e56091
+      - image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:afa151c76fdefe7248c1a75bb1a764c7e28fb334
         command:
         - bash
         - -c
