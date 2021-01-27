@@ -27,6 +27,7 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+      timeout: "4.0h"
     labels:
       image-build: "true"
     spec:
@@ -35,11 +36,16 @@ postsubmits:
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:afa151c76fdefe7248c1a75bb1a764c7e28fb334
+        env:
+        - name: TEST_ROLE_ARN
+          value: "arn:aws:iam::125833916567:role/TestBuildRole"
+        - name: ARTIFACT_BUCKET
+          value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
         command:
         - bash
         - -c
         - >
-          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)' ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)'
           &&
           touch /status/done
         livenessProbe:
