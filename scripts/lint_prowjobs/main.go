@@ -36,7 +36,6 @@ type JobConstants struct {
 	Cluster                         string
 	ServiceAccountName              string
 	DefaultMakeTarget               string
-	CniMakeTarget                   string
 	HelmMakeTarget                  string
 	ReleaseToolingMakeTarget        string
 	PostsubmitConformanceMakeTarget string
@@ -63,7 +62,6 @@ func (jc *JobConstants) Init(jobType string) {
 		jc.Cluster = "prow-presubmits-cluster"
 		jc.ServiceAccountName = "presubmits-build-account"
 		jc.DefaultMakeTarget = "build"
-		jc.CniMakeTarget = "release"
 		jc.HelmMakeTarget = "verify"
 		jc.ReleaseToolingMakeTarget = "test"
 	}
@@ -152,11 +150,7 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
-		if strings.Contains(presubmitConfig.JobBase.Name, "cni") {
-			if jobMakeTarget != jc.CniMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.CniMakeTarget)
-			}
-		} else if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
+		if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
 			if jobMakeTarget != jc.HelmMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.HelmMakeTarget)
 			}
