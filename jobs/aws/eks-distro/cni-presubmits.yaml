@@ -34,9 +34,7 @@ presubmits:
         - bash
         - -c
         - >
-          make release -C projects/containernetworking/plugins
-          &&
-          mv ./projects/containernetworking/plugins/_output/tar/* /logs/artifacts
+          make build -C projects/containernetworking/plugins
         resources:
           requests:
             memory: "2Gi"
