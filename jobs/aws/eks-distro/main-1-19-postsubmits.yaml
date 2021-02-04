@@ -39,7 +39,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)' ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)' ARTIFACT_BUCKET=prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
           &&
           touch /status/done
         livenessProbe:
