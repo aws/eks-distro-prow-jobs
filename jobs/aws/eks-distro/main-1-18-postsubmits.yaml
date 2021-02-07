@@ -23,6 +23,7 @@ postsubmits:
     - ^main$
     skip_report: false
     decoration_config:
+      timeout: 4h
       gcs_configuration:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit

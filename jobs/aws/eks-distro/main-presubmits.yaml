@@ -21,6 +21,7 @@ presubmits:
     cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
+      timeout: 4h
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
