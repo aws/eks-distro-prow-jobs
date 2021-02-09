@@ -1,0 +1,74 @@
+# Copyright Amazon.com Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+postsubmits:
+  aws/eks-distro:
+  - name: release-1-19-postsubmit
+    always_run: false
+    max_concurrency: 1
+    cluster: "prow-postsubmits-cluster"
+    branches:
+    - ^main$
+    skip_report: false
+    decoration_config:
+      gcs_configuration:
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        path_strategy: explicit
+      s3_credentials_secret: s3-credentials
+      timeout: 4h
+    labels:
+      image-build: "true"
+    spec:
+      serviceaccountName: release-build-account
+      automountServiceAccountToken: false
+      containers:
+      - name: build-container
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:bb13cd7056bb2a6582ff7ea96d99e597bffefaee
+        env:
+        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+        - name: AWS_REGION
+          value: "us-east-1"
+        command:
+        - bash
+        - -c
+        - >
+          source release/prow.sh
+          &&
+          make setup release DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2 IMAGE_REPO=public.ecr.aws/eks-distro
+          &&
+          touch /status/done
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - -c
+            - date +%s > /status/pending
+          periodSeconds: 10
+      - name: buildkitd
+        image: moby/buildkit:master-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+          periodSeconds: 15
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
