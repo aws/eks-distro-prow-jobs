@@ -13,7 +13,7 @@
 # limitations under the License.
 
 postsubmits:
-  aws/eks-distro:
+  bnrjee/eks-distro:
   - name: release-1-19-postsubmit
     always_run: false
     max_concurrency: 1
@@ -23,7 +23,7 @@ postsubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-4wk9ssz43obi
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
       timeout: 4h
@@ -34,10 +34,10 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:bb13cd7056bb2a6582ff7ea96d99e597bffefaee
+        image: 051478615782.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:6b1e327f0ebf9abbdef93236b81ebbb28971ff47
         env:
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+          value: "arn:aws:iam::051478615782:role/ArtifactDeploymentRole"
         - name: AWS_REGION
           value: "us-east-1"
         command:
@@ -46,7 +46,7 @@ postsubmits:
         - >
           source release/prow.sh
           &&
-          make setup release DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2 IMAGE_REPO=public.ecr.aws/eks-distro
+          make release DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=paris-artifact-stack-devs-artifactsbucket2aac5544-16hs3iutbyhdn IMAGE_REPO=public.ecr.aws/t2x7i1s0
           &&
           touch /status/done
         livenessProbe:
