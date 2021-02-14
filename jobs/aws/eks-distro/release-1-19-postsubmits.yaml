@@ -46,7 +46,7 @@ postsubmits:
         - >
           source release/prow.sh
           &&
-          make setup release DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2 IMAGE_REPO=public.ecr.aws/eks-distro
+          make release DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2 IMAGE_REPO=public.ecr.aws/eks-distro
           &&
           touch /status/done
         livenessProbe:
