@@ -30,14 +30,12 @@ postsubmits:
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: release-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:bb13cd7056bb2a6582ff7ea96d99e597bffefaee
         env:
-        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: AWS_REGION
           value: "us-east-1"
         command:
