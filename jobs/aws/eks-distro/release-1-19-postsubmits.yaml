@@ -44,7 +44,7 @@ postsubmits:
         - bash
         - -c
         - >
-          ./release/prow.sh DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=paris-artifact-stack-devs-artifactsbucket2aac5544-16hs3iutbyhdn IMAGE_REPO=public.ecr.aws/t2x7i1s0
+          ./release/prow-release.sh DEVELOPMENT=false RELEASE_BRANCH=1-19 ARTIFACT_BUCKET=paris-artifact-stack-devs-artifactsbucket2aac5544-16hs3iutbyhdn IMAGE_REPO=public.ecr.aws/t2x7i1s0
           &&
           touch /status/done
         livenessProbe:
