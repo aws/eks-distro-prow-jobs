@@ -39,11 +39,19 @@ postsubmits:
         env:
         - name: AWS_REGION
           value: "us-east-1"
+        - name: DEVELOPMENT
+          value: "false"
+        - name: RELEASE_BRANCH
+          value: "1-18"
+        - name: ARTIFACT_BUCKET
+          value: "eks-d-postsubmit-artifacts"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/h1r8a7l5"
         command:
         - bash
         - -c
         - >
-          ./release/prow.sh DEVELOPMENT=false RELEASE_BRANCH=1-18 ARTIFACT_BUCKET=eks-d-postsubmit-artifacts IMAGE_REPO=public.ecr.aws/h1r8a7l5
+          ./release/prow.sh
           &&
           touch /status/done
         livenessProbe:
