@@ -42,13 +42,13 @@ postsubmits:
         - name: AWS_REGION
           value: "us-east-1"
         - name: DEVELOPMENT
-          value: false
+          value: "false"
         - name: RELEASE_BRANCH
-          value: 1-18
+          value: "1-18"
         - name: ARTIFACT_BUCKET
-          value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: IMAGE_REPO
-          value: public.ecr.aws/eks-distro
+          value: "public.ecr.aws/eks-distro"
         command:
         - bash
         - -c
