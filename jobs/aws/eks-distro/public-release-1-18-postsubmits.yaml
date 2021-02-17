@@ -41,11 +41,19 @@ postsubmits:
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: DEVELOPMENT
+          value: false
+        - name: RELEASE_BRANCH
+          value: 1-18
+        - name: ARTIFACT_BUCKET
+          value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+        - name: IMAGE_REPO
+          value: public.ecr.aws/eks-distro
         command:
         - bash
         - -c
         - >
-          ./release/prow-release.sh DEVELOPMENT=false RELEASE_BRANCH=1-18 ARTIFACT_BUCKET=artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2 IMAGE_REPO=public.ecr.aws/eks-distro
+          ./release/prow-release.sh
           &&
           touch /status/done
         livenessProbe:
