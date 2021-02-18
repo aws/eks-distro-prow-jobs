@@ -14,9 +14,9 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: release-1-18-postsubmit
+  - name: prod-release-1-18-postsubmit
     always_run: false
-    run_if_changed: "release/1-18/RELEASE"
+    run_if_changed: "release/1-18/RELEASE-PUBLIC"
     max_concurrency: 1
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -31,12 +31,14 @@ postsubmits:
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: release-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:76aeaef060e613e35be46da242ced331e9e9ad5b
         env:
+        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: AWS_REGION
           value: "us-east-1"
         - name: DEVELOPMENT
@@ -44,14 +46,14 @@ postsubmits:
         - name: RELEASE_BRANCH
           value: "1-18"
         - name: ARTIFACT_BUCKET
-          value: "eks-d-postsubmit-artifacts"
+          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: IMAGE_REPO
-          value: "public.ecr.aws/h1r8a7l5"
+          value: "public.ecr.aws/eks-distro"
         command:
         - bash
         - -c
         - >
-          ./release/prow.sh
+          ./release/prow-release.sh
           &&
           touch /status/done
         livenessProbe:
