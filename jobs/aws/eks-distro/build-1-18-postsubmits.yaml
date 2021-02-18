@@ -14,9 +14,9 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: main-1-19-postsubmit
+  - name: build-1-18-postsubmit
     always_run: false
-    run_if_changed: "LICENSE"
+    run_if_changed: ".*"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -36,11 +36,20 @@ postsubmits:
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:bb13cd7056bb2a6582ff7ea96d99e597bffefaee
+        env:
+        - name: DEVELOPMENT
+          value: "false"
+        - name: RELEASE_BRANCH
+          value: "1-18"
+        - name: ARTIFACT_BUCKET
+          value: "eks-d-postsubmit-artifacts"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/h1r8a7l5"
         command:
         - bash
         - -c
         - >
-          make postsubmit-conformance DEVELOPMENT=false RELEASE_BRANCH=1-19 RELEASE=$(git rev-parse --short HEAD) IMAGE_TAG='$(GIT_TAG)-$(PULL_BASE_SHA)' ARTIFACT_BUCKET=eks-d-postsubmit-artifacts
+          make postsubmit-build
           &&
           touch /status/done
         livenessProbe:
