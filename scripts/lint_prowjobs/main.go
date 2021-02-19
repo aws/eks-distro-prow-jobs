@@ -167,10 +167,13 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 
 func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(postsubmitConfig.JobBase.Name, "release") {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
-		if strings.Contains(postsubmitConfig.JobBase.Name, "main") || strings.Contains(postsubmitConfig.JobBase.Name, "release") {
+		if strings.HasPrefix(postsubmitConfig.JobBase.Name, "build-") {
 			if jobMakeTarget != jc.PostsubmitConformanceMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.PostsubmitConformanceMakeTarget)
 			}
