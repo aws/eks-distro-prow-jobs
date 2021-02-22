@@ -46,17 +46,23 @@ postsubmits:
         - name: NODE_INSTANCE_PROFILE
           value: "arn:aws:iam::051478615782:instance-profile/KopsNodesBuildRole"
         - name: KOPS_STATE_STORE
-          value: "prow-data-devstack-kopsbucket430c8c85-14zoiyq5lra24"
+          value: "s3://prow-data-devstack-kopsbucket430c8c85-14zoiyq5lra24"
         - name: DEVELOPMENT
           value: "false"
         - name: RELEASE_BRANCH
           value: "1-18"
         - name: IMAGE_REPO
           value: "public.ecr.aws/t2x7i1s0"
+        - name: DOCKER_CONFIG
+          value: "/home/prow/go/src/github.com/bnrjee/eks-distro/.docker"
         command:
         - bash
         - -c
         - >
+          env
+          &&
+          cp -r $(HOME)/.docker /home/prow/go/src/github.com/bnrjee/eks-distro
+          &&
           make postsubmit-conformance
           &&
           touch /status/done
