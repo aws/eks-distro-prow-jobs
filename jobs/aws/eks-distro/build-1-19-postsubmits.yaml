@@ -53,10 +53,14 @@ postsubmits:
           value: "1-19"
         - name: IMAGE_REPO
           value: "public.ecr.aws/h1r8a7l5"
+        - name: DOCKER_CONFIG
+          value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
         command:
         - bash
         - -c
         - >
+          cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
+          &&
           make postsubmit-conformance
           &&
           touch /status/done
