@@ -61,7 +61,7 @@ postsubmits:
         - >
           env
           &&
-          cp -r $(HOME)/.docker /home/prow/go/src/github.com/bnrjee/eks-distro
+          cp -r "${HOME}/.docker" /home/prow/go/src/github.com/bnrjee/eks-distro
           &&
           make postsubmit-conformance
           &&
