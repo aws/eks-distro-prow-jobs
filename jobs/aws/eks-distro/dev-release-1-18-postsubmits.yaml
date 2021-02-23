@@ -61,6 +61,10 @@ postsubmits:
             - -c
             - date +%s > /status/pending
           periodSeconds: 10
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:
@@ -74,6 +78,10 @@ postsubmits:
             - -c
             - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
           periodSeconds: 15
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1"
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
