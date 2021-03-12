@@ -45,7 +45,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes/kubernetes || true
+          make build -C projects/kubernetes/kubernetes
           &&
           mv ./projects/kubernetes/kubernetes/_output/1-20/* /logs/artifacts
           &&
