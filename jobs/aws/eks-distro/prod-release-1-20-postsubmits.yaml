@@ -53,7 +53,7 @@ postsubmits:
         - bash
         - -c
         - >
-          ./release/prow-release.sh
+          echo ./release/prow-release.sh
           &&
           touch /status/done
         livenessProbe:
