@@ -14,9 +14,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: metrics-server-presubmit
+  - name: coredns-1-19-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-sigs/metrics-server/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/coredns/coredns/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -33,11 +33,14 @@ presubmits:
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:199e941a6e1499870717e8b05178072e0b69b0fe
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-19"
         command:
-        - sh
+        - bash
         - -c
         - >
-          make build -C projects/kubernetes-sigs/metrics-server DEVELOPMENT=false
+          make build -C projects/coredns/coredns DEVELOPMENT=false
           &&
           touch /status/done
         livenessProbe:
