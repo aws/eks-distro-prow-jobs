@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro:
   - name: announcement-postsubmit
     always_run: false
-    run_if_changed: "release/.*/release-announcement.txt"
+    run_if_changed: "docs/contents/releases/.*/release-announcement.txt"
     max_concurrency: 1
     cluster: "prow-postsubmits-cluster"
     branches:
