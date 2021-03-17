@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro:
-  - name: aws-iam-authenticator-presubmit
+  - name: aws-iam-authenticator-1-18-presubmit
     always_run: false
     run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-sigs/aws-iam-authenticator/.*"
     max_concurrency: 10
@@ -33,6 +33,9 @@ presubmits:
       containers:
       - name: build-container
         image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:199e941a6e1499870717e8b05178072e0b69b0fe
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-18"
         command:
         - bash
         - -c
