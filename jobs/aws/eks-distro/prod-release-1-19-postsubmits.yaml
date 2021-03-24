@@ -35,7 +35,7 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:e98fcde28fd0d85949047083e24c1daf6f961237
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:b729ea295aec9b2d271179b004ba2624cb950969
         env:
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
