@@ -15,7 +15,7 @@
 periodics:
 - name: attribution-files-periodic
   # Runs every day at 2pm PST
-  cron: "0 21 * * *"
+  cron: "*/15 * * * *"
   cluster: "prow-postsubmits-cluster"
   decoration_config:
     gcs_configuration:
@@ -36,7 +36,7 @@ periodics:
       - bash
       - -c
       - >
-        make update-attribution-files -C eks-distro
+        make update-attribution-files
       env:
       - name: REPO_OWNER
         value: "aws"
