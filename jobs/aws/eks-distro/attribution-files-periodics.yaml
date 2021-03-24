@@ -47,13 +47,6 @@ periodics:
       - name: github-auth
         mountPath: /secrets/github-secrets
         readOnly: true
-      livenessProbe:
-        exec:
-          command:
-          - bash
-          - -c
-          - date +%s > /status/pending
-        periodSeconds: 10
       resources:
         requests:
           memory: "16Gi"
