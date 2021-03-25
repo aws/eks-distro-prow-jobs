@@ -23,7 +23,7 @@ periodics:
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   extra_refs:
-  - org: eks-distro-pr-bot
+  - org: aws
     repo: eks-distro
     base_ref: main
   spec:
