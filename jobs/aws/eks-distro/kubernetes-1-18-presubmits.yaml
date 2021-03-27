@@ -17,7 +17,7 @@ presubmits:
   - name: kubernetes-1-18-presubmit
     always_run: false
     # TODO: tweak to only run if Makefile, build, release branch files change
-    run_if_changed: "projects/kubernetes/kubernetes/.*"
+    run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-18)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
