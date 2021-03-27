@@ -39,6 +39,7 @@ type JobConstants struct {
 	HelmMakeTarget                  string
 	ReleaseToolingMakeTarget        string
 	PostsubmitConformanceMakeTarget string
+	TestsMakeTarget                 string
 }
 
 type UnmarshaledJobConfig struct {
@@ -64,6 +65,7 @@ func (jc *JobConstants) Init(jobType string) {
 		jc.DefaultMakeTarget = "build"
 		jc.HelmMakeTarget = "verify"
 		jc.ReleaseToolingMakeTarget = "test"
+		jc.TestsMakeTarget = "test"
 	}
 }
 
@@ -158,6 +160,10 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 			if jobMakeTarget != jc.ReleaseToolingMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
 			}
+		} else if strings.Contains(presubmitConfig.JobBase.Name, "tests") {
+			if jobMakeTarget != jc.TestsMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.TestsMakeTarget)
+			}
 		} else if jobMakeTarget != jc.DefaultMakeTarget {
 			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
 		}
@@ -170,9 +176,9 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if strings.Contains(postsubmitConfig.JobBase.Name, "release") {
 			return true, 0, ""
 		}
-        if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
-            return true, 0, ""
-        }
+		if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
