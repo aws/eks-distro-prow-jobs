@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro:
   - name: prod-release-1-18-postsubmit
     always_run: false
-    run_if_changed: "release/1-18/RELEASE-PUBLIC"
+    run_if_changed: "release/1-18/production/RELEASE"
     max_concurrency: 1
     cluster: "prow-postsubmits-cluster"
     branches:
