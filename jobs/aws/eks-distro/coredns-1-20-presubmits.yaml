@@ -40,7 +40,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/coredns/coredns DEVELOPMENT=false
+          make build -C projects/coredns/coredns
           &&
           touch /status/done
         livenessProbe:

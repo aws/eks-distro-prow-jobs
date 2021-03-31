@@ -40,7 +40,7 @@ presubmits:
         - sh
         - -c
         - >
-          make build -C projects/kubernetes-sigs/metrics-server DEVELOPMENT=false
+          make build -C projects/kubernetes-sigs/metrics-server
           &&
           touch /status/done
         livenessProbe:

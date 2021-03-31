@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/external-snapshotter DEVELOPMENT=false
+          make build -C projects/kubernetes-csi/external-snapshotter
           &&
           touch /status/done
         livenessProbe:

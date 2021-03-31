@@ -40,7 +40,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-sigs/aws-iam-authenticator DEVELOPMENT=false
+          make build -C projects/kubernetes-sigs/aws-iam-authenticator
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
           &&

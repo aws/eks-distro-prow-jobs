@@ -39,8 +39,6 @@ postsubmits:
         env:
         - name: AWS_REGION
           value: "us-east-1"
-        - name: DEVELOPMENT
-          value: "false"
         - name: RELEASE_BRANCH
           value: "1-20"
         - name: ARTIFACT_BUCKET

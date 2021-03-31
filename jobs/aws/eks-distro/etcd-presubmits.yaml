@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/etcd-io/etcd DEVELOPMENT=false
+          make build -C projects/etcd-io/etcd
           &&
           mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
           &&

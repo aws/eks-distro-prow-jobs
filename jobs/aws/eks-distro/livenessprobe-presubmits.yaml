@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/livenessprobe DEVELOPMENT=false
+          make build -C projects/kubernetes-csi/livenessprobe
           &&
           touch /status/done
         livenessProbe:
