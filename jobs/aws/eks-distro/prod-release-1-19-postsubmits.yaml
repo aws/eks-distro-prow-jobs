@@ -45,6 +45,8 @@ postsubmits:
           value: "false"
         - name: RELEASE_BRANCH
           value: "1-19"
+        - name: RELEASE_ENVIRONMENT
+          value: "production"
         - name: ARTIFACT_BUCKET
           value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: IMAGE_REPO
