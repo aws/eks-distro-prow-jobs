@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro:
   - name: prod-release-1-20-postsubmit
     always_run: false
-    run_if_changed: "release/1-20/RELEASE-PUBLIC"
+    run_if_changed: "release/1-20/production/RELEASE"
     max_concurrency: 1
     cluster: "prow-postsubmits-cluster"
     branches:
@@ -45,6 +45,8 @@ postsubmits:
           value: "false"
         - name: RELEASE_BRANCH
           value: "1-20"
+        - name: RELEASE_ENVIRONMENT
+          value: "production"
         - name: ARTIFACT_BUCKET
           value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: IMAGE_REPO
