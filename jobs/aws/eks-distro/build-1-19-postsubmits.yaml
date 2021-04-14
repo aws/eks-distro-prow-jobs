@@ -55,8 +55,6 @@ postsubmits:
           value: "public.ecr.aws/h1r8a7l5"
         - name: DOCKER_CONFIG
           value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
-        - name: REPOSITORY_URI
-          value: "public.ecr.aws/h1r8a7l5"
         command:
         - bash
         - -c
