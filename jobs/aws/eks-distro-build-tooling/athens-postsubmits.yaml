@@ -34,7 +34,7 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:397a7e8dacb2c6e2ee038bfe486429cc8130c580
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:4ae475cf720cb0067bb87ffa056fa499440e7ca2
         command:
         - bash
         - -c
