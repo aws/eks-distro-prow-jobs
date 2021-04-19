@@ -32,7 +32,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:4ae475cf720cb0067bb87ffa056fa499440e7ca2
+        image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:143f709aa86128f5f990c928941d54f1db572468
         env:
         - name: RELEASE_BRANCH
           value: "1-20"
