@@ -35,6 +35,8 @@ presubmits:
         - bash
         - -c
         - >
+          go mod tidy
+          &&
           go vet scripts/lint_prowjobs/main.go
           &&
           go run scripts/lint_prowjobs/main.go
