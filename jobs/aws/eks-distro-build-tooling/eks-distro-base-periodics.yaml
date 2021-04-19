@@ -40,6 +40,9 @@ periodics:
     containers:
     - name: build-container
       image: 316434458148.dkr.ecr.us-west-2.amazonaws.com/eks-distro/builder:4ae475cf720cb0067bb87ffa056fa499440e7ca2
+      env:
+      - name: IMAGE_REPO
+        value: "public.ecr.aws/h1r8a7l5"
       command:
       - bash
       - -c
