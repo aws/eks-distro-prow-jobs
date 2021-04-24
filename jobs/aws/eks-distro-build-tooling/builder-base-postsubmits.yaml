@@ -44,7 +44,9 @@ postsubmits:
         image: 137112412989.dkr.ecr.us-west-2.amazonaws.com/amazonlinux:2
         env:
         - name: IMAGE_REPO
-          value: "public.ecr.aws/h1r8a7l5"
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         command:
         - bash
         - -c
