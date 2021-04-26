@@ -42,9 +42,9 @@ postsubmits:
         - name: ARTIFACT_BUCKET
           value: "eks-d-postsubmit-artifacts"
         - name: CONTROL_PLANE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/KopsControlPlaneBuildRole"
+          value: "arn:aws:iam::125833916567:instance-profile/Kops118ControlPlaneBuildRole"
         - name: NODE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/KopsNodesBuildRole"
+          value: "arn:aws:iam::125833916567:instance-profile/Kops118NodesBuildRole"
         - name: KOPS_STATE_STORE
           value: "s3://testbuildstack-125833916-kopsbuildstatestorebucke-d4esen60nfrk"
         - name: DEVELOPMENT
