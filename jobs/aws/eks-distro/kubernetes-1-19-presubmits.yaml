@@ -33,7 +33,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/h1r8a7l5/eks-distro/builder:143f709aa86128f5f990c928941d54f1db572468
+        image: public.ecr.aws/h1r8a7l5/eks-distro/builder:e8c9330e9c0e9e91de3087e07ba44a0a70b4d6cc
         env:
         - name: DEVELOPMENT
           value: "false"
