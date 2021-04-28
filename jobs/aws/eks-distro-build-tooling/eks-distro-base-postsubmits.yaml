@@ -16,7 +16,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: eks-distro-base-tooling-postsubmit
     always_run: false
-    run_if_changed: "eks-distro-base/.*"
+    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
