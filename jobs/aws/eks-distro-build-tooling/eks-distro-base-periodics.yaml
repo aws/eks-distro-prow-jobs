@@ -51,6 +51,8 @@ periodics:
       - bash
       - -c
       - >
+        ./scripts/setup_public_ecr_push.sh
+        &&
         make update -C eks-distro-base
         &&
         touch /status/done;
