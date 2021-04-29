@@ -57,7 +57,7 @@ postsubmits:
           &&
           source scripts/setup_public_ecr_push.sh
           &&
-          make release -C eks-distro-base DEVELOPMENT=false IMAGE_TAG=${DATE_EPOCH}
+          make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
           &&
           touch /status/done
         volumeMounts:

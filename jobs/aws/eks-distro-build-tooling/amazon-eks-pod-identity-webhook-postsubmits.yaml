@@ -39,7 +39,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/aws/amazon-eks-pod-identity-webhook DEVELOPMENT=false IMAGE_TAG=$PULL_BASE_SHA
+          make release -C projects/aws/amazon-eks-pod-identity-webhook IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done
         livenessProbe:

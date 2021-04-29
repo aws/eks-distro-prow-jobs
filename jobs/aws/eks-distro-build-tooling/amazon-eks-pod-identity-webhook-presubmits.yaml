@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/aws/amazon-eks-pod-identity-webhook DEVELOPMENT=false
+          make build -C projects/aws/amazon-eks-pod-identity-webhook
           &&
           touch /status/done
         livenessProbe:
