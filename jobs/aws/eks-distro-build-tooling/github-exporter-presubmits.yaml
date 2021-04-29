@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/infinityworks/github-exporter DEVELOPMENT=false
+          make build -C projects/infinityworks/github-exporter
           &&
           touch /status/done
         livenessProbe:

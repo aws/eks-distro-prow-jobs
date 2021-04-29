@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/prometheus/alertmanager DEVELOPMENT=false
+          make build -C projects/prometheus/alertmanager
           &&
           touch /status/done
         livenessProbe:

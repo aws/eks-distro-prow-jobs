@@ -46,7 +46,7 @@ presubmits:
         - >
           ./builder-base/install.sh
           &&
-          make build -C builder-base DEVELOPMENT=false
+          make build -C builder-base
           &&
           touch /status/done
         livenessProbe:

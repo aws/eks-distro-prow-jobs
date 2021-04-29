@@ -44,7 +44,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C eks-distro-base DEVELOPMENT=false
+          make build -C eks-distro-base
           &&
           touch /status/done
         livenessProbe:
