@@ -74,6 +74,10 @@ postsubmits:
             - -c
             - date +%s > /status/pending
           periodSeconds: 10
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:
