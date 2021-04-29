@@ -47,8 +47,6 @@ postsubmits:
           value: "arn:aws:iam::125833916567:instance-profile/Kops119NodesBuildRole"
         - name: KOPS_STATE_STORE
           value: "s3://testbuildstack-125833916-kopsbuildstatestorebucke-d4esen60nfrk"
-        - name: DEVELOPMENT
-          value: "false"
         - name: RELEASE_BRANCH
           value: "1-19"
         - name: IMAGE_REPO

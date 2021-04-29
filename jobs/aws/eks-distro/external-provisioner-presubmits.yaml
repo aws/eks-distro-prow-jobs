@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/external-provisioner DEVELOPMENT=false
+          make build -C projects/kubernetes-csi/external-provisioner
           &&
           touch /status/done
         livenessProbe:

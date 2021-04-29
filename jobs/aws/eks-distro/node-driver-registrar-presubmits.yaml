@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/node-driver-registrar DEVELOPMENT=false
+          make build -C projects/kubernetes-csi/node-driver-registrar
           &&
           touch /status/done
         livenessProbe:

@@ -37,7 +37,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes-csi/external-resizer DEVELOPMENT=false
+          make build -C projects/kubernetes-csi/external-resizer
           &&
           touch /status/done
         livenessProbe:

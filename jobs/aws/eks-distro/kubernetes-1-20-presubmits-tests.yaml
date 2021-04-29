@@ -32,8 +32,6 @@ presubmits:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:46e8ef6d1f250d0eebf9be660054d7bb46bbfba4
         env:
-        - name: DEVELOPMENT
-          value: "false"
         - name: RELEASE_BRANCH
           value: "1-20"
         command:
