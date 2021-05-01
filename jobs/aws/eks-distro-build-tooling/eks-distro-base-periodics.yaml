@@ -39,7 +39,7 @@ periodics:
     automountServiceAccountToken: false
     containers:
     - name: build-container
-      image: public.ecr.aws/eks-distro-build-tooling/builder-base:abcaeb4f576490aa12133ceec1fecb4ba16a153d
+      image: public.ecr.aws/eks-distro-build-tooling/builder-base:b7bebbfe43eb6fff7c99ade2a635dac816871fa1
       env:
       - name: IMAGE_REPO
         value: "public.ecr.aws/eks-distro-build-tooling"
