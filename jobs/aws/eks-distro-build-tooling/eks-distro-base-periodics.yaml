@@ -47,6 +47,8 @@ periodics:
         value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
       - name: AWS_REGION
         value: "us-east-1"
+      - name: REPO_OWNER
+        value: "aws"
       command:
       - bash
       - -c
@@ -55,10 +57,7 @@ periodics:
         &&
         make update -C eks-distro-base
         &&
-        touch /status/done;
-      env:
-      - name: REPO_OWNER
-        value: "aws"
+        touch /status/done
       volumeMounts:
       - name: ssh-auth
         mountPath: /secrets/ssh-secrets
