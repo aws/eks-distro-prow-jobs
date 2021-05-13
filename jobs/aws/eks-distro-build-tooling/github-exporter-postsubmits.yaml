@@ -39,6 +39,8 @@ postsubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           make release -C projects/infinityworks/github-exporter IMAGE_TAG=$PULL_BASE_SHA
           &&
           touch /status/done

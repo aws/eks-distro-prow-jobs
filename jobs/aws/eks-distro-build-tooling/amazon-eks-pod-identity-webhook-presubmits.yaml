@@ -37,6 +37,8 @@ presubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           make build -C projects/aws/amazon-eks-pod-identity-webhook
           &&
           touch /status/done

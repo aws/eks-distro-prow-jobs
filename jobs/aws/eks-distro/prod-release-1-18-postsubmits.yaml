@@ -53,6 +53,8 @@ postsubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           ./release/prow-release.sh
           &&
           touch /status/done

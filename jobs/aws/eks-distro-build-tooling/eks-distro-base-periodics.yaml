@@ -53,6 +53,8 @@ periodics:
       - bash
       - -c
       - >
+        scripts/buildkit_check.sh
+        &&
         source scripts/setup_public_ecr_push.sh
         &&
         make update -C eks-distro-base

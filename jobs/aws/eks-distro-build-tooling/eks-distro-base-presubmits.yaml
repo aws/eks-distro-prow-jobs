@@ -44,6 +44,8 @@ presubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           make build -C eks-distro-base
           &&
           touch /status/done

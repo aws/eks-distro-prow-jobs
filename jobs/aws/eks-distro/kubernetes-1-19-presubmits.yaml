@@ -43,6 +43,8 @@ presubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           make build -C projects/kubernetes/kubernetes
           &&
           mv ./projects/kubernetes/kubernetes/_output/1-19/* /logs/artifacts

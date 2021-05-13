@@ -37,6 +37,8 @@ presubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           make build -C projects/prometheus/alertmanager
           &&
           touch /status/done

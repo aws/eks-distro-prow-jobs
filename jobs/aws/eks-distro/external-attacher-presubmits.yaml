@@ -37,6 +37,8 @@ presubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           make build -C projects/kubernetes-csi/external-attacher
           &&
           touch /status/done

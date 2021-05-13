@@ -44,6 +44,8 @@ presubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           ./builder-base/install.sh
           &&
           make build -C builder-base

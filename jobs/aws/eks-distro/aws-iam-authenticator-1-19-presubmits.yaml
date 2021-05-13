@@ -40,6 +40,8 @@ presubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           make build -C projects/kubernetes-sigs/aws-iam-authenticator
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts

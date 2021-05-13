@@ -53,6 +53,8 @@ postsubmits:
         - bash
         - -c
         - >
+          scripts/buildkit_check.sh
+          &&
           ./builder-base/install.sh
           &&
           source scripts/setup_public_ecr_push.sh

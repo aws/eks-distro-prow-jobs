@@ -38,6 +38,8 @@ presubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           make build
           &&
           touch /status/done
