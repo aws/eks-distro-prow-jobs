@@ -16,8 +16,8 @@ periodics:
 - name: eks-distro-base-tooling-periodic
   labels:
     image-build: "true"
-  # Runs every weekday (M-F) at 10am PST
-  cron: "0 18 * * 1-5"
+  # Runs every weekday (M-F) at noon PST
+  cron: "0 19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   decoration_config:
     gcs_configuration:
@@ -53,8 +53,6 @@ periodics:
       - bash
       - -c
       - >
-        source scripts/setup_public_ecr_push.sh
-        &&
         make update -C eks-distro-base
         &&
         touch /status/done
