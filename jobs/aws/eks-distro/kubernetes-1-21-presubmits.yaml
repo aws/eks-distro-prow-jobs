@@ -14,10 +14,10 @@
 
 presubmits:
   aws/eks-distro:
-  - name: kubernetes-1-20-presubmit
+  - name: kubernetes-1-21-presubmit
     always_run: false
     # TODO: tweak to only run if Makefile, build, release branch files change
-    run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-20)"
+    run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-21)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -45,7 +45,7 @@ presubmits:
         - >
           make build -C projects/kubernetes/kubernetes
           &&
-          mv ./projects/kubernetes/kubernetes/_output/1-20/* /logs/artifacts
+          mv ./projects/kubernetes/kubernetes/_output/1-21/* /logs/artifacts
           &&
           touch /status/done
         livenessProbe:
