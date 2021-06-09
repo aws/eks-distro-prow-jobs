@@ -14,10 +14,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: kubernetes-1-21-presubmit
+  - name: kubernetes-1-21-presubmit-tests
     always_run: false
-    # TODO: tweak to only run if Makefile, build, release branch files change
-    run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-21)"
+    run_if_changed: "projects/kubernetes/kubernetes/1-21/(GIT_TAG|patches)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -26,8 +25,6 @@ presubmits:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    labels:
-      image-build: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -37,24 +34,11 @@ presubmits:
         env:
         - name: RELEASE_BRANCH
           value: "1-21"
-        - name: IMAGE_REPO
-          value: "public.ecr.aws/h1r8a7l5"
         command:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes/kubernetes
-          &&
-          mv ./projects/kubernetes/kubernetes/_output/1-21/* /logs/artifacts
-          &&
-          touch /status/done
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
+          make test -C projects/kubernetes/kubernetes
         resources:
           requests:
             memory: "26Gi"
@@ -62,26 +46,3 @@ presubmits:
           limits:
             memory: "26Gi"
             cpu: "3584m"
-      - name: buildkitd
-        image: moby/buildkit:master-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "256m"
-          limits:
-            memory: "1Gi"
-            cpu: "256m"
