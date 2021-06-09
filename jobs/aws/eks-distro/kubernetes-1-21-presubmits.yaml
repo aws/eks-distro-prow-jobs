@@ -1,4 +1,4 @@
-# Copyright 2020 Amazon.com Inc. or its affiliates. All Rights Reserved.
+# Copyright Amazon.com Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,10 @@
 
 presubmits:
   aws/eks-distro:
-<<<<<<< HEAD
-  - name: kubernetes-1-20-presubmit
-    always_run: false
-    # TODO: tweak to only run if Makefile, build, release branch files change
-    run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-20)"
-=======
   - name: kubernetes-1-21-presubmit
     always_run: false
     # TODO: tweak to only run if Makefile, build, release branch files change
     run_if_changed: "projects/kubernetes/kubernetes/(build|docker|Makefile|1-21)"
->>>>>>> 2a4076f00342d49773c83248b657a89a1c528936
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
