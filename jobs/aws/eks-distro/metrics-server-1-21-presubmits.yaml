@@ -12,54 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-postsubmits:
+presubmits:
   aws/eks-distro:
-  - name: build-1-21-postsubmit
+  - name: metrics-server-1-21-presubmit
     always_run: false
-    run_if_changed: ".*"
-    max_concurrency: 1
-    cluster: "prow-postsubmits-cluster"
-    branches:
-    - ^main$
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-sigs/metrics-server/.*"
+    max_concurrency: 10
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
-      timeout: 6h
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:36b082d3ce0be02a31259f7fbb7209f56ec6b188
         env:
-        - name: TEST_ROLE_ARN
-          value: "arn:aws:iam::125833916567:role/TestBuildRole"
-        - name: ARTIFACT_BUCKET
-          value: "eks-d-postsubmit-artifacts"
-        - name: CONTROL_PLANE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/Kops120ControlPlaneBuildRole"
-        - name: NODE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/Kops120NodesBuildRole"
-        - name: KOPS_STATE_STORE
-          value: "s3://testbuildstack-125833916-kopsbuildstatestorebucke-d4esen60nfrk"
         - name: RELEASE_BRANCH
           value: "1-21"
-        - name: IMAGE_REPO
-          value: "public.ecr.aws/h1r8a7l5"
-        - name: DOCKER_CONFIG
-          value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
         command:
-        - bash
+        - sh
         - -c
         - >
-          cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
-          &&
-          make postsubmit-conformance
+          make build -C projects/kubernetes-sigs/metrics-server
           &&
           touch /status/done
         livenessProbe:
@@ -71,8 +52,11 @@ postsubmits:
           periodSeconds: 10
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "4"
+            memory: "4Gi"
+            cpu: "1024m"
+          limits:
+            memory: "4Gi"
+            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:
@@ -86,10 +70,6 @@ postsubmits:
             - -c
             - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
           periodSeconds: 15
-        resources:
-          requests:
-            memory: "4Gi"
-            cpu: "1"
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
