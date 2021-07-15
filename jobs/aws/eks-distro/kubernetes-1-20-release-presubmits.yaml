@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro:
-  - name: kubernetes-release-presubmit
+  - name: kubernetes-1-20-release-presubmit
     always_run: false
     run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes/release/.*"
     max_concurrency: 10
@@ -32,7 +32,10 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:36b082d3ce0be02a31259f7fbb7209f56ec6b188
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:88b721da50cc2dd56446af65b3a43b8c83b7dcd4
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-20"
         command:
         - bash
         - -c

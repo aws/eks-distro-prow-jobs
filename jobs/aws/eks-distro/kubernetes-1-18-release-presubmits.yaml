@@ -1,4 +1,4 @@
-# Copyright Amazon.com Inc. or its affiliates. All Rights Reserved.
+# Copyright 2020 Amazon.com Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: metrics-server-1-21-presubmit
+  - name: kubernetes-1-18-release-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-sigs/metrics-server/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes/release/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -35,12 +35,12 @@ presubmits:
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:88b721da50cc2dd56446af65b3a43b8c83b7dcd4
         env:
         - name: RELEASE_BRANCH
-          value: "1-21"
+          value: "1-18"
         command:
-        - sh
+        - bash
         - -c
         - >
-          make build -C projects/kubernetes-sigs/metrics-server
+          make build -C projects/kubernetes/release
           &&
           touch /status/done
         livenessProbe:
@@ -52,11 +52,11 @@ presubmits:
           periodSeconds: 10
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "8Gi"
+            cpu: "2048m"
           limits:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "8Gi"
+            cpu: "2048m"
       - name: buildkitd
         image: moby/buildkit:master-rootless
         command:

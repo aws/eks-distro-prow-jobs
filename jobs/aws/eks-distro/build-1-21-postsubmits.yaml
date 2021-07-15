@@ -35,16 +35,16 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:36b082d3ce0be02a31259f7fbb7209f56ec6b188
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:88b721da50cc2dd56446af65b3a43b8c83b7dcd4
         env:
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
         - name: ARTIFACT_BUCKET
           value: "eks-d-postsubmit-artifacts"
         - name: CONTROL_PLANE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/Kops120ControlPlaneBuildRole"
+          value: "arn:aws:iam::125833916567:instance-profile/Kops121ControlPlaneBuildRole"
         - name: NODE_INSTANCE_PROFILE
-          value: "arn:aws:iam::125833916567:instance-profile/Kops120NodesBuildRole"
+          value: "arn:aws:iam::125833916567:instance-profile/Kops121NodesBuildRole"
         - name: KOPS_STATE_STORE
           value: "s3://testbuildstack-125833916-kopsbuildstatestorebucke-d4esen60nfrk"
         - name: RELEASE_BRANCH
