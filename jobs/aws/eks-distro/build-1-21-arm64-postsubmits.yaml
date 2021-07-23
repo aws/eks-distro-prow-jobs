@@ -35,7 +35,7 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:88b721da50cc2dd56446af65b3a43b8c83b7dcd4
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:cfd5564c424feec50b526dae8c056330aceaab9a
         env:
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
