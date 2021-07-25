@@ -55,15 +55,10 @@ periodics:
       - >
         export DATE_EPOCH=$(date "+%F-%s")
         &&
-        # Conditionally builds and pushes IFF there are package updates.
-        # Writes out a list of updated packages (if any) to ./update_packages
         make update -C eks-distro-base PACKAGES='"ca-certificates setup system-release tzdata"' DOCKERFILE=Dockerfile.minimal IMAGE_NAME=eks-distro-minimal-base IMAGE_TAG=${DATE_EPOCH}
         &&
-        # Conditionally builds and pushes IFF there are package updates
-        # Writes out a list of updated packages (if any) to ./update_packages
         make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
-        # Creates PR with updated tag files for both images if any files were updated
         make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
         touch /status/done
