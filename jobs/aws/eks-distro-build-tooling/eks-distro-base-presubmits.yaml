@@ -48,7 +48,6 @@ presubmits:
           &&
           make build -C eks-distro-base
           &&
-          # Doesn't really create PR, just excercise the script
           make create-pr -C eks-distro-base
           &&
           touch /status/done
