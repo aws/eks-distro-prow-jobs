@@ -44,7 +44,12 @@ presubmits:
         - bash
         - -c
         - >
+          make build -C eks-distro-base DOCKERFILE=Dockerfile.minimal IMAGE_NAME=eks-distro-minimal-base
+          &&
           make build -C eks-distro-base
+          &&
+          # Doesn't really create PR, just excercise the script
+          make create-pr -C eks-distro-base
           &&
           touch /status/done
         livenessProbe:
