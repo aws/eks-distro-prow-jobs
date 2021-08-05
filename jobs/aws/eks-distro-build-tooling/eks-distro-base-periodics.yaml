@@ -55,8 +55,6 @@ periodics:
       - >
         export DATE_EPOCH=$(date "+%F-%s")
         &&
-        make update -C eks-distro-base PACKAGES='"ca-certificates setup system-release tzdata"' DOCKERFILE=Dockerfile.minimal IMAGE_NAME=eks-distro-minimal-base IMAGE_TAG=${DATE_EPOCH}
-        &&
         make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
         make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
