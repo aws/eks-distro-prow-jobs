@@ -44,8 +44,6 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C eks-distro-base DOCKERFILE=Dockerfile.minimal IMAGE_NAME=eks-distro-minimal-base
-          &&
           make build -C eks-distro-base
           &&
           make create-pr -C eks-distro-base

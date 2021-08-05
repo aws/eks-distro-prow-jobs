@@ -57,8 +57,6 @@ postsubmits:
           &&
           source scripts/setup_public_ecr_push.sh
           &&
-          make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH} PACKAGES='"ca-certificates setup system-release tzdata"' DOCKERFILE=Dockerfile.minimal IMAGE_NAME=eks-distro-minimal-base
-          &&
           make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
