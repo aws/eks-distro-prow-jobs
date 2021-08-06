@@ -17,7 +17,7 @@ postsubmits:
   - name: build-1-20-postsubmit
     always_run: false
     run_if_changed: ".*"
-    max_concurrency: 1
+    max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
     - ^main$
