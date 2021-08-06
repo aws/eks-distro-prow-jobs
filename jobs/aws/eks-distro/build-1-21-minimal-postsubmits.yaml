@@ -53,12 +53,6 @@ postsubmits:
           value: "public.ecr.aws/h1r8a7l5"
         - name: DOCKER_CONFIG
           value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
-        - name: KUBE_PROXY_EKS_DISTRO_BASE_IMAGE_NAME
-          value: eks-distro-minimal-base-iptables
-        - name: GO_RUNNER_BASE_IMAGE_NAME
-          value: eks-distro-minimal-base
-        - name: PAUSE_BASE_IMAGE_NAME
-          value: eks-distro-minimal-base-nonroot 
         - name: RELEASE_VARIANT
           value: minimal
         command:
