@@ -58,6 +58,7 @@ func (jc *JobConstants) Init(jobType string) {
 		jc.Cluster = "prow-postsubmits-cluster"
 		jc.DefaultMakeTarget = "release"
 		jc.PostsubmitConformanceMakeTarget = "postsubmit-conformance"
+		jc.AttributionMakeTarget = "update-attribution-files"
 	} else if jobType == "presubmit" {
 		jc.Bucket = "s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp"
 		jc.Cluster = "prow-presubmits-cluster"
@@ -185,6 +186,10 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if strings.HasPrefix(postsubmitConfig.JobBase.Name, "build-") {
 			if jobMakeTarget != jc.PostsubmitConformanceMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.PostsubmitConformanceMakeTarget)
+			}
+		} else if strings.Contains(postsubmitConfig.JobBase.Name, "attribution") {
+			if jobMakeTarget != jc.AttributionMakeTarget {
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.AttributionMakeTarget)
 			}
 		} else if jobMakeTarget != jc.DefaultMakeTarget {
 			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
