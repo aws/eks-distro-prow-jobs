@@ -39,9 +39,6 @@ postsubmits:
         - -c
         - >
           make update-attribution-files
-        env:
-        - name: REPO_OWNER
-          value: "aws"
         volumeMounts:
         - name: ssh-auth
           mountPath: /secrets/ssh-secrets
