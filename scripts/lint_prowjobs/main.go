@@ -39,6 +39,7 @@ type JobConstants struct {
 	HelmMakeTarget                  string
 	ReleaseToolingMakeTarget        string
 	PostsubmitConformanceMakeTarget string
+	AttributionMakeTarget           string
 	TestsMakeTarget                 string
 }
 
@@ -180,7 +181,7 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
 			return true, 0, ""
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
 		if strings.HasPrefix(postsubmitConfig.JobBase.Name, "build-") {
