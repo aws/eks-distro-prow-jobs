@@ -53,8 +53,8 @@ postsubmits:
           value: "public.ecr.aws/h1r8a7l5"
         - name: DOCKER_CONFIG
           value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
-        - name: RELEASE
-          value: 3-minimal
+        - name: RELEASE_VARIANT
+          value: minimal
         command:
         - bash
         - -c
