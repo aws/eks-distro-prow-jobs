@@ -14,7 +14,7 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: build-1-21-minimal.arm64-postsubmit
+  - name: build-1-21-minimal-arm64-postsubmit
     always_run: false
     run_if_changed: ".*"
     max_concurrency: 10
