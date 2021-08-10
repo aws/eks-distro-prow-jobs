@@ -181,6 +181,9 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
 			return true, 0, ""
 		}
+		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
