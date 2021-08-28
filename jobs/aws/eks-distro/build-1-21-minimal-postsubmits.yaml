@@ -20,7 +20,7 @@ postsubmits:
     max_concurrency: 10
     cluster: "prow-postsubmits-cluster"
     branches:
-    - ^minimal$
+    - ^main$
     skip_report: false
     decoration_config:
       timeout: 6h
