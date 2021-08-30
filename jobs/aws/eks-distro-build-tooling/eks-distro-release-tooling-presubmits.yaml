@@ -14,7 +14,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: release-tooling-presubmit
+  - name: eks-distro-release-tooling-presubmit
     always_run: false
     run_if_changed: "release/.*"
     cluster: "prow-presubmits-cluster"
