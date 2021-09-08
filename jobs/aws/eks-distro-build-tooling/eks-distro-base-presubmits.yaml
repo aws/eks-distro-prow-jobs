@@ -26,6 +26,9 @@ presubmits:
     - org: eks-distro-pr-bot
       repo: eks-distro
       base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-anywhere-build-tooling
+      base_ref: main
     skip_report: false
     decoration_config:
       gcs_configuration:
