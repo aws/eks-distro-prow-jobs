@@ -21,10 +21,10 @@ presubmits:
     cluster: "prow-presubmits-cluster"
     extra_refs:
     - org: eks-distro-pr-bot
-      repo: eks-distro-build-tooling
+      repo: eks-distro-prow-jobs
       base_ref: main
     - org: eks-distro-pr-bot
-      repo: eks-distro-prow-jobs
+      repo: eks-anywhere-prow-jobs
       base_ref: main
     skip_report: false
     decoration_config:
