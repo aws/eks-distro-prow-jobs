@@ -39,7 +39,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 137112412989.dkr.ecr.us-west-2.amazonaws.com/amazonlinux:2
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
         command:
         - bash
         - -c
