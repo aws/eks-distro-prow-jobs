@@ -41,7 +41,7 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: 137112412989.dkr.ecr.us-west-2.amazonaws.com/amazonlinux:2
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
         env:
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
