@@ -37,19 +37,25 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:9d8b18871b951e9c92f5db2949efdb14ef7ef1e9
+        env:
+        - name: IMAGE_REPO
+          value: "localhost:5000"
         command:
         - bash
         - -c
         - >
-          make build -C eks-distro-base
+          export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make create-pr -C eks-distro-base
+          make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+          &&
+          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
           &&
           touch /status/done
         livenessProbe:
@@ -91,6 +97,10 @@ presubmits:
             cpu: "256m"
       - name: registry
         image: registry:2
+        command:
+        - sh
+        args:
+        - /script/registry-entrypoint.sh
         livenessProbe:
           exec:
             command:
@@ -98,6 +108,13 @@ presubmits:
             - -c
             - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
           periodSeconds: 15
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
         resources:
           requests:
             memory: "1Gi"
