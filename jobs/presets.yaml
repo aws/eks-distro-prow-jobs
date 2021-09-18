@@ -18,14 +18,14 @@ presets:
   volumeMounts:
   - name: registry-entrypoint
     readOnly: false
-    mountPath: /script
+    mountPath: /registry-script
   volumes:
   - name: registry-entrypoint
     configMap:
       name: registry-entrypoint
       items:
       - key: registry-entrypoint.sh
-        path: registry-entrypoint.sh
+        path: entrypoint.sh
 - labels:
     image-build: "true"
   env:
