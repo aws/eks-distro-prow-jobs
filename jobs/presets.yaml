@@ -14,6 +14,19 @@
 
 presets:
 - labels:
+    local-registry: "true"
+  volumeMounts:
+  - name: registry-entrypoint
+    readOnly: false
+    mountPath: /script
+  volumes:
+  - name: registry-entrypoint
+    configMap:
+      name: registry-entrypoint
+      items:
+      - key: registry-entrypoint.sh
+        path: registry-entrypoint.sh
+- labels:
     image-build: "true"
   env:
   - name: AWS_SDK_LOAD_CONFIG
