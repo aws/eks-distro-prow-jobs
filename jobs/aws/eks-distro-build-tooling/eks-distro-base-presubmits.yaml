@@ -100,7 +100,7 @@ presubmits:
         command:
         - sh
         args:
-        - /script/registry-entrypoint.sh
+        - /registry-script/entrypoint.sh
         livenessProbe:
           exec:
             command:
