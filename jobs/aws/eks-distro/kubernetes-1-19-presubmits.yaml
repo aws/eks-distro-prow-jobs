@@ -48,7 +48,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/kubernetes/release
+          make build clean -C projects/kubernetes/release
           &&
           make build -C projects/kubernetes/kubernetes
           &&
