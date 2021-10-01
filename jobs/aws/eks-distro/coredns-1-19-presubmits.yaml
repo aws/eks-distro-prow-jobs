@@ -16,7 +16,7 @@ presubmits:
   aws/eks-distro:
   - name: coredns-1-19-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/coredns/coredns/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|build/lib/.*|projects/coredns/coredns/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
