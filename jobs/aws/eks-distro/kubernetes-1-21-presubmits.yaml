@@ -40,6 +40,10 @@ presubmits:
           value: "1-21"
         - name: IMAGE_REPO
           value: "localhost:5000"
+        - name: IMAGE_OUTPUT_TYPE
+          value: image
+        - name: IMAGE_OUTPUT
+          value: push=true
         command:
         - bash
         - -c
