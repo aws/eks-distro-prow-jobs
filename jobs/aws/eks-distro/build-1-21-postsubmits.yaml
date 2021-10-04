@@ -57,6 +57,8 @@ postsubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
           &&
           make -j2 postsubmit-conformance
