@@ -16,7 +16,7 @@ presubmits:
   aws/eks-distro:
   - name: aws-iam-authenticator-1-21-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/kubernetes-sigs/aws-iam-authenticator/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|build/lib/.*|Makefile.common|projects/kubernetes-sigs/aws-iam-authenticator/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -40,6 +40,8 @@ presubmits:
         - bash
         - -c
         - >
+          build/lib/buildkit_check.sh
+          &&
           make build -C projects/kubernetes-sigs/aws-iam-authenticator
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
