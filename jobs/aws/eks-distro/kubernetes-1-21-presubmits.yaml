@@ -39,17 +39,13 @@ presubmits:
           value: "1-21"
         - name: IMAGE_REPO
           value: "localhost:5000"
-        - name: IMAGE_OUTPUT_TYPE
-          value: image
-        - name: IMAGE_OUTPUT
-          value: push=true
         command:
         - bash
         - -c
         - >
           build/lib/buildkit_check.sh
           &&
-          make build clean -C projects/kubernetes/release
+          make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
           &&
           make build -C projects/kubernetes/kubernetes
           &&
