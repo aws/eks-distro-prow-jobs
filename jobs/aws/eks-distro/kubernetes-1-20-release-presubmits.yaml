@@ -16,7 +16,7 @@ presubmits:
   aws/eks-distro:
   - name: kubernetes-1-20-release-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Makefile.common|projects/kubernetes/release/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/release/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
