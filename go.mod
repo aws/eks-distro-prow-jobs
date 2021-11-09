@@ -3,6 +3,7 @@ module github.com/aws/eks-distro-prow-jobs
 go 1.16
 
 replace (
+	github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.0.0
 	k8s.io/api => k8s.io/api v0.20.2
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.1
 	k8s.io/apimachinery => k8s.io/apimachinery v0.20.2
@@ -11,6 +12,7 @@ replace (
 )
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.1.0 // indirect
 	k8s.io/test-infra v0.0.0-20210608224924-94f3f2343d63
 	sigs.k8s.io/yaml v1.2.0
 )
