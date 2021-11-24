@@ -37,6 +37,9 @@ periodics:
   - org: eks-distro-pr-bot
     repo: eks-anywhere-build-tooling
     base_ref: main
+  - org: eks-distro-pr-bot
+    repo: eks-anywhere
+    base_ref: main
   spec:
     serviceaccountName: periodics-build-account
     automountServiceAccountToken: false
