@@ -36,6 +36,8 @@ presubmits:
         env:
         - name: RELEASE_BRANCH
           value: "1-21"
+        - name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION
+          value: "true"
         command:
         - bash
         - -c
