@@ -162,7 +162,7 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 			if jobMakeTarget != jc.ReleaseToolingMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
 			}
-		} else if strings.Contains(presubmitConfig.JobBase.Name, "tests") {
+		} else if strings.Contains(presubmitConfig.JobBase.Name, "test") {
 			if jobMakeTarget != jc.TestsMakeTarget {
 				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.TestsMakeTarget)
 			}
@@ -212,10 +212,10 @@ func getFilesChanged(gitRoot string, pullBaseSha string, pullPullSha string) ([]
 
 	filesChanged := strings.Fields(string(gitDiffOutput))
 	for _, file := range filesChanged {
-		if strings.Contains(file, "presubmits") {
+		if strings.Contains(file, "presubmits") && strings.HasPrefix(file, "jobs") && strings.HasSuffix(file, "yaml") {
 			presubmitFiles = append(presubmitFiles, file)
 		}
-		if strings.Contains(file, "postsubmits") {
+		if strings.Contains(file, "postsubmits") && strings.HasPrefix(file, "jobs") && strings.HasSuffix(file, "yaml") {
 			postsubmitFiles = append(postsubmitFiles, file)
 		}
 	}

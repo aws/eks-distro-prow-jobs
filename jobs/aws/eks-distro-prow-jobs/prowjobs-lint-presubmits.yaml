@@ -35,11 +35,9 @@ presubmits:
         - bash
         - -c
         - >
-          go mod tidy
+          make prowjobs -C templater
           &&
-          go vet scripts/lint_prowjobs/main.go
-          &&
-          go run scripts/lint_prowjobs/main.go
+          make lint -C linter
         resources:
           requests:
             memory: "8Gi"
