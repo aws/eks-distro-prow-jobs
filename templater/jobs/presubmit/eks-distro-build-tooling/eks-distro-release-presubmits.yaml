@@ -1,0 +1,6 @@
+jobName: eks-distro-release-tooling-presubmit
+runIfChanged: release/.*
+commands:
+- make test -C release
+- make build -C release
+- mv ./release/cover.out /logs/artifacts/filtered.cov

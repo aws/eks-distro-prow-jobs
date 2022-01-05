@@ -1,0 +1,25 @@
+jobName: prod-release-{{ .releaseBranch }}-postsubmit
+runIfChanged: release/{{ .releaseBranch }}/production/RELEASE
+maxConcurrency: 1
+imageBuild: true
+commands:
+- ./release/prow-release.sh
+envVars:
+- name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+  value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
+- name: AWS_REGION
+  value: us-east-1
+- name: RELEASE_ENVIRONMENT
+  value: production
+- name: ARTIFACT_BUCKET
+  value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
+- name: RELEASE_BRANCH
+  value: "{{ .releaseBranch }}"
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro
+resources:
+  requests:
+    cpu: "4"
+    memory: 16Gi
+serviceAccountName: release-build-account
+timeout: 4h

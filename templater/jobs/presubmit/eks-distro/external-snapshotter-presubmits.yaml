@@ -1,0 +1,12 @@
+jobName: external-snapshotter-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-snapshotter/.*
+imageBuild: true
+commands:
+- make build -C projects/kubernetes-csi/external-snapshotter
+resources:
+  limits:
+    cpu: 2048m
+    memory: 8Gi
+  requests:
+    cpu: 2048m
+    memory: 8Gi

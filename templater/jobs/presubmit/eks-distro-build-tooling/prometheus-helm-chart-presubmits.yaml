@@ -1,0 +1,11 @@
+jobName: prometheus-helm-chart-tooling-presubmit
+runIfChanged: helm-charts/scripts/.*|projects/prometheus-community/helm-charts/.*
+commands:
+- make verify -C projects/prometheus-community/helm-charts
+resources:
+  limits:
+    cpu: 1024m
+    memory: 2Gi
+  requests:
+    cpu: 1024m
+    memory: 2Gi

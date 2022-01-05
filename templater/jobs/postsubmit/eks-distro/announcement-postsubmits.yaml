@@ -1,0 +1,13 @@
+jobName: announcement-postsubmit
+maxConcurrency: 1
+runIfChanged: docs/contents/releases/.*/release-announcement.txt
+commands:
+- ./release/prow-announce.sh
+envVars:
+- name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+  value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
+- name: SNS_TOPIC_ARN
+  value: arn:aws:sns:us-east-1:379412251201:eks-distro-updates
+- name: AWS_REGION
+  value: us-east-1
+serviceAccountName: release-build-account

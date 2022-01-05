@@ -1,0 +1,17 @@
+jobName: coredns-{{ .releaseBranch }}-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/coredns/coredns/.*
+imageBuild: true
+commands:
+- make build -C projects/coredns/coredns
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+- name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION
+  value: "true"
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi

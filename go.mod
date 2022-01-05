@@ -12,6 +12,7 @@ replace (
 )
 
 require (
+	github.com/ghodss/yaml v1.0.0
 	github.com/golang-jwt/jwt/v4 v4.1.0 // indirect
 	k8s.io/test-infra v0.0.0-20210608224924-94f3f2343d63
 	sigs.k8s.io/yaml v1.2.0

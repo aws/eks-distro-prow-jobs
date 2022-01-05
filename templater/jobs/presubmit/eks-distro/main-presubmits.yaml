@@ -1,0 +1,13 @@
+jobName: main-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^Makefile$|cmd/.*
+imageBuild: true
+commands:
+- make build
+resources:
+  limits:
+    cpu: 3584m
+    memory: 26Gi
+  requests:
+    cpu: 3584m
+    memory: 26Gi
+timeout: 4h

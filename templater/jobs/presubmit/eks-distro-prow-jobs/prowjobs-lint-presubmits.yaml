@@ -1,0 +1,12 @@
+jobName: prowjobs-lint-presubmit
+runIfChanged: jobs/aws/.*
+commands:
+- make verify-prowjobs -C templater
+- make lint -C linter
+resources:
+  limits:
+    cpu: 2048m
+    memory: 8Gi
+  requests:
+    cpu: 2048m
+    memory: 8Gi

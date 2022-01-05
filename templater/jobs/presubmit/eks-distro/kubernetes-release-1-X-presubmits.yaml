@@ -1,0 +1,15 @@
+jobName: kubernetes-release-{{ .releaseBranch }}-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/release/.*
+imageBuild: true
+commands:
+- make build -C projects/kubernetes/release
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+resources:
+  limits:
+    cpu: 2048m
+    memory: 8Gi
+  requests:
+    cpu: 2048m
+    memory: 8Gi

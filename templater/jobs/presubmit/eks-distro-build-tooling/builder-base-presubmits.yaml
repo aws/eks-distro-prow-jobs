@@ -1,0 +1,21 @@
+jobName: builder-base-tooling-presubmit
+runIfChanged: builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh
+imageBuild: true
+runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
+commands:
+- ./builder-base/install.sh
+- make build -C builder-base
+extraRefs:
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-prow-jobs
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere-prow-jobs
+resources:
+  limits:
+    cpu: 1536m
+    memory: 8Gi
+  requests:
+    cpu: 1536m
+    memory: 8Gi
