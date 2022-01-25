@@ -1,0 +1,12 @@
+jobName: external-attacher-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/.*
+imageBuild: true
+commands:
+- make build -C projects/kubernetes-csi/external-attacher
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi

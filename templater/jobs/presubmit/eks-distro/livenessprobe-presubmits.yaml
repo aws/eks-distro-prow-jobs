@@ -1,0 +1,12 @@
+jobName: livenessprobe-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/.*
+imageBuild: true
+commands:
+- make build -C projects/kubernetes-csi/livenessprobe
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi

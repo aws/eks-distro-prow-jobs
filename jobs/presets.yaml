@@ -14,6 +14,24 @@
 
 presets:
 - labels:
+    pr-creation: "true"
+  volumeMounts:
+  - name: github-auth
+    mountPath: /secrets/github-secrets
+    readOnly: true
+  - name: ssh-auth
+    mountPath: /secrets/ssh-secrets
+    readOnly: true
+  volumes:
+  - name: github-auth
+    secret:
+      secretName: pr-bot-github-token
+      defaultMode: 256
+  - name: ssh-auth
+    secret:
+      secretName: pr-bot-ssh-secret
+      defaultMode: 256
+- labels:
     local-registry: "true"
   volumeMounts:
   - name: registry-entrypoint

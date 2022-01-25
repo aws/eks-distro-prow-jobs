@@ -1,0 +1,14 @@
+jobName: kubernetes-{{ .releaseBranch }}-test-presubmit
+runIfChanged: projects/kubernetes/kubernetes/{{ .releaseBranch }}/(GIT_TAG|patches)
+commands:
+- make test -C projects/kubernetes/kubernetes
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+resources:
+  limits:
+    cpu: 3584m
+    memory: 26Gi
+  requests:
+    cpu: 3584m
+    memory: 26Gi

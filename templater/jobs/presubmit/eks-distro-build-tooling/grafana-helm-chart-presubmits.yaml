@@ -1,0 +1,11 @@
+jobName: grafana-helm-chart-tooling-presubmit
+runIfChanged: helm-charts/scripts/.*|projects/grafana/helm-charts/.*
+commands:
+- make verify -C projects/grafana/helm-charts
+resources:
+  limits:
+    cpu: 1024m
+    memory: 2Gi
+  requests:
+    cpu: 1024m
+    memory: 2Gi

@@ -1,0 +1,12 @@
+jobName: prometheus-tooling-presubmit
+runIfChanged: projects/prometheus/prometheus/.*
+imageBuild: true
+commands:
+- make build -C projects/prometheus/prometheus
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi

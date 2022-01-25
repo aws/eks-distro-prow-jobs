@@ -1,0 +1,5 @@
+jobName: helm-chart-tooling-postsubmit
+runIfChanged: helm-charts/.*
+commands:
+- make release -C helm-charts
+serviceAccountName: charts-build-account

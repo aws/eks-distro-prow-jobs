@@ -1,0 +1,16 @@
+jobName: aws-iam-authenticator-{{ .releaseBranch }}-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/aws-iam-authenticator/.*
+imageBuild: true
+commands:
+- make build -C projects/kubernetes-sigs/aws-iam-authenticator
+- mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi

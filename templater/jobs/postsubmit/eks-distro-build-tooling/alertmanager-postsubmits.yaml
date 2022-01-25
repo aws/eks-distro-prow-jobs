@@ -1,0 +1,5 @@
+jobName: alertmanager-tooling-postsubmit
+runIfChanged: projects/prometheus/alertmanager/.*
+imageBuild: true
+commands:
+- make release -C projects/prometheus/alertmanager IMAGE_TAG=$PULL_BASE_SHA

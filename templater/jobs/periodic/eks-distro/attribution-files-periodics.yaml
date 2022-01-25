@@ -1,0 +1,16 @@
+jobName: attribution-files-periodic
+cronExpression: 0 18 * * 1-5
+prCreation: true
+commands:
+- make update-attribution-files
+envVars:
+- name: REPO_OWNER
+  value: aws
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro
+resources:
+  requests:
+    cpu: "4"
+    memory: 16Gi

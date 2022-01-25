@@ -1,0 +1,20 @@
+jobName: dev-release-{{ .releaseBranch }}-postsubmit
+runIfChanged: release/{{ .releaseBranch }}/development/RELEASE
+maxConcurrency: 1
+imageBuild: true
+commands:
+- ./release/prow.sh
+envVars:
+- name: AWS_REGION
+  value: us-east-1
+- name: ARTIFACT_BUCKET
+  value: eks-d-postsubmit-artifacts
+- name: RELEASE_BRANCH
+  value: "{{ .releaseBranch }}"
+- name: IMAGE_REPO
+  value: public.ecr.aws/h1r8a7l5
+resources:
+  requests:
+    cpu: "4"
+    memory: 16Gi
+timeout: 4h

@@ -12,6 +12,8 @@ to prow jobs.
 Please read our [CONTRIBUTING](CONTRIBUTING.md) guide before making a pull
 request.
 
+Refer to the [documentation](docs/adding-updating-prowjobs.md) for information on how to add or update Prowjobs.
+
 ## Security
 
 If you discover a potential security issue in this project, or think you may

@@ -1,0 +1,20 @@
+jobName: kubernetes-{{ .releaseBranch }}-presubmit
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/kubernetes/(build|docker|Makefile|{{ .releaseBranch }})
+imageBuild: true
+localRegistry: true
+commands:
+- make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
+- make build -C projects/kubernetes/kubernetes
+- mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+- name: IMAGE_REPO
+  value: localhost:5000
+resources:
+  limits:
+    cpu: 3328m
+    memory: 25Gi
+  requests:
+    cpu: 3328m
+    memory: 25Gi

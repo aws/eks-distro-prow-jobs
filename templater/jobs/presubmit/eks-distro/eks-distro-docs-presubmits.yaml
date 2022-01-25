@@ -1,0 +1,5 @@
+jobName: eks-distro-docs-presubmit
+runIfChanged: docs/.*
+commands:
+- make build -C docs
+- mv ./docs/site/* /logs/artifacts
