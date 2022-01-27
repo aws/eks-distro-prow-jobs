@@ -56,6 +56,8 @@ presubmits:
           &&
           make build -C builder-base
           &&
+          make build -C builder-base AL_TAG=2022 LATEST=latest.2022
+          &&
           touch /status/done
         livenessProbe:
           exec:

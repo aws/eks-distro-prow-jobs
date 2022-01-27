@@ -61,6 +61,8 @@ postsubmits:
           &&
           make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA
           &&
+          make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.2022 AL_TAG=2022 LATEST=latest.2022
+          &&
           touch /status/done
         env:
         - name: IMAGE_REPO
