@@ -22,7 +22,7 @@ presubmits:
     run_if_changed: "{{ .runIfChanged }}"
     {{- if .branches }}
     branches:
-    {{- range .extraRefs }}
+    {{- range .branches }}
     - {{ . }}
     {{- end }}
     {{- end }}
