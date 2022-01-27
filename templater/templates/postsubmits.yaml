@@ -23,7 +23,7 @@ postsubmits:
     branches:
     - ^main$
     {{- if .branches }}
-    {{- range .extraRefs }}
+    {{- range .branches }}
     - {{ . }}
     {{- end }}
     {{- end }}
