@@ -45,16 +45,16 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:cb4cb6c153c12a3db8974ad0bea26c9e4eecff97
         command:
         - bash
         - -c
         - >
           scripts/buildkit_check.sh
           &&
-          ./builder-base/install.sh
-          &&
           make build -C builder-base
+          &&
+          make build -C builder-base AL_TAG=2022 LATEST=latest.2022
           &&
           touch /status/done
         livenessProbe:

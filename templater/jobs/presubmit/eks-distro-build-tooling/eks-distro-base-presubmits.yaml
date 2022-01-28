@@ -5,6 +5,7 @@ localRegistry: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+- make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH} AL_TAG=2022 LATEST=latest.2022
 - make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
 envVars:
 - name: IMAGE_REPO

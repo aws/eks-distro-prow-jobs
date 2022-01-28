@@ -64,6 +64,8 @@ periodics:
         &&
         make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
+        make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH} AL_TAG=2022 LATEST=latest.2022
+        &&
         make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
         touch /status/done
