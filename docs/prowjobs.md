@@ -81,5 +81,5 @@ The below steps must be followed when making changes to Prowjobs:
 2. Run `make verify-prowjobs -C templater` to re-generate the `jobs/` folder and verify that there are no
    discrepancies between the generated Prowjobs and the ones committed.
 
-3. After committing changes and rebasing with `main`, run `make lint -C lint` to verify that the job(s) succeed the linting.
+3. After committing changes and rebasing with `main`, run `make lint -C linter` to verify that the job(s) succeed the linting.
 
