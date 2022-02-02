@@ -86,7 +86,7 @@ periodics:
           - date +%s > /status/pending
         periodSeconds: 10
     - name: buildkitd
-      image: moby/buildkit:v0.9.0-rootless
+      image: moby/buildkit:v0.9.3-rootless
       command:
       - sh
       args:

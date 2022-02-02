@@ -31,7 +31,7 @@ var editWarning string
 //go:embed BUILDER_BASE_TAG_FILE
 var builderBaseTag string
 
-var buildkitImageTag = "v0.9.0-rootless"
+var buildkitImageTag = "v0.9.3-rootless"
 
 func main() {
 	for _, jobType := range jobTypes {
