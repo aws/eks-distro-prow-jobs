@@ -67,11 +67,11 @@ presubmits:
           periodSeconds: 10
         resources:
           requests:
-            memory: "25Gi"
-            cpu: "3328m"
+            memory: "24Gi"
+            cpu: "2560m"
           limits:
-            memory: "25Gi"
-            cpu: "3328m"
+            memory: "24Gi"
+            cpu: "2560m"
       - name: buildkitd
         image: moby/buildkit:v0.9.3-rootless
         command:
