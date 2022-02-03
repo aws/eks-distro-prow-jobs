@@ -27,13 +27,10 @@ presubmits:
     cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
-      timeout: 4h
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    labels:
-      image-build: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -44,41 +41,7 @@ presubmits:
         - bash
         - -c
         - >
-          build/lib/buildkit_check.sh
-          &&
           make build
-          &&
-          touch /status/done
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
-        resources:
-          requests:
-            memory: "26Gi"
-            cpu: "3584m"
-          limits:
-            memory: "26Gi"
-            cpu: "3584m"
-      - name: buildkitd
-        image: moby/buildkit:v0.9.3-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
         resources:
           requests:
             memory: "2Gi"
