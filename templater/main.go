@@ -13,6 +13,8 @@ import (
 	"github.com/aws/eks-distro-prow-jobs/templater/jobs/utils"
 )
 
+var jobsFolder = "jobs"
+var orgsSupported = []string{"aws"}
 var jobTypes = []string{"periodic", "postsubmit", "presubmit"}
 
 //go:embed templates/presubmits.yaml
@@ -34,6 +36,19 @@ var builderBaseTag string
 var buildkitImageTag = "v0.9.3-rootless"
 
 func main() {
+	jobsFolderPath, err := getJobsFolderPath()
+	if err != nil {
+		fmt.Printf("Error getting jobs folder path: %v", err)
+		os.Exit(1)
+	}
+
+	for _, org := range orgsSupported {
+		if err = os.RemoveAll(filepath.Join(jobsFolderPath, org)); err != nil {
+			fmt.Printf("Error removing jobs folder path: %v", err)
+			os.Exit(1)
+		}
+	}
+
 	for _, jobType := range jobTypes {
 		jobList, err := jobs.GetJobList(jobType)
 		if err != nil {
@@ -83,33 +98,36 @@ func main() {
 }
 
 func GenerateProwjob(prowjobFileName, templateContent string, data map[string]interface{}) error {
-	jobsFolder := "jobs"
 	bytes, err := utils.ExecuteTemplate(templateContent, data)
 	if err != nil {
-		return err
+		return fmt.Errorf("error executing template: %v", err)
 	}
 
-	gitRootDir, err := getGitRootDir()
+	jobsFolderPath, err := getJobsFolderPath()
 	if err != nil {
-		return err
+		return fmt.Errorf("error getting jobs folder path: %v", err)
 	}
-	prowjobPath := filepath.Join(gitRootDir, jobsFolder, data["repoName"].(string), prowjobFileName)
-	err = ioutil.WriteFile(prowjobPath, bytes, 0o644)
-	if err != nil {
+
+	prowjobPath := filepath.Join(jobsFolderPath, data["repoName"].(string), prowjobFileName)
+	if err = os.MkdirAll(filepath.Dir(prowjobPath), 0o755); err != nil {
+		return fmt.Errorf("error creating Prowjob directory: %v", err)
+	}
+
+	if err = ioutil.WriteFile(prowjobPath, bytes, 0o644); err != nil {
 		return fmt.Errorf("error writing to path %s: %v", prowjobPath, err)
 	}
 
 	return nil
 }
 
-func getGitRootDir() (string, error) {
+func getJobsFolderPath() (string, error) {
 	gitRootOutput, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
 	if err != nil {
 		return "", fmt.Errorf("error running the git command: %v", err)
 	}
 	gitRoot := strings.Fields(string(gitRootOutput))[0]
 
-	return gitRoot, nil
+	return filepath.Join(gitRoot, jobsFolder), nil
 }
 
 func useTemplate(jobType string) (string, error) {
