@@ -64,12 +64,12 @@ periodics:
         &&
         make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
-        make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH} AL_TAG=2022 LATEST=latest.2022
-        &&
         make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
         &&
         touch /status/done
       env:
+      - name: AL_TAG
+        value: "2"
       - name: IMAGE_REPO
         value: "public.ecr.aws/eks-distro-build-tooling"
       - name: ECR_PUBLIC_PUSH_ROLE_ARN

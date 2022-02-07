@@ -1,27 +1,22 @@
-jobName: eks-distro-base-tooling-periodic
-cronExpression: 0 19 * * 1-5
+jobName: eks-distro-base-tooling-postsubmit
+runIfChanged: ^eks-distro-base/postsubmit_trigger$
 imageBuild: true
 prCreation: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - source scripts/setup_public_ecr_push.sh
-- make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+- make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
 - make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
 envVars:
 - name: AL_TAG
-  value: 2
+  value: 2022
 - name: IMAGE_REPO
   value: public.ecr.aws/eks-distro-build-tooling
 - name: ECR_PUBLIC_PUSH_ROLE_ARN
   value: arn:aws:iam::832188789588:role/ECRPublicPushRole
 - name: AWS_REGION
   value: us-east-1
-- name: REPO_OWNER
-  value: aws
 extraRefs:
-- baseRef: main
-  org: aws
-  repo: eks-distro-build-tooling
 - baseRef: main
   org: eks-distro-pr-bot
   repo: eks-distro-build-tooling

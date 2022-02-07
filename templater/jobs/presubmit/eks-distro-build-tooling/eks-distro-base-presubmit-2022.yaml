@@ -8,7 +8,7 @@ commands:
 - make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
 envVars:
 - name: AL_TAG
-  value: 2
+  value: 2022
 - name: IMAGE_REPO
   value: localhost:5000
 extraRefs:
