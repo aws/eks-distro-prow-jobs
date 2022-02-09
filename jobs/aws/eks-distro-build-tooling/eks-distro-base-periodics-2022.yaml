@@ -19,7 +19,7 @@
 ################################################################################
 
 periodics:
-- name: eks-distro-base-tooling-periodic
+- name: eks-distro-base-tooling-periodic-2022
   cron: "0 19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   extra_refs:

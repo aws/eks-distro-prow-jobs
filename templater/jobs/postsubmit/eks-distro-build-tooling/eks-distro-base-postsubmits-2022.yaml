@@ -1,4 +1,4 @@
-jobName: eks-distro-base-tooling-postsubmit
+jobName: eks-distro-base-tooling-postsubmit-2022
 runIfChanged: ^eks-distro-base/postsubmit_trigger$
 imageBuild: true
 prCreation: true

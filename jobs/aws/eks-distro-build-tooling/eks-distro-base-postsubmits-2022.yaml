@@ -20,7 +20,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-postsubmit
+  - name: eks-distro-base-tooling-postsubmit-2022
     always_run: false
     run_if_changed: "^eks-distro-base/postsubmit_trigger$"
     branches:

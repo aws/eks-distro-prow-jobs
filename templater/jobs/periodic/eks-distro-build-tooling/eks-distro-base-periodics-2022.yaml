@@ -1,4 +1,4 @@
-jobName: eks-distro-base-tooling-periodic
+jobName: eks-distro-base-tooling-periodic-2022
 cronExpression: 0 19 * * 1-5
 imageBuild: true
 prCreation: true
