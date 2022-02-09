@@ -19,7 +19,7 @@
 ################################################################################
 
 periodics:
-- name: eks-distro-base-tooling-periodic
+- name: eks-distro-base-tooling-periodic-2022
   cron: "0 19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   extra_refs:
@@ -69,7 +69,7 @@ periodics:
         touch /status/done
       env:
       - name: AL_TAG
-        value: "2"
+        value: "2022"
       - name: IMAGE_REPO
         value: "public.ecr.aws/eks-distro-build-tooling"
       - name: ECR_PUBLIC_PUSH_ROLE_ARN

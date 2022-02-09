@@ -18,13 +18,15 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-presubmits:
+postsubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmit
+  - name: eks-distro-base-tooling-postsubmit-2022
     always_run: false
-    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
+    run_if_changed: "^eks-distro-base/postsubmit_trigger$"
+    branches:
+    - ^main$
     max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     extra_refs:
     - org: eks-distro-pr-bot
@@ -41,14 +43,14 @@ presubmits:
       base_ref: main
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
-      local-registry: "true"
+      pr-creation: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
@@ -61,16 +63,22 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+          source scripts/setup_public_ecr_push.sh
+          &&
+          make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
           &&
           touch /status/done
         env:
         - name: AL_TAG
-          value: "2"
+          value: "2022"
         - name: IMAGE_REPO
-          value: "localhost:5000"
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+        - name: AWS_REGION
+          value: "us-east-1"
         livenessProbe:
           exec:
             command:
@@ -78,13 +86,6 @@ presubmits:
             - -c
             - date +%s > /status/pending
           periodSeconds: 10
-        resources:
-          requests:
-            memory: "4Gi"
-            cpu: "1024m"
-          limits:
-            memory: "4Gi"
-            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.9.3-rootless
         command:
@@ -105,33 +106,3 @@ presubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
-          limits:
-            memory: "2Gi"
-            cpu: "1024m"
-      - name: registry
-        image: registry:2
-        command:
-        - sh
-        args:
-        - /registry-script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
-          initialDelaySeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 3
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "256m"
-          limits:
-            memory: "1Gi"
-            cpu: "256m"
