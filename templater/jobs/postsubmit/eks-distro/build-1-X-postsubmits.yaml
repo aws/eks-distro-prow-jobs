@@ -3,7 +3,7 @@ runIfChanged: .*
 imageBuild: true
 commands:
 - cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
-- make postsubmit-conformance
+- make -j2 postsubmit-conformance
 envVars:
 - name: TEST_ROLE_ARN
   value: arn:aws:iam::125833916567:role/TestBuildRole
