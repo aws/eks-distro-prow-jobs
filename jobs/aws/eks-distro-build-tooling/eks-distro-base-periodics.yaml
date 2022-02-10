@@ -62,9 +62,9 @@ periodics:
         &&
         source scripts/setup_public_ecr_push.sh
         &&
-        make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+        make update -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         &&
-        make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+        make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         &&
         touch /status/done
       env:
