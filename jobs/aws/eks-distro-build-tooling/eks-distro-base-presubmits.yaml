@@ -61,9 +61,9 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+          make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
-          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}
+          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           touch /status/done
         env:
