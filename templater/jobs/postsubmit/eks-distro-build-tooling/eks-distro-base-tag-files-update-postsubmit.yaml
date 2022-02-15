@@ -1,4 +1,4 @@
-jobName: update-eks-distro-base-tag-files
+jobName: eks-distro-base-tag-files-update-postsubmit
 runIfChanged: ^EKS_DISTRO_TAG_FILE.yaml$
 prCreation: true
 commands:

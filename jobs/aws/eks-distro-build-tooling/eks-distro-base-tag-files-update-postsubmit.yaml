@@ -20,7 +20,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: update-eks-distro-base-tag-files
+  - name: eks-distro-base-tag-files-update-postsubmit
     always_run: false
     run_if_changed: "^EKS_DISTRO_TAG_FILE.yaml$"
     branches:
