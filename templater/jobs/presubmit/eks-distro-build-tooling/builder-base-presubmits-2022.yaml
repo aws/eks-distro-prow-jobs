@@ -1,11 +1,11 @@
-jobName: builder-base-tooling-presubmit
+jobName: builder-base-tooling-presubmit-2022
 runIfChanged: builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 commands:
 - make build -C builder-base
 envVars:
 - name: AL_TAG
-  value: 2
+  value: 2022
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
