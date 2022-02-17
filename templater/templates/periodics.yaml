@@ -141,7 +141,7 @@ periodics:
           command:
           - sh
           - -c
-          - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
+          - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
         periodSeconds: 15
         initialDelaySeconds: 10
       readinessProbe:
