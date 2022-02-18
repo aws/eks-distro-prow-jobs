@@ -46,11 +46,11 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           build/lib/buildkit_check.sh
           &&
           ./release/prow-release.sh
-          &&
-          touch /status/done
         env:
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
@@ -64,13 +64,6 @@ postsubmits:
           value: "1-19"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "16Gi"
@@ -81,13 +74,6 @@ postsubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000

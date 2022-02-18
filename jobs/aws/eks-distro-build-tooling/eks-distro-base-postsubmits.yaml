@@ -60,6 +60,8 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           scripts/buildkit_check.sh
           &&
           export DATE_EPOCH=$(date "+%F-%s")
@@ -69,8 +71,6 @@ postsubmits:
           make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-          &&
-          touch /status/done
         env:
         - name: AL_TAG
           value: "2"
@@ -80,26 +80,12 @@ postsubmits:
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
           value: "us-east-1"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
       - name: buildkitd
         image: moby/buildkit:v0.9.3-rootless
         command:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
