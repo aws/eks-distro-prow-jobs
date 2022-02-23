@@ -58,6 +58,8 @@ periodics:
       - -c
       - >
         {{- if .imageBuild }}
+        trap 'touch /status/done' EXIT
+        &&
         {{- if eq .repoName "aws/eks-distro"}}
         build/lib/buildkit_check.sh
         {{- else }}
@@ -66,25 +68,12 @@ periodics:
         &&
         {{- end}}
 {{ .command | indent 8 }}
-        {{- if .imageBuild }}
-        &&
-        touch /status/done
-        {{- end}}
       {{- if .envVars }}
       env:
       {{- range .envVars }}
       - name: {{ .Name }}
         value: "{{ .Value }}"
       {{- end }}
-      {{- end }}
-      {{- if .imageBuild }}
-      livenessProbe:
-        exec:
-          command:
-          - bash
-          - -c
-          - date +%s > /status/pending
-        periodSeconds: 10
       {{- end }}
       {{- if .resources }}
       resources:
@@ -114,13 +103,6 @@ periodics:
       - sh
       args:
       - /script/entrypoint.sh
-      livenessProbe:
-        exec:
-          command:
-          - sh
-          - -c
-          - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-        periodSeconds: 15
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -136,14 +118,6 @@ periodics:
       - sh
       args:
       - /registry-script/entrypoint.sh
-      livenessProbe:
-        exec:
-          command:
-          - sh
-          - -c
-          - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-        periodSeconds: 15
-        initialDelaySeconds: 10
       readinessProbe:
         httpGet:
           path: /

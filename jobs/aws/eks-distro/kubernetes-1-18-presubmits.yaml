@@ -44,6 +44,8 @@ presubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           build/lib/buildkit_check.sh
           &&
           make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
@@ -51,20 +53,11 @@ presubmits:
           make build -C projects/kubernetes/kubernetes
           &&
           mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
-          &&
-          touch /status/done
         env:
         - name: RELEASE_BRANCH
           value: "1-18"
         - name: IMAGE_REPO
           value: "localhost:5000"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "24Gi"
@@ -78,13 +71,6 @@ presubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
@@ -101,14 +87,6 @@ presubmits:
         - sh
         args:
         - /registry-script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
-          initialDelaySeconds: 10
         readinessProbe:
           httpGet:
             path: /

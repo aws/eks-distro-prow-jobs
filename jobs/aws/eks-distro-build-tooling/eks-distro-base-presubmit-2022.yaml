@@ -57,6 +57,8 @@ presubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           scripts/buildkit_check.sh
           &&
           export DATE_EPOCH=$(date "+%F-%s")
@@ -64,20 +66,11 @@ presubmits:
           make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-          &&
-          touch /status/done
         env:
         - name: AL_TAG
           value: "2022"
         - name: IMAGE_REPO
           value: "localhost:5000"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "4Gi"
@@ -91,13 +84,6 @@ presubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
@@ -114,14 +100,6 @@ presubmits:
         - sh
         args:
         - /registry-script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
-          initialDelaySeconds: 10
         readinessProbe:
           httpGet:
             path: /

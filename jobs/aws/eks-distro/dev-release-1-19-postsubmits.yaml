@@ -46,11 +46,11 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           build/lib/buildkit_check.sh
           &&
           ./release/prow.sh
-          &&
-          touch /status/done
         env:
         - name: AWS_REGION
           value: "us-east-1"
@@ -60,13 +60,6 @@ postsubmits:
           value: "1-19"
         - name: IMAGE_REPO
           value: "public.ecr.aws/h1r8a7l5"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "16Gi"
@@ -77,13 +70,6 @@ postsubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000

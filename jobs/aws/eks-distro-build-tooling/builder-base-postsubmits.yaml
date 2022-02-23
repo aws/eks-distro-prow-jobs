@@ -53,13 +53,13 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           scripts/buildkit_check.sh
           &&
           source scripts/setup_public_ecr_push.sh
           &&
           make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
-          &&
-          touch /status/done
         env:
         - name: AL_TAG
           value: "2"
@@ -69,13 +69,6 @@ postsubmits:
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
           value: "us-east-1"
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "16Gi"
@@ -86,13 +79,6 @@ postsubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 30)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000

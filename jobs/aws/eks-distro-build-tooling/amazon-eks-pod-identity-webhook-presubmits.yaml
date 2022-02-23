@@ -43,18 +43,11 @@ presubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           scripts/buildkit_check.sh
           &&
           make build -C projects/aws/amazon-eks-pod-identity-webhook
-          &&
-          touch /status/done
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - -c
-            - date +%s > /status/pending
-          periodSeconds: 10
         resources:
           requests:
             memory: "4Gi"
@@ -68,13 +61,6 @@ presubmits:
         - sh
         args:
         - /script/entrypoint.sh
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test $(($(date +%s) - 15)) -lt $(cat /status/pending)
-          periodSeconds: 15
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
