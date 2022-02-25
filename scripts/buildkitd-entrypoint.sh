@@ -21,6 +21,8 @@ rootlesskit \
 	--oci-worker-no-process-sandbox \
 	--oci-worker-platform=linux/amd64 \
 	--oci-worker-platform=linux/arm64 \
+	--oci-worker-gc \
+	--oci-worker-gc-keepstorage 1000 \
 	&
 pid=$!
 while [ ! -f /status/done ]
