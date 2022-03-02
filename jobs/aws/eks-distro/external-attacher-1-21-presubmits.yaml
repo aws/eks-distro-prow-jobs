@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-attacher-presubmit
+  - name: external-snapshotter-1-21-presubmit
     always_run: false
     run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/.*"
     max_concurrency: 10

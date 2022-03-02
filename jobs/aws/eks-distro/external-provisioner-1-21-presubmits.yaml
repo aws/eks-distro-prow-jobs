@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-provisioner-presubmit
+  - name: external-provisioner-1-21-presubmit
     always_run: false
     run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-provisioner/.*"
     max_concurrency: 10

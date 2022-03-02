@@ -1,4 +1,4 @@
-jobName: node-driver-registrar-presubmit
+jobName: node-driver-registrar-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/.*
 imageBuild: true
 commands:

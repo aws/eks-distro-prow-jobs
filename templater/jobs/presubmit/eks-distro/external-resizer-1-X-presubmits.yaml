@@ -1,4 +1,4 @@
-jobName: external-resizer-presubmit
+jobName: external-resizer-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-resizer/.*
 imageBuild: true
 commands:
