@@ -1,8 +1,11 @@
-jobName: livenessprobe-presubmit
+jobName: livenessprobe-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/.*
 imageBuild: true
 commands:
 - make build -C projects/kubernetes-csi/livenessprobe
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
 resources:
   limits:
     cpu: 1024m

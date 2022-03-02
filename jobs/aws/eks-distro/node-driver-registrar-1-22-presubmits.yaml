@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-provisioner-presubmit
+  - name: node-driver-registrar-1-22-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-provisioner/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -47,7 +47,10 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/kubernetes-csi/external-provisioner
+          make build -C projects/kubernetes-csi/node-driver-registrar
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-22"
         resources:
           requests:
             memory: "4Gi"

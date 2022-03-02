@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-resizer-presubmit
+  - name: livenessprobe-1-18-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-resizer/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -47,7 +47,10 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/kubernetes-csi/external-resizer
+          make build -C projects/kubernetes-csi/livenessprobe
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-18"
         resources:
           requests:
             memory: "4Gi"
