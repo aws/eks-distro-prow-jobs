@@ -48,6 +48,9 @@ presubmits:
           build/lib/buildkit_check.sh
           &&
           make build -C projects/kubernetes-csi/external-resizer
+        env:
+        - name: RELEASE_BRANCH
+          value: "1-20"
         resources:
           requests:
             memory: "4Gi"
