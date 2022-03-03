@@ -1,5 +1,4 @@
 jobName: external-attacher-{{ .releaseBranch }}-presubmit
-jobName: external-snapshotter-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/.*
 imageBuild: true
 commands:
