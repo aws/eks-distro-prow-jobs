@@ -80,6 +80,10 @@ postsubmits:
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
           value: "us-east-1"
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
         image: moby/buildkit:v0.9.3-rootless
         command:
