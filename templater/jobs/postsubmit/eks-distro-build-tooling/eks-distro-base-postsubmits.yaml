@@ -29,4 +29,8 @@ extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
   repo: eks-anywhere
+resources:
+  requests:
+    cpu: "4"
+    memory: 16Gi
 timeout: 4h
