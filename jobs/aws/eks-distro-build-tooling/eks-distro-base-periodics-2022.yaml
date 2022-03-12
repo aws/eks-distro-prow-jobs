@@ -39,7 +39,7 @@ periodics:
     repo: eks-anywhere
     base_ref: main
   decoration_config:
-    timeout: 4h
+    timeout: 8h
     gcs_configuration:
       bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
       path_strategy: explicit

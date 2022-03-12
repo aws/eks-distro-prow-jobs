@@ -34,4 +34,4 @@ extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
   repo: eks-anywhere
-timeout: 4h
+timeout: 8h
