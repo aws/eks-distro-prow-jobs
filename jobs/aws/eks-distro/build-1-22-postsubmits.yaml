@@ -72,8 +72,8 @@ postsubmits:
           value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "4"
+            memory: "8Gi"
+            cpu: "2"
       - name: buildkitd
         image: moby/buildkit:v0.9.3-rootless
         command:
