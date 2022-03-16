@@ -23,6 +23,6 @@ envVars:
   value: /home/prow/go/src/github.com/aws/eks-distro/.docker
 resources:
   requests:
-    cpu: "4"
-    memory: 16Gi
+    cpu: "2"
+    memory: 8Gi
 timeout: 6h
