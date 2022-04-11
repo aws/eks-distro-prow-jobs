@@ -39,6 +39,7 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
+      ci-build-image: public.ecr.aws/eks-distro-build-tooling/builder-base:c78bfebd3c6a0a0307cd0982fedd9548268273df.2
       image-build: "true"
     spec:
       serviceaccountName: presubmits-build-account

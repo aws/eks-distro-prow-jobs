@@ -88,3 +88,7 @@ presets:
         fieldPath: metadata.name
   - name: GOPROXY
     value: "http://athens-proxy.default.svc.cluster.local"
+  - name: CI_BUILD_IMAGE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['ci-build-image']
