@@ -88,3 +88,14 @@ presets:
         fieldPath: metadata.name
   - name: GOPROXY
     value: "http://athens-proxy.default.svc.cluster.local"
+  volumes:
+  - name: builder-base-tag-file
+    configMap:
+      name: builder-base-tag-file
+      items:
+      - key: BUILDER_BASE_TAG_FILE
+        path: BUILDER_BASE_TAG_FILE
+  volumeMounts:
+  - name: builder-base-tag-file
+    readOnly: false
+    mountPath: /config
