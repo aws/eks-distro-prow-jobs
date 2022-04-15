@@ -44,7 +44,7 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
           build/lib/buildkit_check.sh
           &&
