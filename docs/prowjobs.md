@@ -53,7 +53,7 @@ The configurable parameters are explained in the table below:
 | `volumes` | List of pod volumes that can be mounted by this Prowjob's containers | ✓ | ✓ | ✓ |
 
 Currerntly, `runIfChanged` and `skipIfOnlyChanged` cannot be used at the same time. Upstream Prow
-as put this restriction in place. See the 
+has put this restriction in place. See the 
 [Prow docs](https://github.com/kubernetes/test-infra/blob/master/prow/jobs.md#standard-triggering-and-execution-behavior-for-jobs) f
 or additional information.
 
