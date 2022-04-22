@@ -9,8 +9,8 @@ Each Prowjob is represented as a well-defined set of parameters, which are fed a
 type JobConfig struct {
 	JobName            string         `json:"jobName,omitempty"`
 	RunIfChanged       string         `json:"runIfChanged,omitempty"`
-    SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
-    Branches           []string       `json:"branches,omitempty"`
+    SkipIfOnlyChanged   string         `json:"skipIfOnlyChanged,omitempty"`
+    Branches            []string        `json:"branches,omitempty"`
 	MaxConcurrency     int            `json:"maxConcurrency,omitempty"`
 	CronExpression     string         `json:"cronExpression,omitempty"`
 	Timeout            string         `json:"timeout,omitempty"`
