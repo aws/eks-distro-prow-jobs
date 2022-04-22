@@ -48,11 +48,14 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 		fileName := file.Name()
 		filePath := filepath.Join(jobDir, fileName)
 		if strings.Contains(fileName, "1-X") {
-			for _, releaseBranch := range releaseBranches {
+			for i, releaseBranch := range releaseBranches {
 				var jobConfig types.JobConfig
 				releaseBranchBasedFileName := strings.ReplaceAll(fileName, "1-X", releaseBranch)
+				otherReleaseBranches := append(append([]string{}, releaseBranches[:i]...),
+					releaseBranches[i+1:]...)
 				data := map[string]interface{}{
-					"releaseBranch": releaseBranch,
+					"releaseBranch":        releaseBranch,
+					"otherReleaseBranches": strings.Join(otherReleaseBranches, "|"),
 				}
 
 				contents, err := ioutil.ReadFile(filePath)

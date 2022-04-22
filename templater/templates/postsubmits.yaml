@@ -19,7 +19,11 @@ postsubmits:
   {{ .repoName }}:
   - name: {{ .prowjobName }}
     always_run: false
+    {{- if .runIfChanged }}
     run_if_changed: "{{ .runIfChanged }}"
+    {{- else if .skipIfOnlyChanged  }}
+    skip_if_only_changed: "{{ .skipIfOnlyChanged }}"
+    {{- end }}
     branches:
     - ^main$
     {{- if .branches }}

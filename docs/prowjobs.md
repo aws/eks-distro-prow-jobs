@@ -4,12 +4,13 @@ The Prowjobs in this repo are located under the [jobs folder](../jobs) and are s
 
 ## Job parameters
 
-Each Prowjob is represented as a well-defined set of parameters which are fed as input to a YAML template to generate the final Prowjob YAML. The parameter set is unmarshaled into the following Go struct that corresponds to the standard Prowjob definition fields :
+Each Prowjob is represented as a well-defined set of parameters, which are fed as input to a YAML template to generate the final Prowjob YAML. The parameter set is unmarshalled into the following Go struct that corresponds to the standard Prowjob definition fields :
 ```go
 type JobConfig struct {
 	JobName            string         `json:"jobName,omitempty"`
 	RunIfChanged       string         `json:"runIfChanged,omitempty"`
-	Branches           []string       `json:"branches,omitempty"`
+    SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
+    Branches           []string       `json:"branches,omitempty"`
 	MaxConcurrency     int            `json:"maxConcurrency,omitempty"`
 	CronExpression     string         `json:"cronExpression,omitempty"`
 	Timeout            string         `json:"timeout,omitempty"`
