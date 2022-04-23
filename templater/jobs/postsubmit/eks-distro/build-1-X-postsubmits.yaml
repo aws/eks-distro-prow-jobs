@@ -1,5 +1,5 @@
 jobName: build-{{ .releaseBranch }}-postsubmit
-runIfChanged: .*
+skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*
 imageBuild: true
 commands:
 - cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro

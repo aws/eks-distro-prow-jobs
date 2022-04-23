@@ -4,11 +4,12 @@ The Prowjobs in this repo are located under the [jobs folder](../jobs) and are s
 
 ## Job parameters
 
-Each Prowjob is represented as a well-defined set of parameters which are fed as input to a YAML template to generate the final Prowjob YAML. The parameter set is unmarshaled into the following Go struct that corresponds to the standard Prowjob definition fields :
+Each Prowjob is represented as a well-defined set of parameters, which are fed as input to a YAML template to generate the final Prowjob YAML. The parameter set is unmarshalled into the following Go struct that corresponds to the standard Prowjob definition fields :
 ```go
 type JobConfig struct {
 	JobName            string         `json:"jobName,omitempty"`
 	RunIfChanged       string         `json:"runIfChanged,omitempty"`
+	SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
 	Branches           []string       `json:"branches,omitempty"`
 	MaxConcurrency     int            `json:"maxConcurrency,omitempty"`
 	CronExpression     string         `json:"cronExpression,omitempty"`
@@ -34,6 +35,7 @@ The configurable parameters are explained in the table below:
 | :---: | :---: | :---: | :---: | :---: |
 | `jobName` | Name of the Prowjob | ✓ | ✓ | ✓ |
 | `runIfChanged` | Regex for the subset of files that will trigger this Prowjob when changed |  | ✓ | ✓ |
+| `skipIfOnlyChanged` | Regex for skipping the job if all paths match |  |  | ✓ |
 | `branches` | List of branches to run this Prowjob against |   | ✓ | ✓ |
 | `maxConcurrency` | Maximum instances of this Prowjob that can run concurrently | ✓ | ✓ | ✓ |
 | `cronExpression` | Cron representation of this Prowjob trigger time | ✓ |   |   |
@@ -49,6 +51,11 @@ The configurable parameters are explained in the table below:
 | `resources` | Resource requests and limits for this Prowjob's main build container | ✓ | ✓ | ✓ |
 | `volumeMounts` | List of pod volumes to mount into each container in this Prowjob | ✓ | ✓ | ✓ |
 | `volumes` | List of pod volumes that can be mounted by this Prowjob's containers | ✓ | ✓ | ✓ |
+
+Currerntly, `runIfChanged` and `skipIfOnlyChanged` cannot be used at the same time. Upstream Prow
+has put this restriction in place. See the 
+[Prow docs](https://github.com/kubernetes/test-infra/blob/master/prow/jobs.md#standard-triggering-and-execution-behavior-for-jobs) f
+or additional information.
 
 For example, if you want to create a presubmit:
 * of name `foo-bar-job`

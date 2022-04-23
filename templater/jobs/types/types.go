@@ -47,6 +47,7 @@ type VolumeMount struct {
 type JobConfig struct {
 	JobName            string         `json:"jobName,omitempty"`
 	RunIfChanged       string         `json:"runIfChanged,omitempty"`
+	SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
 	Branches           []string       `json:"branches,omitempty"`
 	MaxConcurrency     int            `json:"maxConcurrency,omitempty"`
 	CronExpression     string         `json:"cronExpression,omitempty"`

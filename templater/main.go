@@ -67,6 +67,7 @@ func main() {
 					"repoName":           repoName,
 					"prowjobName":        jobConfig.JobName,
 					"runIfChanged":       jobConfig.RunIfChanged,
+					"skipIfOnlyChanged":  jobConfig.SkipIfOnlyChanged,
 					"branches":           jobConfig.Branches,
 					"cronExpression":     jobConfig.CronExpression,
 					"maxConcurrency":     jobConfig.MaxConcurrency,
