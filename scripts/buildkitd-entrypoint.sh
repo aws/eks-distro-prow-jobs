@@ -22,7 +22,7 @@ rootlesskit \
 	--oci-worker-platform=linux/amd64 \
 	--oci-worker-platform=linux/arm64 \
 	--oci-worker-gc \
-	--oci-worker-gc-keepstorage 15000 \
+	--oci-worker-gc-keepstorage 5000 \
 	&
 pid=$!
 while [ ! -f /status/done ]
