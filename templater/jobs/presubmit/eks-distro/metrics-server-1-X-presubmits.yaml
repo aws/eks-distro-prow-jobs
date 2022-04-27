@@ -1,5 +1,5 @@
 jobName: metrics-server-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/.*
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
 - make build -C projects/kubernetes-sigs/metrics-server

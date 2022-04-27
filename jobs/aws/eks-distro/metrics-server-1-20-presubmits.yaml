@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: metrics-server-1-20-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/.*"
+    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/(build|docker|Makefile|1-20)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false

@@ -1,5 +1,5 @@
 jobName: coredns-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/coredns/coredns/.*
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/coredns/coredns/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
 - make build -C projects/coredns/coredns
