@@ -80,7 +80,7 @@ periodics:
       - name: REPO_OWNER
         value: "aws"
     - name: buildkitd
-      image: moby/buildkit:v0.9.3-rootless
+      image: moby/buildkit:v0.10.1-rootless
       command:
       - sh
       args:
