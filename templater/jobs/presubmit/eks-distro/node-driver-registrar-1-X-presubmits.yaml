@@ -1,5 +1,5 @@
 jobName: node-driver-registrar-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/.*
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
 - make build -C projects/kubernetes-csi/node-driver-registrar

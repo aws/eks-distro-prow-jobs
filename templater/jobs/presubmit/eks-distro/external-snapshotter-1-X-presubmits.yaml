@@ -1,5 +1,5 @@
 jobName: external-snapshotter-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-snapshotter/.*
+runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-snapshotter/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
 - make build -C projects/kubernetes-csi/external-snapshotter
