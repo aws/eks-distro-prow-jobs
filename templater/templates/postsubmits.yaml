@@ -32,6 +32,7 @@ postsubmits:
     {{- end }}
     {{- end }}
     max_concurrency: {{or .maxConcurrency 10 }}
+    error_on_eviction: true
     cluster: "prow-postsubmits-cluster"
     skip_report: false
     {{- if .extraRefs }}

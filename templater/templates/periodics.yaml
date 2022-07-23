@@ -19,6 +19,7 @@ periodics:
 - name: {{ .prowjobName }}
   cron: "{{ .cronExpression }}"
   cluster: "prow-postsubmits-cluster"
+  error_on_eviction: true
   {{- if .extraRefs }}
   extra_refs:
   {{- range .extraRefs }}
