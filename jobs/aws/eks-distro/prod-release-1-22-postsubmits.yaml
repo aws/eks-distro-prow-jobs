@@ -26,6 +26,7 @@ postsubmits:
     branches:
     - ^main$
     max_concurrency: 1
+    error_on_eviction: true
     cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
