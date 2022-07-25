@@ -81,6 +81,8 @@ postsubmits:
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: OUTPUT_DEBUG_LOG
+          value: "true"
         resources:
           requests:
             memory: "16Gi"

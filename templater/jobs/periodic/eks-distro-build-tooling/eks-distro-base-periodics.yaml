@@ -18,6 +18,8 @@ envVars:
   value: us-east-1
 - name: REPO_OWNER
   value: aws
+- name: OUTPUT_DEBUG_LOG
+  value: true
 extraRefs:
 - baseRef: main
   org: aws
