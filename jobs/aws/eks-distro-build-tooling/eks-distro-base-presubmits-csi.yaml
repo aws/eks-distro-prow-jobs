@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmit-csi
+  - name: eks-distro-base-tooling-presubmits-csi
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -73,6 +73,8 @@ presubmits:
           value: "localhost:5000"
         - name: BUILD_DEPS
           value: "true"
+        - name: PLATFORMS
+          value: "linux/amd64"
         resources:
           requests:
             memory: "4Gi"

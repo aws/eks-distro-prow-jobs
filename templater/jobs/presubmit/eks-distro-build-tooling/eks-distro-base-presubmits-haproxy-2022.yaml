@@ -1,16 +1,20 @@
-jobName: eks-distro-base-tooling-presubmit-2022
+jobName: eks-distro-base-tooling-presubmits-haproxy-2022
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- make build -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make minimal-images-base-haproxy -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 envVars:
 - name: AL_TAG
   value: 2022
 - name: IMAGE_REPO
   value: localhost:5000
+- name: BUILD_DEPS
+  value: true
+- name: PLATFORMS
+  value: linux/amd64
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
