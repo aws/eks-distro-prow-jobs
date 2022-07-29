@@ -1,0 +1,35 @@
+jobName: eks-distro-base-tooling-presubmit-kind
+runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
+imageBuild: true
+localRegistry: true
+commands:
+- export DATE_EPOCH=$(date "+%F-%s")
+- make minimal-images-base-kind -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+envVars:
+- name: AL_TAG
+  value: 2
+- name: IMAGE_REPO
+  value: localhost:5000
+- name: BUILD_DEPS
+  value: true
+extraRefs:
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere
+resources:
+  limits:
+    cpu: 1024m
+    memory: 4Gi
+  requests:
+    cpu: 1024m
+    memory: 4Gi
