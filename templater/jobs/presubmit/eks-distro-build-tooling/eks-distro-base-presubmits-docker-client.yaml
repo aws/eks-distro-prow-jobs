@@ -1,4 +1,4 @@
-jobName: eks-distro-base-tooling-presubmit-docker-client
+jobName: eks-distro-base-tooling-presubmits-docker-client
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
@@ -13,6 +13,8 @@ envVars:
   value: localhost:5000
 - name: BUILD_DEPS
   value: true
+- name: PLATFORMS
+  value: linux/amd64
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
