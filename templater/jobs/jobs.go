@@ -3,8 +3,8 @@ package jobs
 import (
 	"fmt"
 
-	"github.com/aws/eks-distro-prow-jobs/templater/jobs/types"
-	"github.com/aws/eks-distro-prow-jobs/templater/jobs/utils"
+	"github.com/kevinsalerno/eks-distro-prow-jobs/templater/jobs/types"
+	"github.com/kevinsalerno/eks-distro-prow-jobs/templater/jobs/utils"
 )
 
 func GetJobList(jobType string) (map[string]map[string]types.JobConfig, error) {

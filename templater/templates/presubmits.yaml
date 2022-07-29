@@ -14,7 +14,7 @@
 #
 {{ .editWarning }}
 
-{{ $builderBaseImage := printf "%s:%s" "public.ecr.aws/eks-distro-build-tooling/builder-base" .builderBaseTag -}}
+{{ $builderBaseImage := printf "%s:%s" "public.ecr.kevinsalerno/eks-distro-build-tooling/builder-base" .builderBaseTag -}}
 presubmits:
   {{ .repoName }}:
   - name: {{ .prowjobName }}
@@ -42,7 +42,7 @@ presubmits:
       timeout: {{ .timeout }}
       {{- end }}
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prow-data-presubmits-devstack-prowbucket7c73355c-16zgsi6cfo6d6
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     {{- if or .imageBuild .localRegistry .prCreation }}
@@ -70,7 +70,7 @@ presubmits:
           {{- if .imageBuild }}
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          {{- if eq .repoName "aws/eks-distro"}}
+          {{- if eq .repoName "kevinsalerno/eks-distro"}}
           build/lib/buildkit_check.sh
           {{- else }}
           scripts/buildkit_check.sh

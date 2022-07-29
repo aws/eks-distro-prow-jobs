@@ -11,7 +11,7 @@ envVars:
 - name: AL_TAG
   value: 2022
 - name: IMAGE_REPO
-  value: public.ecr.aws/eks-distro-build-tooling
+  value: public.ecr.kevinsalerno/eks-distro-build-tooling
 - name: ECR_PUBLIC_PUSH_ROLE_ARN
   value: arn:aws:iam::832188789588:role/ECRPublicPushRole
 - name: AWS_REGION

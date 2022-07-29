@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/aws/eks-distro-prow-jobs/templater/jobs"
-	"github.com/aws/eks-distro-prow-jobs/templater/jobs/utils"
+	"github.com/kevinsalerno/eks-distro-prow-jobs/templater/jobs"
+	"github.com/kevinsalerno/eks-distro-prow-jobs/templater/jobs/utils"
 )
 
 var jobsFolder = "jobs"

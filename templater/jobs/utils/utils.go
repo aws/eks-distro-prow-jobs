@@ -10,7 +10,7 @@ import (
 
 	"github.com/ghodss/yaml"
 
-	"github.com/aws/eks-distro-prow-jobs/templater/jobs/types"
+	"github.com/kevinsalerno/eks-distro-prow-jobs/templater/jobs/types"
 )
 
 var releaseBranches = []string{

@@ -7,7 +7,7 @@ all: build prowjobs
 .PHONY: build
 build:  ## Build templater binary
 build: fmt generate vet
-	go build -o ./$(BIN_DIR)/generate-prowjobs github.com/aws/eks-distro-prow-jobs/templater
+	go build -o ./$(BIN_DIR)/generate-prowjobs github.com/kevinsalerno/eks-distro-prow-jobs/templater
 
 fmt: ## Run go fmt against code.
 	go fmt ./...

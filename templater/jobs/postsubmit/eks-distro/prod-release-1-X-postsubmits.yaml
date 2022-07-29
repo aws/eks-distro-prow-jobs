@@ -16,7 +16,7 @@ envVars:
 - name: RELEASE_BRANCH
   value: "{{ .releaseBranch }}"
 - name: IMAGE_REPO
-  value: public.ecr.aws/eks-distro
+  value: public.ecr.kevinsalerno/eks-distro
 resources:
   requests:
     cpu: "4"

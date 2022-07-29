@@ -14,7 +14,7 @@
 #
 {{ .editWarning }}
 
-{{ $builderBaseImage := printf "%s:%s" "public.ecr.aws/eks-distro-build-tooling/builder-base" .builderBaseTag -}}
+{{ $builderBaseImage := printf "%s:%s" "public.ecr.kevinsalerno/eks-distro-build-tooling/builder-base" .builderBaseTag -}}
 periodics:
 - name: {{ .prowjobName }}
   cron: "{{ .cronExpression }}"
@@ -33,7 +33,7 @@ periodics:
     timeout: {{ .timeout }}
     {{- end }}
     gcs_configuration:
-      bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+      bucket: s3://prow-data-devstack-prowbucket7c73355c-1kc0rtso7o46y
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   {{- if or .imageBuild .localRegistry .prCreation }}
@@ -61,7 +61,7 @@ periodics:
         {{- if .imageBuild }}
         trap 'touch /status/done' EXIT
         &&
-        {{- if eq .repoName "aws/eks-distro"}}
+        {{- if eq .repoName "kevinsalerno/eks-distro"}}
         build/lib/buildkit_check.sh
         {{- else }}
         scripts/buildkit_check.sh

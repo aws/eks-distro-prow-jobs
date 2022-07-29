@@ -2,7 +2,7 @@ jobName: build-{{ .releaseBranch }}-postsubmit
 skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*
 imageBuild: true
 commands:
-- cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
+- cp -r "${HOME}/.docker" /home/prow/go/src/github.com/kevinsalerno/eks-distro
 - make -j2 postsubmit-conformance
 envVars:
 - name: TEST_ROLE_ARN
@@ -20,7 +20,7 @@ envVars:
 - name: IMAGE_REPO
   value: public.ecr.aws/h1r8a7l5
 - name: DOCKER_CONFIG
-  value: /home/prow/go/src/github.com/aws/eks-distro/.docker
+  value: /home/prow/go/src/github.com/kevinsalerno/eks-distro/.docker
 resources:
   requests:
     cpu: "2"

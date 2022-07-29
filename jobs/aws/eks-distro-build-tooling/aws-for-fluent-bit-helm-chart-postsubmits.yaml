@@ -19,7 +19,7 @@
 ################################################################################
 
 postsubmits:
-  aws/eks-distro-build-tooling:
+  kevinsalerno/eks-distro-build-tooling:
   - name: aws-for-fluent-bit-helm-chart-tooling-postsubmit
     always_run: false
     run_if_changed: "helm-charts/scripts/.*|projects/aws/eks-charts/aws-for-fluent-bit/.*"
@@ -31,7 +31,7 @@ postsubmits:
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-1kc0rtso7o46y
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     spec:
@@ -39,7 +39,7 @@ postsubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:5d1c2feb8d74a1919b87e6263e96020f08dbf314.2
+        image: public.ecr.kevinsalerno/eks-distro-build-tooling/builder-base:5d1c2feb8d74a1919b87e6263e96020f08dbf314.2
         command:
         - bash
         - -c
