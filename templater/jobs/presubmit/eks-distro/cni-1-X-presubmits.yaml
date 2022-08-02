@@ -1,0 +1,14 @@
+jobName: cni-plugins-{{ .releaseBranch }}-presubmit
+runIfChanged: ^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
+commands:
+- make build -C projects/containernetworking/plugins
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+resources:
+  limits:
+    cpu: 1024m
+    memory: 2Gi
+  requests:
+    cpu: 1024m
+    memory: 2Gi
