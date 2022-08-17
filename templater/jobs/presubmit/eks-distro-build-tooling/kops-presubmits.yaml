@@ -1,6 +1,5 @@
 jobName: kops-tooling-presubmit
 runIfChanged: projects/kubernetes/kops/.*
-imageBuild: false
 commands:
 - make build -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
 resources:
