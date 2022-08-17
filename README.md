@@ -8,11 +8,7 @@ introduction](https://github.com/kubernetes/test-infra/blob/master/prow/jobs.md)
 to prow jobs.
 
 ## Creating a New EKS Distro Prow Job
-All EKS Distro Prow jobs are automatically generated from a template.
-In order to create a new prow job, add a template containing your job details to the relevant folder in the [`templates/jobs`](https://github.com/aws/eks-distro-prow-jobs/tree/main/templater/jobs) directory (`presubmits` for presubmits, etc), 
-run [`make all`](https://github.com/aws/eks-distro-prow-jobs/blob/main/templater/Makefile#L4) in the [`templater` Makefile](https://github.com/aws/eks-distro-prow-jobs/blob/main/templater/Makefile) to generate job specs from the template, and commit the generated job specs output by the templater.
-
-Manually creating the job specs without the accompanying template will result in a presubmit verification failure.
+Check out [the development documentation](https://github.com/aws/eks-distro-prow-jobs/blob/main/docs/prowjobs.md) for instructions on how to create a new EKS Distro Prow Job in this repository. 
 
 ## Contributing
 
