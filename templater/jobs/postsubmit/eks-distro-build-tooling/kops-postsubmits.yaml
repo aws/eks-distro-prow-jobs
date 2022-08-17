@@ -1,0 +1,5 @@
+jobName: kops-tooling-postsubmit
+runIfChanged: projects/kubernetes/kops/.*
+imageBuild: true
+commands:
+- make release -C projects/kubernetes/kops
