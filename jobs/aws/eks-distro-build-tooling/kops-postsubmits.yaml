@@ -45,3 +45,10 @@ postsubmits:
         - -c
         - >
           make release -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
+          limits:
+            memory: "2Gi"
+            cpu: "1024m"
