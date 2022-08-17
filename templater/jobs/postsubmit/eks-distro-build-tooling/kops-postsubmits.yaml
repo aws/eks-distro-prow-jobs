@@ -3,3 +3,10 @@ runIfChanged: projects/kubernetes/kops/.*
 imageBuild: false
 commands:
 - make release -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+resources:
+  limits:
+    cpu: 1024m
+    memory: 2Gi
+  requests:
+    cpu: 1024m
+    memory: 2Gi
