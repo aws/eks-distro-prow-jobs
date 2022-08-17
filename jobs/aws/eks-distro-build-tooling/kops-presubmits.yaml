@@ -31,8 +31,6 @@ presubmits:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    labels:
-      image-build: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -43,10 +41,6 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
-          &&
-          scripts/buildkit_check.sh
-          &&
           make build -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
         resources:
           requests:
@@ -54,20 +48,4 @@ presubmits:
             cpu: "1024m"
           limits:
             memory: "4Gi"
-            cpu: "1024m"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
-          limits:
-            memory: "2Gi"
             cpu: "1024m"
