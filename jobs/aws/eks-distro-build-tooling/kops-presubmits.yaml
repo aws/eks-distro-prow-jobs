@@ -44,8 +44,8 @@ presubmits:
           make build -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1024m"
+            memory: "16Gi"
+            cpu: "2560m"
           limits:
-            memory: "2Gi"
-            cpu: "1024m"
+            memory: "16Gi"
+            cpu: "2560m"
