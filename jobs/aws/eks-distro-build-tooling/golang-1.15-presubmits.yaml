@@ -41,7 +41,10 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/golang/go/1.15 GO_SOURCE_VERSION="1.15"
+          make build -C projects/golang/go/1.15
+        env:
+        - name: GO_SOURCE_VERSION
+          value: "1.15"
         resources:
           requests:
             memory: "16Gi"
