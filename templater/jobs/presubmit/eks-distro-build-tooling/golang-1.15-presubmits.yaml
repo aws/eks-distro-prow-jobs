@@ -1,7 +1,7 @@
 jobName: golang-1.15-tooling-presubmit
 runIfChanged: projects/golang/go/1.15/.*
 commands:
-- make build -C projects/golang/go/1.15
+- make build -C projects/golang/go
 resources:
   limits:
     cpu: 2560m
