@@ -12,3 +12,5 @@ resources:
 envVars:
   - name: GO_SOURCE_VERSION
     value: 1.15
+  - name: SKIP_PRIVILEGED_TESTS
+    value: true
