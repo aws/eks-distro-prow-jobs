@@ -41,6 +41,8 @@ presubmits:
         - bash
         - -c
         - >
+          make install-deps -C projects/golang/go
+          &&
           make build -C projects/golang/go
         env:
         - name: GO_SOURCE_VERSION
