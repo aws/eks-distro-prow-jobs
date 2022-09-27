@@ -1,6 +1,7 @@
 jobName: golang-1.15-tooling-presubmit
 runIfChanged: projects/golang/go/1.15/.*
 commands:
+- make install-deps
 - make build -C projects/golang/go
 resources:
   limits:
