@@ -41,6 +41,8 @@ presubmits:
         - bash
         - -c
         - >
+          yum -y install make
+          &&
           make install-deps -C projects/golang/go
           &&
           make build -C projects/golang/go
