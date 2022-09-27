@@ -41,7 +41,7 @@ presubmits:
         - bash
         - -c
         - >
-          make install-deps
+          make install-deps -C projects/golang/go
           &&
           make build -C projects/golang/go
         env:
