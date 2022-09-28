@@ -1,0 +1,19 @@
+jobName: golang-1.15-tooling-presubmit
+runIfChanged: projects/golang/go/1.15/.*
+runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
+commands:
+- yum -y install make
+- make install-deps -C projects/golang/go
+- make release -C projects/golang/go
+resources:
+  limits:
+    cpu: 2560m
+    memory: 16Gi
+  requests:
+    cpu: 2560m
+    memory: 16Gi
+envVars:
+  - name: GO_SOURCE_VERSION
+    value: 1.15
+  - name: SKIP_PRIVILEGED_TESTS
+    value: true
