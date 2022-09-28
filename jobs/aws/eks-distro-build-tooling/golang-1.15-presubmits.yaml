@@ -49,6 +49,8 @@ presubmits:
           value: "1.15"
         - name: SKIP_PRIVILEGED_TESTS
           value: "true"
+        - name: ARTIFACTS_BUCKET
+          value: "eks-d-postsubmit-artifacts"
         resources:
           requests:
             memory: "16Gi"
