@@ -1,4 +1,4 @@
-jobName: golang-1.15-tooling-presubmit
+jobName: golang-1.15-tooling-postsubmit
 runIfChanged: projects/golang/go/1.15/.*
 runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
 commands:
