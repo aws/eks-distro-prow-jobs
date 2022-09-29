@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-java
+  - name: eks-distro-base-tooling-presubmits-compiler-base-2022
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -63,12 +63,12 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make run-make-tests minimal-images-base-java17 -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make run-make-tests compiler-base-images-C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: AL_TAG
-          value: "2"
+          value: "2022"
         - name: IMAGE_REPO
           value: "localhost:5000"
         - name: BUILD_DEPS
