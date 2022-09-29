@@ -63,7 +63,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make minimal-images-base-nsenter -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make run-make-tests minimal-images-base-nsenter -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
