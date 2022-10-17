@@ -4,6 +4,7 @@ go 1.16
 
 replace (
 	github.com/dgrijalva/jwt-go => github.com/golang-jwt/jwt/v4 v4.0.0
+	github.com/mattn/go-sqlite3 => github.com/mattn/go-sqlite3 v1.14.15
 	k8s.io/api => k8s.io/api v0.20.2
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.20.1
 	k8s.io/apimachinery => k8s.io/apimachinery v0.20.2
