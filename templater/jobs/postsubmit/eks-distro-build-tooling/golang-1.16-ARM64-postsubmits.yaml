@@ -1,4 +1,4 @@
-jobName: golang-1.16-tooling-postsubmit
+jobName: golang-1.16-ARM64-tooling-postsubmit
 runIfChanged: projects/golang/go/1.16/.*
 runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
 architecture: ARM64
