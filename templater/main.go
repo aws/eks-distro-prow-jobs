@@ -64,6 +64,7 @@ func main() {
 		for repoName, jobConfigs := range jobList {
 			for fileName, jobConfig := range jobConfigs {
 				data := map[string]interface{}{
+					"architecture":       jobConfig.Architecture,
 					"repoName":           repoName,
 					"prowjobName":        jobConfig.JobName,
 					"runIfChanged":       jobConfig.RunIfChanged,

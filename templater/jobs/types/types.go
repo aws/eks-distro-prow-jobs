@@ -45,6 +45,7 @@ type VolumeMount struct {
 }
 
 type JobConfig struct {
+	Architecture       string         `json:"architecture,omitempty"`
 	JobName            string         `json:"jobName,omitempty"`
 	RunIfChanged       string         `json:"runIfChanged,omitempty"`
 	SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
