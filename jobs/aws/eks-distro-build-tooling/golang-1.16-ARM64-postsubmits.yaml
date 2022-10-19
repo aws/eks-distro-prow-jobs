@@ -41,7 +41,7 @@ postsubmits:
         arch: ARM64
       containers:
       - name: build-container
-        image: public.ecr.aws/amazonlinux/amazonlinux:2.0.20221004.0-arm64v8
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
         command:
         - bash
         - -c
