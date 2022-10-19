@@ -20,3 +20,5 @@ envVars:
     value: true
   - name: ARTIFACTS_BUCKET
     value: eks-d-postsubmit-artifacts
+  - name: ARCHITECTURE
+    value: ARM64
