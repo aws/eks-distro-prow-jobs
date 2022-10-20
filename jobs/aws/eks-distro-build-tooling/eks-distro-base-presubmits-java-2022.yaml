@@ -63,7 +63,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          if [ -f eks-distro-base/Dockerfile.minimal-base-java ]; then make run-make-tests minimal-images-base-java-17 java-17-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+          if [ -f eks-distro-base/Dockerfile.minimal-base-java ]; then make run-make-tests java-17-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
           &&
           make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
