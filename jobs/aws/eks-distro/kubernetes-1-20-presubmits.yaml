@@ -82,7 +82,7 @@ presubmits:
             memory: "2Gi"
             cpu: "1024m"
       - name: registry
-        image: registry:2
+        image: public.ecr.aws/docker/library/registry:2
         command:
         - sh
         args:
