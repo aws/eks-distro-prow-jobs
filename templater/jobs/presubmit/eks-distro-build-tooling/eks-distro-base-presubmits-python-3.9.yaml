@@ -1,10 +1,10 @@
-jobName: eks-distro-base-tooling-presubmits-python3.9
+jobName: eks-distro-base-tooling-presubmits-python-3.9
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- make run-make-tests minimal-images-base-python3.9 -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make run-make-tests minimal-images-base-python-3.9 python-3.9-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 envVars:
 - name: AL_TAG
