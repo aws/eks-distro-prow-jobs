@@ -126,7 +126,7 @@ presubmits:
       {{- end }}
       {{- if .localRegistry }}
       - name: registry
-        image: registry:2
+        image: public.ecr.aws/docker/library/registry:2
         command:
         - sh
         args:
