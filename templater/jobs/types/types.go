@@ -54,6 +54,7 @@ type JobConfig struct {
 	CronExpression     string         `json:"cronExpression,omitempty"`
 	Timeout            string         `json:"timeout,omitempty"`
 	ImageBuild         bool           `json:"imageBuild,omitempty"`
+	UseDockerBuildX    bool           `json:"useDockerBuildX,omitempty"`
 	PRCreation         bool           `json:"prCreation,omitempty"`
 	RuntimeImage       string         `json:"runtimeImage,omitempty"`
 	LocalRegistry      bool           `json:"localRegistry,omitempty"`
