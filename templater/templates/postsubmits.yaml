@@ -64,7 +64,7 @@ postsubmits:
     {{- end }}
     spec:
       serviceaccountName: {{ or .serviceAccountName "postsubmits-build-account" }}
-      automountServiceAccountToken: false
+      automountServiceAccountToken: {{ or .automountServiceAccountToken false}}
       nodeSelector:
         arch: {{ or .architecture "AMD64" }}
       containers:
