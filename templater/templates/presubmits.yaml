@@ -75,6 +75,14 @@ presubmits:
           {{- else }}
           scripts/buildkit_check.sh
           {{- end }}
+          {{- if .localRegistry }}
+          &&
+          {{- if eq .repoName "aws/eks-distro"}}
+          build/lib/local_registry_check.sh
+          {{- else }}
+          scripts/local_registry_check.sh
+          {{- end }}          
+          {{- end }}
           &&
           {{- end}}
 {{ .command | indent 10 }}
