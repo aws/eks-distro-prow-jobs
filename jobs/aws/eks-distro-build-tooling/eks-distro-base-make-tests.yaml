@@ -20,25 +20,12 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-nginx-2022
+  - name: eks-distro-base-make-tests
     always_run: false
-    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
+    run_if_changed: "eks-distro-base/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
-    extra_refs:
-    - org: eks-distro-pr-bot
-      repo: eks-distro-build-tooling
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-distro
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-anywhere-build-tooling
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-anywhere
-      base_ref: main
     decoration_config:
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
@@ -61,27 +48,7 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          export DATE_EPOCH=$(date "+%F-%s")
-          &&
-          make minimal-images-base-nginx -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-          &&
-          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-        env:
-        - name: AL_TAG
-          value: "2022"
-        - name: IMAGE_REPO
-          value: "localhost:5000"
-        - name: BUILD_DEPS
-          value: "true"
-        - name: PLATFORMS
-          value: "linux/amd64"
-        resources:
-          requests:
-            memory: "4Gi"
-            cpu: "1024m"
-          limits:
-            memory: "4Gi"
-            cpu: "1024m"
+          if [ -f eks-distro-base/Dockerfile.minimal-base-compiler ]; then make run-make-tests  -C eks-distro-base; fi
       - name: buildkitd
         image: moby/buildkit:v0.10.1-rootless
         command:

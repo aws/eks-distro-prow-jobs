@@ -1,0 +1,7 @@
+jobName: eks-distro-base-make-tests
+runIfChanged: eks-distro-base/.*
+imageBuild: true
+localRegistry: true
+commands:
+- if [ -f eks-distro-base/Dockerfile.minimal-base-compiler ]; then make run-make-tests  -C eks-distro-base; fi
+
