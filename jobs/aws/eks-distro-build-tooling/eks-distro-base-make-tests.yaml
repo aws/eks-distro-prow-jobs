@@ -31,9 +31,6 @@ presubmits:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    labels:
-      image-build: "true"
-      local-registry: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -44,45 +41,4 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
-          &&
-          scripts/buildkit_check.sh
-          &&
-          scripts/local_registry_check.sh
-          &&
           if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests  -C eks-distro-base; fi
-      - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
-          limits:
-            memory: "2Gi"
-            cpu: "1024m"
-      - name: registry
-        image: public.ecr.aws/docker/library/registry:2
-        command:
-        - sh
-        args:
-        - /registry-script/entrypoint.sh
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 3
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "256m"
-          limits:
-            memory: "1Gi"
-            cpu: "256m"
