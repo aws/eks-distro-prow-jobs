@@ -48,6 +48,8 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
+          scripts/local_registry_check.sh
+          &&
           if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests  -C eks-distro-base; fi
       - name: buildkitd
         image: moby/buildkit:v0.10.1-rootless

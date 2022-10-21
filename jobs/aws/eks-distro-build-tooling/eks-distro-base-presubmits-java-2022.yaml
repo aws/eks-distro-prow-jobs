@@ -61,6 +61,8 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
+          scripts/local_registry_check.sh
+          &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
           if [ -f eks-distro-base/Dockerfile.minimal-base-java ]; then make java-17-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
