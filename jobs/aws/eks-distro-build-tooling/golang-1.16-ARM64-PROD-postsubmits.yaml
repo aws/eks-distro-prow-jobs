@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1.17-ARM64-tooling-postsubmit
+  - name: golang-1.16-ARM64-PROD-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.17/.*"
+    run_if_changed: "projects/golang/go/1.16/RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
@@ -50,14 +50,14 @@ postsubmits:
           &&
           make install-deps -C projects/golang/go
           &&
-          make release -C projects/golang/go
+          make prod-release -C projects/golang/go
         env:
         - name: GO_SOURCE_VERSION
-          value: "1.17"
+          value: "1.16"
         - name: SKIP_PRIVILEGED_TESTS
           value: "true"
         - name: ARTIFACTS_BUCKET
-          value: "eks-d-postsubmit-artifacts"
+          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: ARCHITECTURE
           value: "ARM64"
         resources:
