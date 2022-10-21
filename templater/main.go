@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/aws/eks-distro-prow-jobs/templater/jobs"
+	"github.com/aws/eks-distro-prow-jobs/templater/jobs/types"
 	"github.com/aws/eks-distro-prow-jobs/templater/jobs/utils"
 )
 
@@ -63,18 +64,30 @@ func main() {
 
 		for repoName, jobConfigs := range jobList {
 			for fileName, jobConfig := range jobConfigs {
+				envVars := jobConfig.EnvVars
+
+				if jobConfig.UseDockerBuildX {
+					envVars = append(envVars, &types.EnvVar{Name: "BUILDKITD_IMAGE", Value: "moby/buildkit:" + buildkitImageTag})
+				}
+
+				branches := jobConfig.Branches
+				if jobType == "postsubmit" && len(branches) == 0 {
+					branches = append(branches, "^main$")
+				}
+
 				data := map[string]interface{}{
 					"architecture":       jobConfig.Architecture,
 					"repoName":           repoName,
 					"prowjobName":        jobConfig.JobName,
 					"runIfChanged":       jobConfig.RunIfChanged,
 					"skipIfOnlyChanged":  jobConfig.SkipIfOnlyChanged,
-					"branches":           jobConfig.Branches,
+					"branches":           branches,
 					"cronExpression":     jobConfig.CronExpression,
 					"maxConcurrency":     jobConfig.MaxConcurrency,
 					"timeout":            jobConfig.Timeout,
 					"extraRefs":          jobConfig.ExtraRefs,
 					"imageBuild":         jobConfig.ImageBuild,
+					"useDockerBuildX":    jobConfig.UseDockerBuildX,
 					"prCreation":         jobConfig.PRCreation,
 					"runtimeImage":       jobConfig.RuntimeImage,
 					"localRegistry":      jobConfig.LocalRegistry,
@@ -83,7 +96,7 @@ func main() {
 					"builderBaseTag":     builderBaseTag,
 					"buildkitImageTag":   buildkitImageTag,
 					"resources":          jobConfig.Resources,
-					"envVars":            jobConfig.EnvVars,
+					"envVars":            envVars,
 					"volumes":            jobConfig.Volumes,
 					"volumeMounts":       jobConfig.VolumeMounts,
 					"editWarning":        editWarning,

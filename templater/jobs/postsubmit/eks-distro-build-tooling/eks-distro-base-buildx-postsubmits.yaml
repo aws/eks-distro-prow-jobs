@@ -1,0 +1,41 @@
+jobName: eks-distro-base-builx-postsubmit
+runIfChanged: ^eks-distro-base/*
+imageBuild: true
+useDockerBuildX: true
+prCreation: true
+branches:
+- ^buildx-testing$
+commands:
+- docker buildx ls
+- docker buildx inspect eks-d-builders
+envVars:
+- name: AL_TAG
+  value: 2
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: ECR_PUBLIC_PUSH_ROLE_ARN
+  value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+- name: AWS_REGION
+  value: us-east-1
+- name: OUTPUT_DEBUG_LOG
+  value: true
+- name: CREATE_BUILDER_PODS
+  value: true
+extraRefs:
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere
+resources:
+  requests:
+    cpu: "4"
+    memory: 16Gi
+timeout: 8h
