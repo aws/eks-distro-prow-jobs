@@ -77,6 +77,8 @@ presubmits:
           value: "true"
         - name: PLATFORMS
           value: "linux/amd64"
+        - name: PRUNE_BUILDCTL
+          value: "true"
         resources:
           requests:
             memory: "4Gi"

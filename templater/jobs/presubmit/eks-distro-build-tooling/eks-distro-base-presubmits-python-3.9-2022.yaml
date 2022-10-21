@@ -17,7 +17,7 @@ envVars:
 - name: PLATFORMS
   value: linux/amd64
 - name: PRUNE_BUILDCTL
-  value: "true"
+  value: true
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
