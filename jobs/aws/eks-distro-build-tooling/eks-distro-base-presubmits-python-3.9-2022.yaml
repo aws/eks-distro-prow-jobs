@@ -63,7 +63,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          if [ -f eks-distro-base/Dockerfile.minimal-base-compiler-base ]; then make run-make-tests python-3.9-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+          if [ -f eks-distro-base/Dockerfile.minimal-base-compiler-base ]; then make python-3.9-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
           &&
           if [ ! -f eks-distro-base/Dockerfile.minimal-base-compiler-base ]; then make minimal-images-base-python3.9 -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
           &&
@@ -77,6 +77,8 @@ presubmits:
           value: "true"
         - name: PLATFORMS
           value: "linux/amd64"
+        - name: PRUNE_BUILDCTL
+          value: "true"
         resources:
           requests:
             memory: "4Gi"
