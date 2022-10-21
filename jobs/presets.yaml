@@ -50,7 +50,7 @@ presets:
   - name: AWS_SDK_LOAD_CONFIG
     value: "true"
   volumeMounts:
-  - name: docker-registry-config    
+  - name: docker-registry-config
     mountPath: /root/.docker/config.json
     subPath: config.json
   - name: run-buildkit
