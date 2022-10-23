@@ -17,8 +17,8 @@ extraRefs:
   repo: eks-anywhere-prow-jobs
 resources:
   limits:
-    cpu: "2560m"
+    cpu: 14976m
     memory: 16Gi
   requests:
-    cpu: "2560m"
+    cpu: 14976m
     memory: 16Gi

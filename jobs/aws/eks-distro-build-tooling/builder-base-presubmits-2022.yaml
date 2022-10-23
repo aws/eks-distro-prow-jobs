@@ -63,10 +63,10 @@ presubmits:
         resources:
           requests:
             memory: "16Gi"
-            cpu: "2560m"
+            cpu: "14976m"
           limits:
             memory: "16Gi"
-            cpu: "2560m"
+            cpu: "14976m"
       - name: buildkitd
         image: moby/buildkit:v0.10.1-rootless
         command:
