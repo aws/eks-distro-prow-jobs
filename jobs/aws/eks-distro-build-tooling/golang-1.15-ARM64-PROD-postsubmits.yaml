@@ -35,7 +35,7 @@ postsubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: release-build-account
       automountServiceAccountToken: false
       nodeSelector:
         arch: ARM64
@@ -60,6 +60,10 @@ postsubmits:
           value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
         - name: ARCHITECTURE
           value: "ARM64"
+        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+        - name: AWS_REGION
+          value: "us-east-1"
         resources:
           requests:
             memory: "16Gi"
