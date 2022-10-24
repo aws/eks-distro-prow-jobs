@@ -22,3 +22,8 @@ envVars:
     value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
   - name: ARCHITECTURE
     value: ARM64
+  - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+    value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
+  - name: AWS_REGION
+    value: us-east-1
+serviceAccountName: release-build-account
