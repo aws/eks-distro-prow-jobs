@@ -86,13 +86,13 @@ postsubmits:
         - name: CREATE_BUILDER_PODS
           value: "true"
         - name: BUILDKITD_IMAGE
-          value: "moby/buildkit:v0.10.1-rootless"
+          value: "moby/buildkit:v0.10.5-rootless"
         resources:
           requests:
             memory: "16Gi"
             cpu: "4"
       - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
+        image: moby/buildkit:v0.10.5-rootless
         command:
         - sh
         args:

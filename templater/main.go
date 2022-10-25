@@ -34,7 +34,7 @@ var editWarning string
 //go:embed BUILDER_BASE_TAG_FILE
 var builderBaseTag string
 
-var buildkitImageTag = "v0.10.1-rootless"
+var buildkitImageTag = "v0.10.5-rootless"
 
 func main() {
 	jobsFolderPath, err := getJobsFolderPath()
