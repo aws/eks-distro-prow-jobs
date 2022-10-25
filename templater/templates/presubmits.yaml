@@ -27,7 +27,7 @@ presubmits:
     {{- end }}
     {{- end }}
     max_concurrency: {{or .maxConcurrency 10 }}
-    cluster: "prow-presubmits-cluster"
+    cluster: "{{ .cluster }}"
     skip_report: false
     {{- if .extraRefs }}
     extra_refs:
@@ -42,7 +42,7 @@ presubmits:
       timeout: {{ .timeout }}
       {{- end }}
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: {{ .bucket }}
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     {{- if or .imageBuild .localRegistry .prCreation }}
@@ -58,7 +58,7 @@ presubmits:
       {{- end }}
     {{- end }}
     spec:
-      serviceaccountName: {{ or .serviceAccountName "presubmits-build-account" }}
+      serviceaccountName: {{ .serviceAccountName }}
       automountServiceAccountToken: false
       containers:
       - name: build-container
@@ -69,11 +69,13 @@ presubmits:
         - >
           {{- if .imageBuild }}
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          {{- if not .skipBuldkitCheck }}
           &&
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh
           {{- else }}
           scripts/buildkit_check.sh
+          {{- end }}
           {{- end }}
           {{- if .localRegistry }}
           &&

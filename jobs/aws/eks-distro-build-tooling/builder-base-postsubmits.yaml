@@ -51,16 +51,16 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:9242630ce031e03158c65753c07bbfc79985347e.2
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
         command:
         - bash
         - -c
         - >
           trap 'touch /status/done' EXIT
           &&
-          scripts/buildkit_check.sh
-          &&
           source scripts/setup_public_ecr_push.sh
+          &&
+          ./builder-base/install.sh
           &&
           make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
         env:
