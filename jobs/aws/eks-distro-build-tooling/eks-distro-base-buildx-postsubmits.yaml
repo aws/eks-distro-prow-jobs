@@ -20,7 +20,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-builx-postsubmit
+  - name: eks-distro-base-buildx-postsubmit
     always_run: false
     run_if_changed: "^eks-distro-base/*"
     branches:
@@ -53,7 +53,7 @@ postsubmits:
       pr-creation: "true"
     spec:
       serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
       containers:

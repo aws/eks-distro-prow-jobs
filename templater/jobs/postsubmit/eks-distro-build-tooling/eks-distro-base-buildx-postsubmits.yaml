@@ -1,8 +1,9 @@
-jobName: eks-distro-base-builx-postsubmit
+jobName: eks-distro-base-buildx-postsubmit
 runIfChanged: ^eks-distro-base/*
 imageBuild: true
 useDockerBuildX: true
 prCreation: true
+automountServiceAccountToken: true
 branches:
 - ^buildx-testing$
 commands:

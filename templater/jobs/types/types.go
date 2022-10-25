@@ -45,24 +45,25 @@ type VolumeMount struct {
 }
 
 type JobConfig struct {
-	Architecture       string         `json:"architecture,omitempty"`
-	JobName            string         `json:"jobName,omitempty"`
-	RunIfChanged       string         `json:"runIfChanged,omitempty"`
-	SkipIfOnlyChanged  string         `json:"skipIfOnlyChanged,omitempty"`
-	Branches           []string       `json:"branches,omitempty"`
-	MaxConcurrency     int            `json:"maxConcurrency,omitempty"`
-	CronExpression     string         `json:"cronExpression,omitempty"`
-	Timeout            string         `json:"timeout,omitempty"`
-	ImageBuild         bool           `json:"imageBuild,omitempty"`
-	UseDockerBuildX    bool           `json:"useDockerBuildX,omitempty"`
-	PRCreation         bool           `json:"prCreation,omitempty"`
-	RuntimeImage       string         `json:"runtimeImage,omitempty"`
-	LocalRegistry      bool           `json:"localRegistry,omitempty"`
-	ExtraRefs          []*ExtraRef    `json:"extraRefs,omitempty"`
-	ServiceAccountName string         `json:"serviceAccountName,omitempty"`
-	EnvVars            []*EnvVar      `json:"envVars,omitempty"`
-	Commands           []string       `json:"commands,omitempty"`
-	Resources          *Resources     `json:"resources,omitempty"`
-	VolumeMounts       []*VolumeMount `json:"volumeMounts,omitempty"`
-	Volumes            []*Volume      `json:"volumes,omitempty"`
+	Architecture                 string         `json:"architecture,omitempty"`
+	JobName                      string         `json:"jobName,omitempty"`
+	RunIfChanged                 string         `json:"runIfChanged,omitempty"`
+	SkipIfOnlyChanged            string         `json:"skipIfOnlyChanged,omitempty"`
+	Branches                     []string       `json:"branches,omitempty"`
+	MaxConcurrency               int            `json:"maxConcurrency,omitempty"`
+	CronExpression               string         `json:"cronExpression,omitempty"`
+	Timeout                      string         `json:"timeout,omitempty"`
+	ImageBuild                   bool           `json:"imageBuild,omitempty"`
+	UseDockerBuildX              bool           `json:"useDockerBuildX,omitempty"`
+	PRCreation                   bool           `json:"prCreation,omitempty"`
+	RuntimeImage                 string         `json:"runtimeImage,omitempty"`
+	LocalRegistry                bool           `json:"localRegistry,omitempty"`
+	ExtraRefs                    []*ExtraRef    `json:"extraRefs,omitempty"`
+	ServiceAccountName           string         `json:"serviceAccountName,omitempty"`
+	EnvVars                      []*EnvVar      `json:"envVars,omitempty"`
+	Commands                     []string       `json:"commands,omitempty"`
+	Resources                    *Resources     `json:"resources,omitempty"`
+	VolumeMounts                 []*VolumeMount `json:"volumeMounts,omitempty"`
+	Volumes                      []*Volume      `json:"volumes,omitempty"`
+	AutomountServiceAccountToken string         `json:"automountServiceAccountToken,omitempty"`
 }
