@@ -75,6 +75,8 @@ func main() {
 					branches = append(branches, "^main$")
 				}
 
+				cluster, bucket, serviceAccountName := clusterDetails(jobType, jobConfig.Cluster, jobConfig.ServiceAccountName)
+
 				data := map[string]interface{}{
 					"architecture":                 jobConfig.Architecture,
 					"repoName":                     repoName,
@@ -91,7 +93,7 @@ func main() {
 					"prCreation":                   jobConfig.PRCreation,
 					"runtimeImage":                 jobConfig.RuntimeImage,
 					"localRegistry":                jobConfig.LocalRegistry,
-					"serviceAccountName":           jobConfig.ServiceAccountName,
+					"serviceAccountName":           serviceAccountName,
 					"command":                      strings.Join(jobConfig.Commands, "\n&&\n"),
 					"builderBaseTag":               builderBaseTag,
 					"buildkitImageTag":             buildkitImageTag,
@@ -101,6 +103,9 @@ func main() {
 					"volumeMounts":                 jobConfig.VolumeMounts,
 					"editWarning":                  editWarning,
 					"automountServiceAccountToken": jobConfig.AutomountServiceAccountToken,
+					"cluster":                      cluster,
+					"bucket":                       bucket,
+					"skipBuildkitCheck":            jobConfig.SkipBuildkitCheck,
 				}
 
 				err := GenerateProwjob(fileName, template, data)
@@ -157,4 +162,24 @@ func useTemplate(jobType string) (string, error) {
 	default:
 		return "", fmt.Errorf("Unsupported job type: %s", jobType)
 	}
+}
+
+func clusterDetails(jobType string, cluster string, serviceAccountName string) (string, string, string) {
+	if cluster == "prow-postsubmits-cluster" {
+		jobType = "postsubmit"
+	}
+
+	cluster = "prow-presubmits-cluster"
+	bucket := "s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp"
+
+	if jobType == "postsubmit" || jobType == "periodic" {
+		cluster = "prow-postsubmits-cluster"
+		bucket = "s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm"
+	}
+
+	if len(serviceAccountName) == 0 {
+		serviceAccountName = jobType + "s-build-account"
+	}
+
+	return cluster, bucket, serviceAccountName
 }

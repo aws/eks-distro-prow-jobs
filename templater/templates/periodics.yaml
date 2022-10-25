@@ -18,7 +18,7 @@
 periodics:
 - name: {{ .prowjobName }}
   cron: "{{ .cronExpression }}"
-  cluster: "prow-postsubmits-cluster"
+  cluster: "{{ .cluster }}"
   error_on_eviction: true
   {{- if .extraRefs }}
   extra_refs:
@@ -33,7 +33,7 @@ periodics:
     timeout: {{ .timeout }}
     {{- end }}
     gcs_configuration:
-      bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+      bucket: {{ .bucket }}
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   {{- if or .imageBuild .localRegistry .prCreation }}
@@ -49,7 +49,7 @@ periodics:
     {{- end }}
   {{- end }}
   spec:
-    serviceaccountName: {{ or .serviceAccountName "periodics-build-account" }}
+    serviceaccountName: {{ .serviceAccountName }}
     automountServiceAccountToken: false
     containers:
     - name: build-container

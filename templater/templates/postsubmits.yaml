@@ -32,7 +32,7 @@ postsubmits:
     {{- end }}
     max_concurrency: {{or .maxConcurrency 10 }}
     error_on_eviction: true
-    cluster: "prow-postsubmits-cluster"
+    cluster: "{{ .cluster }}"
     skip_report: false
     {{- if .extraRefs }}
     extra_refs:
@@ -47,7 +47,7 @@ postsubmits:
       timeout: {{ .timeout }}
       {{- end }}
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: {{ .bucket }}
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     {{- if or .imageBuild .localRegistry .prCreation }}
@@ -63,7 +63,7 @@ postsubmits:
       {{- end }}
     {{- end }}
     spec:
-      serviceaccountName: {{ or .serviceAccountName "postsubmits-build-account" }}
+      serviceaccountName: {{ .serviceAccountName }}
       automountServiceAccountToken: {{ or .automountServiceAccountToken false}}
       nodeSelector:
         arch: {{ or .architecture "AMD64" }}
@@ -76,11 +76,13 @@ postsubmits:
         - >
           {{- if .imageBuild }}
           trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done' EXIT
+          {{- if not .skipBuildkitCheck }}
           &&
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh
           {{- else }}
           scripts/buildkit_check.sh
+          {{- end }}
           {{- end }}
           {{- if .useDockerBuildX }}
           &&
