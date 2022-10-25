@@ -5,7 +5,7 @@ architecture: ARM64
 commands:
 - yum -y install make
 - make install-deps -C projects/golang/go
-- make prod-release -C projects/golang/go
+- projects/golang/go/scripts/prow_release.sh
 resources:
   limits:
     cpu: 2560m
