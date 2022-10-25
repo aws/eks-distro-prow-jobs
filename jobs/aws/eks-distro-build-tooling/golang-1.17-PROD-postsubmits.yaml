@@ -50,7 +50,7 @@ postsubmits:
           &&
           make install-deps -C projects/golang/go
           &&
-          make prod-release -C projects/golang/go
+          projects/golang/go/scripts/prow_release.sh
         env:
         - name: GO_SOURCE_VERSION
           value: "1.17"
