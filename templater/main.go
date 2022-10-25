@@ -105,7 +105,7 @@ func main() {
 					"automountServiceAccountToken": jobConfig.AutomountServiceAccountToken,
 					"cluster":                      cluster,
 					"bucket":                       bucket,
-					"skipBuldkitCheck":             jobConfig.SkipBuldkitCheck,
+					"skipBuildkitCheck":            jobConfig.SkipBuildkitCheck,
 				}
 
 				err := GenerateProwjob(fileName, template, data)

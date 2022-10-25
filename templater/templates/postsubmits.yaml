@@ -76,7 +76,7 @@ postsubmits:
         - >
           {{- if .imageBuild }}
           trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done' EXIT
-          {{- if not .skipBuldkitCheck }}
+          {{- if not .skipBuildkitCheck }}
           &&
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh

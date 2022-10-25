@@ -69,7 +69,7 @@ presubmits:
         - >
           {{- if .imageBuild }}
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
-          {{- if not .skipBuldkitCheck }}
+          {{- if not .skipBuildkitCheck }}
           &&
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh

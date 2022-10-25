@@ -67,5 +67,5 @@ type JobConfig struct {
 	Volumes                      []*Volume      `json:"volumes,omitempty"`
 	AutomountServiceAccountToken string         `json:"automountServiceAccountToken,omitempty"`
 	Cluster                      string         `json:"cluster,omitempty"`
-	SkipBuldkitCheck             bool           `json:"skipBuldkitCheck,omitempty"`
+	SkipBuildkitCheck            bool           `json:"skipBuildkitCheck,omitempty"`
 }
