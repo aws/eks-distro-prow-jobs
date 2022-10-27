@@ -60,6 +60,10 @@ presubmits:
     spec:
       serviceaccountName: {{ .serviceAccountName }}
       automountServiceAccountToken: false
+      {{- if .architecture }}
+      nodeSelector:
+        arch: {{ or .architecture }}
+      {{- end }}
       containers:
       - name: build-container
         image: {{ or .runtimeImage $builderBaseImage }}

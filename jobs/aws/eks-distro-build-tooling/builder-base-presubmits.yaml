@@ -43,6 +43,8 @@ presubmits:
     spec:
       serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
+      nodeSelector:
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/amazonlinux/amazonlinux:2
