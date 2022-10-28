@@ -68,7 +68,7 @@ postsubmits:
             memory: "16Gi"
             cpu: "4"
       - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
+        image: moby/buildkit:v0.10.5-rootless
         command:
         - sh
         args:

@@ -51,16 +51,16 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:7e3154406cdf70dbe7b2fd87d5e7a48dd2014b9d.2
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
         command:
         - bash
         - -c
         - >
           trap 'touch /status/done' EXIT
           &&
-          scripts/buildkit_check.sh
-          &&
           source scripts/setup_public_ecr_push.sh
+          &&
+          ./builder-base/install.sh
           &&
           make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
         env:
@@ -77,7 +77,7 @@ postsubmits:
             memory: "16Gi"
             cpu: "4"
       - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
+        image: moby/buildkit:v0.10.5-rootless
         command:
         - sh
         args:

@@ -24,7 +24,7 @@ presubmits:
     always_run: false
     run_if_changed: "builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     extra_refs:
     - org: eks-distro-pr-bot
@@ -35,14 +35,16 @@ presubmits:
       base_ref: main
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
+      nodeSelector:
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/amazonlinux/amazonlinux:2
@@ -52,23 +54,14 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          scripts/buildkit_check.sh
-          &&
           ./builder-base/install.sh
           &&
           make build -C builder-base
         env:
         - name: AL_TAG
           value: "2"
-        resources:
-          requests:
-            memory: "16Gi"
-            cpu: "14"
-          limits:
-            memory: "16Gi"
-            cpu: "14"
       - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
+        image: moby/buildkit:v0.10.5-rootless
         command:
         - sh
         args:

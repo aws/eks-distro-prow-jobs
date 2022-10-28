@@ -54,7 +54,7 @@ postsubmits:
           &&
           make release -C projects/prometheus/prometheus IMAGE_TAG=$PULL_BASE_SHA
       - name: buildkitd
-        image: moby/buildkit:v0.10.1-rootless
+        image: moby/buildkit:v0.10.5-rootless
         command:
         - sh
         args:
