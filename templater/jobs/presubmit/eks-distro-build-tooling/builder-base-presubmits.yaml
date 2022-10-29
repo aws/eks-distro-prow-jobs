@@ -5,6 +5,7 @@ useDockerBuildX: true
 skipBuildkitCheck: true
 architecture: AMD64
 cluster: prow-postsubmits-cluster
+automountServiceAccountToken: true
 commands:
 - ./builder-base/install.sh
 - make build -C builder-base
