@@ -72,7 +72,7 @@ presubmits:
         - -c
         - >
           {{- if .imageBuild }}
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done && rm -rf /home/prow/go/src/' EXIT
           {{- if not .skipBuildkitCheck }}
           &&
           {{- if eq .repoName "aws/eks-distro"}}
@@ -87,6 +87,14 @@ presubmits:
           build/lib/local_registry_check.sh
           {{- else }}
           scripts/local_registry_check.sh
+          {{- end }}          
+          {{- end }}
+          {{- if .useDockerBuildX }}
+          &&
+          {{- if eq .repoName "aws/eks-distro"}}
+          build/lib/setup_buildx.sh
+          {{- else }}
+          scripts/setup_buildx.sh
           {{- end }}          
           {{- end }}
           &&
