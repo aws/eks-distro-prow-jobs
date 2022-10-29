@@ -59,7 +59,7 @@ presubmits:
     {{- end }}
     spec:
       serviceaccountName: {{ .serviceAccountName }}
-      automountServiceAccountToken: false
+      automountServiceAccountToken: {{ or .automountServiceAccountToken false}}
       {{- if .architecture }}
       nodeSelector:
         arch: {{ or .architecture }}

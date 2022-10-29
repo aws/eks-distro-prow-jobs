@@ -42,7 +42,7 @@ presubmits:
       image-build: "true"
     spec:
       serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
       containers:
