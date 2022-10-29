@@ -2,7 +2,6 @@ jobName: builder-base-tooling-presubmit-2022
 runIfChanged: builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 useDockerBuildX: true
-skipBuildkitCheck: true
 architecture: AMD64
 cluster: prow-postsubmits-cluster
 automountServiceAccountToken: true
@@ -11,8 +10,6 @@ commands:
 envVars:
 - name: AL_TAG
   value: 2022
-- name: CREATE_BUILDER_PODS
-  value: true
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
