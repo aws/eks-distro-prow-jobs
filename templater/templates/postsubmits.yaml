@@ -92,6 +92,14 @@ postsubmits:
           scripts/setup_buildx.sh
           {{- end }}
           {{- end}}
+          {{- if .useDockerBuildX }}
+          &&
+          {{- if eq .repoName "aws/eks-distro"}}
+          build/lib/setup_buildx.sh
+          {{- else }}
+          scripts/setup_buildx.sh
+          {{- end }}          
+          {{- end }}
           &&
           {{- end }}
 {{ .command | indent 10 }}

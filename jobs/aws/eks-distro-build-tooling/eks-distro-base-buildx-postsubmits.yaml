@@ -69,6 +69,8 @@ postsubmits:
           &&
           scripts/setup_buildx.sh
           &&
+          scripts/setup_buildx.sh
+          &&
           docker buildx ls
           &&
           docker buildx inspect eks-d-builders

@@ -52,7 +52,9 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          &&
+          scripts/setup_buildx.sh
           &&
           ./builder-base/install.sh
           &&
@@ -60,6 +62,8 @@ presubmits:
         env:
         - name: AL_TAG
           value: "2022"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.10.5-rootless"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
