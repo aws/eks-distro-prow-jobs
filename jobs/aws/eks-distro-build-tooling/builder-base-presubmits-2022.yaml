@@ -56,8 +56,6 @@ presubmits:
           &&
           scripts/setup_buildx.sh
           &&
-          ./builder-base/install.sh
-          &&
           make build -C builder-base
         env:
         - name: AL_TAG
