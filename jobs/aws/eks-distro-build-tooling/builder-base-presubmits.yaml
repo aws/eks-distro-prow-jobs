@@ -54,16 +54,18 @@ presubmits:
         - >
           trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
+          scripts/buildkit_check.sh
+          &&
           scripts/setup_buildx.sh
           &&
           make build -C builder-base
         env:
         - name: AL_TAG
           value: "2"
-        - name: CREATE_BUILDER_PODS
-          value: "true"
         - name: BUILDKITD_IMAGE
           value: "moby/buildkit:v0.10.5-rootless"
+        - name: USE_BUILDX
+          value: "true"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:

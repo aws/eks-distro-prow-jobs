@@ -51,27 +51,35 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:7e3154406cdf70dbe7b2fd87d5e7a48dd2014b9d.2
         command:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
+          &&
+          scripts/buildkit_check.sh
+          &&
+          scripts/setup_buildx.sh
           &&
           source scripts/setup_public_ecr_push.sh
-          &&
-          ./builder-base/install.sh
           &&
           make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
         env:
         - name: AL_TAG
           value: "2"
+        - name: CREATE_BUILDER_PODS
+          value: "true"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.10.5-rootless"
+        - name: USE_BUILDX
+          value: "true"
         resources:
           requests:
             memory: "16Gi"

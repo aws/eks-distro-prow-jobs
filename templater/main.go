@@ -68,6 +68,7 @@ func main() {
 
 				if jobConfig.UseDockerBuildX {
 					envVars = append(envVars, &types.EnvVar{Name: "BUILDKITD_IMAGE", Value: "moby/buildkit:" + buildkitImageTag})
+					envVars = append(envVars, &types.EnvVar{Name: "USE_BUILDX", Value: "true"})
 				}
 
 				branches := jobConfig.Branches
@@ -105,7 +106,6 @@ func main() {
 					"automountServiceAccountToken": jobConfig.AutomountServiceAccountToken,
 					"cluster":                      cluster,
 					"bucket":                       bucket,
-					"skipBuildkitCheck":            jobConfig.SkipBuildkitCheck,
 				}
 
 				err := GenerateProwjob(fileName, template, data)
