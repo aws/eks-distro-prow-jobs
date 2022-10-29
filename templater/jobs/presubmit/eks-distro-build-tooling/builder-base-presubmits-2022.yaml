@@ -12,6 +12,8 @@ commands:
 envVars:
 - name: AL_TAG
   value: 2022
+- name: CREATE_BUILDER_PODS
+  value: true
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot

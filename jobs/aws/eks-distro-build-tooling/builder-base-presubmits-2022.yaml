@@ -62,6 +62,8 @@ presubmits:
         env:
         - name: AL_TAG
           value: "2022"
+        - name: CREATE_BUILDER_PODS
+          value: "true"
         - name: BUILDKITD_IMAGE
           value: "moby/buildkit:v0.10.5-rootless"
       - name: buildkitd
