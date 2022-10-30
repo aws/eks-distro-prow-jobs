@@ -88,6 +88,10 @@ presets:
         fieldPath: metadata.name
   - name: GOPROXY
     value: "http://athens-proxy.default.svc.cluster.local"
+  - name: FARGATE_PROFILE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['eks.amazonaws.com/fargate-profile']
   volumes:
   - name: builder-base-tag-file
     configMap:
