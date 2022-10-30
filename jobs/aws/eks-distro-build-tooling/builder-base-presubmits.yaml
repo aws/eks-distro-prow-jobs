@@ -66,6 +66,10 @@ presubmits:
           value: "moby/buildkit:v0.10.5-rootless"
         - name: USE_BUILDX
           value: "true"
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
