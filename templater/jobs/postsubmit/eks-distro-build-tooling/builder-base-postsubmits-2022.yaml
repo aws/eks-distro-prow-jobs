@@ -4,6 +4,7 @@ imageBuild: true
 useDockerBuildX: true
 architecture: AMD64
 prCreation: true
+automountServiceAccountToken: true
 commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C builder-base IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
