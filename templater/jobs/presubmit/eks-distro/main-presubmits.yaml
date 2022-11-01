@@ -3,9 +3,6 @@ runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^Makefile$|cmd/.*
 commands:
 - make build
 resources:
-  limits:
-    cpu: 1024m
-    memory: 2Gi
   requests:
     cpu: 1024m
     memory: 2Gi

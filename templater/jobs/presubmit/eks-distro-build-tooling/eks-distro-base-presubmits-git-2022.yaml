@@ -29,9 +29,6 @@ extraRefs:
   org: eks-distro-pr-bot
   repo: eks-anywhere
 resources:
-  limits:
-    cpu: 1024m
-    memory: 4Gi
   requests:
     cpu: 1024m
     memory: 4Gi

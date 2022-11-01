@@ -4,9 +4,6 @@ imageBuild: true
 commands:
 - make build -C projects/gomods/athens
 resources:
-  limits:
-    cpu: 1024m
-    memory: 2Gi
   requests:
     cpu: 1024m
     memory: 2Gi
