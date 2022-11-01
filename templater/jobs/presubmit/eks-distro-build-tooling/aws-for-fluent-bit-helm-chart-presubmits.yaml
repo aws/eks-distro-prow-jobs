@@ -3,9 +3,6 @@ runIfChanged: helm-charts/scripts/.*|projects/aws/eks-charts/aws-for-fluent-bit/
 commands:
 - make verify -C projects/aws/eks-charts/aws-for-fluent-bit
 resources:
-  limits:
-    cpu: 1024m
-    memory: 4Gi
   requests:
     cpu: 1024m
     memory: 4Gi

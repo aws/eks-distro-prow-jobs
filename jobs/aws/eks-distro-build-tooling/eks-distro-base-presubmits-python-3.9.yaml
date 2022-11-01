@@ -85,9 +85,6 @@ presubmits:
           requests:
             memory: "4Gi"
             cpu: "1024m"
-          limits:
-            memory: "4Gi"
-            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
@@ -99,9 +96,6 @@ presubmits:
           runAsGroup: 1000
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1024m"
-          limits:
             memory: "2Gi"
             cpu: "1024m"
       - name: registry
@@ -118,8 +112,5 @@ presubmits:
           periodSeconds: 3
         resources:
           requests:
-            memory: "1Gi"
-            cpu: "256m"
-          limits:
             memory: "1Gi"
             cpu: "256m"

@@ -112,11 +112,6 @@ presubmits:
             memory: "{{ .resources.Requests.Memory }}"
             cpu: "{{ .resources.Requests.CPU }}"
           {{- end }}
-          {{- if .resources.Limits }}
-          limits:
-            memory: "{{ .resources.Limits.Memory }}"
-            cpu: "{{ .resources.Limits.CPU }}"
-          {{- end}}
         {{- end }}
         {{- if .volumeMounts }}
         volumeMounts:
@@ -140,9 +135,6 @@ presubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
-          limits:
-            memory: "2Gi"
-            cpu: "1024m"
       {{- end }}
       {{- if .localRegistry }}
       - name: registry
@@ -159,9 +151,6 @@ presubmits:
           periodSeconds: 3
         resources:
           requests:
-            memory: "1Gi"
-            cpu: "256m"
-          limits:
             memory: "1Gi"
             cpu: "256m"
       {{- end }}
