@@ -49,7 +49,7 @@ periodics:
     image-build: "true"
     pr-creation: "true"
   spec:
-    serviceaccountName: periodics-build-account
+    serviceaccountName: postsubmits-build-account
     automountServiceAccountToken: true
     nodeSelector:
       arch: AMD64
