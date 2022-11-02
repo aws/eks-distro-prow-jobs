@@ -50,7 +50,9 @@ periodics:
     pr-creation: "true"
   spec:
     serviceaccountName: periodics-build-account
-    automountServiceAccountToken: false
+    automountServiceAccountToken: true
+    nodeSelector:
+      arch: AMD64
     containers:
     - name: build-container
       image: public.ecr.aws/eks-distro-build-tooling/builder-base:8a2a9d01b95ee8f2bbacbb03d1d55b6c56615411.2
@@ -58,9 +60,11 @@ periodics:
       - bash
       - -c
       - >
-        trap 'touch /status/done' EXIT
+        trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
         &&
         scripts/buildkit_check.sh
+        &&
+        scripts/setup_buildx.sh
         &&
         export DATE_EPOCH=$(date "+%F-%s")
         &&
@@ -81,6 +85,12 @@ periodics:
       - name: REPO_OWNER
         value: "aws"
       - name: OUTPUT_DEBUG_LOG
+        value: "true"
+      - name: CREATE_BUILDER_PODS
+        value: "true"
+      - name: BUILDKITD_IMAGE
+        value: "moby/buildkit:v0.10.5-rootless"
+      - name: USE_BUILDX
         value: "true"
     - name: buildkitd
       image: moby/buildkit:v0.10.5-rootless

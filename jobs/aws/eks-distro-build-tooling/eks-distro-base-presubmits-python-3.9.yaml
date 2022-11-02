@@ -57,11 +57,13 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
           scripts/buildkit_check.sh
           &&
           scripts/local_registry_check.sh
+          &&
+          scripts/setup_buildx.sh
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
@@ -80,6 +82,10 @@ presubmits:
         - name: PLATFORMS
           value: "linux/amd64"
         - name: PRUNE_BUILDCTL
+          value: "true"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.10.5-rootless"
+        - name: USE_BUILDX
           value: "true"
         resources:
           requests:

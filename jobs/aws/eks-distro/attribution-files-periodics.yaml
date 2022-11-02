@@ -38,6 +38,8 @@ periodics:
   spec:
     serviceaccountName: periodics-build-account
     automountServiceAccountToken: false
+    nodeSelector:
+      arch: AMD64
     containers:
     - name: build-container
       image: public.ecr.aws/eks-distro-build-tooling/builder-base:8a2a9d01b95ee8f2bbacbb03d1d55b6c56615411.2
