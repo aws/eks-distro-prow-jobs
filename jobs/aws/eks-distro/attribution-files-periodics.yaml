@@ -20,7 +20,7 @@
 
 periodics:
 - name: attribution-files-periodic
-  cron: "0 18 * * 1-5"
+  cron: "0 8 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
   extra_refs:

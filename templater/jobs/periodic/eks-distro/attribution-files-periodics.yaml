@@ -1,5 +1,5 @@
 jobName: attribution-files-periodic
-cronExpression: 0 18 * * 1-5
+cronExpression: 0 8 * * 1-5
 prCreation: true
 commands:
 - make update-attribution-files
