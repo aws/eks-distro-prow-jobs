@@ -50,7 +50,9 @@ periodics:
   {{- end }}
   spec:
     serviceaccountName: {{ .serviceAccountName }}
-    automountServiceAccountToken: false
+    automountServiceAccountToken: {{ or .automountServiceAccountToken false}}
+    nodeSelector:
+      arch: {{ or .architecture "AMD64" }}
     containers:
     - name: build-container
       image: {{ or .runtimeImage $builderBaseImage }}
@@ -59,15 +61,23 @@ periodics:
       - -c
       - >
         {{- if .imageBuild }}
-        trap 'touch /status/done' EXIT
+        trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done' EXIT
         &&
         {{- if eq .repoName "aws/eks-distro"}}
         build/lib/buildkit_check.sh
         {{- else }}
         scripts/buildkit_check.sh
         {{- end }}
+        {{- if .useDockerBuildX }}
         &&
+        {{- if eq .repoName "aws/eks-distro"}}
+        build/lib/setup_buildx.sh
+        {{- else }}
+        scripts/setup_buildx.sh
+        {{- end }}
         {{- end}}
+        &&
+        {{- end }}
 {{ .command | indent 8 }}
       {{- if .envVars }}
       env:

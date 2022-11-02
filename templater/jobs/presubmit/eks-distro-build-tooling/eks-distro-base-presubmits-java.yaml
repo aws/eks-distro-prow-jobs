@@ -2,6 +2,7 @@ jobName: eks-distro-base-tooling-presubmits-java
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
+useDockerBuildX: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - if [ -f eks-distro-base/Dockerfile.minimal-base-java ]; then make java-17-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi

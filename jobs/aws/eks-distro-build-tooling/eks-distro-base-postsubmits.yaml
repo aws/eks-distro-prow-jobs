@@ -53,7 +53,7 @@ postsubmits:
       pr-creation: "true"
     spec:
       serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
       containers:
@@ -63,9 +63,11 @@ postsubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
           &&
           scripts/buildkit_check.sh
+          &&
+          scripts/setup_buildx.sh
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
@@ -84,6 +86,12 @@ postsubmits:
         - name: AWS_REGION
           value: "us-east-1"
         - name: OUTPUT_DEBUG_LOG
+          value: "true"
+        - name: CREATE_BUILDER_PODS
+          value: "true"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.10.5-rootless"
+        - name: USE_BUILDX
           value: "true"
         resources:
           requests:

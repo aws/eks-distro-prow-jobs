@@ -2,6 +2,7 @@ jobName: eks-distro-base-tooling-presubmits-docker-client
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
+useDockerBuildX: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - make minimal-images-base-docker-client -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}

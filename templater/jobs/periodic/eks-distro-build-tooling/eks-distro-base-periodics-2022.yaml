@@ -2,6 +2,9 @@ jobName: eks-distro-base-tooling-periodic-2022
 cronExpression: 0 19 * * 1-5
 imageBuild: true
 prCreation: true
+architecture: AMD64
+useDockerBuildX: true
+automountServiceAccountToken: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - source scripts/setup_public_ecr_push.sh
@@ -19,6 +22,8 @@ envVars:
 - name: REPO_OWNER
   value: aws
 - name: OUTPUT_DEBUG_LOG
+  value: true
+- name: CREATE_BUILDER_PODS
   value: true
 extraRefs:
 - baseRef: main
