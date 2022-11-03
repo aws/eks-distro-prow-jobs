@@ -4,7 +4,7 @@ imageBuild: true
 localRegistry: true
 commands:
 - make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
-- make build -C projects/kubernetes/kubernetes
+- make build -C $PROJECT_PATH
 - mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
 envVars:
 - name: RELEASE_BRANCH
