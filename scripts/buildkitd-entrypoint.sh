@@ -15,6 +15,12 @@
 # Run buildkitd in background mode to be able to poll
 # for the done status file and kill process after
 
+# if running on the postsubmit cluster allow more cache space
+KEEP_STORAGE=20000
+if [ -n "${FARGATE_PROFILE_NAME}" ]; then
+	KEEP_STORAGE=5000
+fi
+
 rootlesskit \
 	buildkitd \
 	--addr=unix:///run/buildkit/buildkitd.sock \
@@ -22,7 +28,7 @@ rootlesskit \
 	--oci-worker-platform=linux/amd64 \
 	--oci-worker-platform=linux/arm64 \
 	--oci-worker-gc \
-	--oci-worker-gc-keepstorage 5000 \
+	--oci-worker-gc-keepstorage $KEEP_STORAGE \
 	&
 pid=$!
 while [ ! -f /status/done ]
