@@ -42,3 +42,7 @@ presubmits:
         - -c
         - >
           if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests  -C eks-distro-base; fi
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1024m"

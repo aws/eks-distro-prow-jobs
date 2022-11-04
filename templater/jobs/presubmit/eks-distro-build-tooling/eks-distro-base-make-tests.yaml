@@ -2,4 +2,7 @@ jobName: eks-distro-base-make-tests
 runIfChanged: eks-distro-base/.*
 commands:
 - if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests  -C eks-distro-base; fi
-
+resources:
+  requests:
+    cpu: 1024m
+    memory: 4Gi
