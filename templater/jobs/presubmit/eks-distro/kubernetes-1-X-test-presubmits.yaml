@@ -1,7 +1,7 @@
 jobName: kubernetes-{{ .releaseBranch }}-test-presubmit
 runIfChanged: projects/kubernetes/kubernetes/{{ .releaseBranch }}/(GIT_TAG|patches)
 commands:
-- make test -C projects/kubernetes/kubernetes
+- make test -C $PROJECT_PATH
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}

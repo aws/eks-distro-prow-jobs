@@ -3,8 +3,8 @@ runIfChanged: projects/golang/go/1.17/.*
 runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
 commands:
 - yum -y install make
-- make install-deps -C projects/golang/go
-- make build -C projects/golang/go
+- make install-deps -C $PROJECT_PATH
+- make build -C $PROJECT_PATH
 resources:
   limits:
     cpu: 2560m

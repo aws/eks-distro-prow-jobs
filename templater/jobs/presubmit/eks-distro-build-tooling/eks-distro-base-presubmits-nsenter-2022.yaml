@@ -5,8 +5,8 @@ localRegistry: true
 useDockerBuildX: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- make minimal-images-base-nsenter -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-- make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make minimal-images-base-nsenter -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 envVars:
 - name: AL_TAG
   value: 2022

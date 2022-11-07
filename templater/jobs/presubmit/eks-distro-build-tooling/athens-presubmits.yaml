@@ -2,7 +2,7 @@ jobName: athens-tooling-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|projects/gomods/athens/.*
 imageBuild: true
 commands:
-- make build -C projects/gomods/athens
+- make build -C $PROJECT_PATH
 resources:
   requests:
     cpu: 1024m

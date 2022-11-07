@@ -1,6 +1,6 @@
 jobName: eks-distro-docs-postsubmit
 runIfChanged: docs/.*
 commands:
-- make release -C docs
+- make release -C $PROJECT_PATH
 - mv ./docs/site/* /logs/artifacts
 serviceAccountName: docs-build-account

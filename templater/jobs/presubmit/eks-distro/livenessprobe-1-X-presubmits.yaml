@@ -2,7 +2,7 @@ jobName: livenessprobe-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
-- make build -C projects/kubernetes-csi/livenessprobe
+- make build -C $PROJECT_PATH
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}

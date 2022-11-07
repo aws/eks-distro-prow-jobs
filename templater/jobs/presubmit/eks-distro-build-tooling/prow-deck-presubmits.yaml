@@ -2,7 +2,7 @@ jobName: prow-deck-tooling-presubmit
 runIfChanged: projects/kubernetes/test-infra|scripts/setup_public_ecr_push.sh
 imageBuild: true
 commands:
-- make build -C projects/kubernetes/test-infra
+- make build -C $PROJECT_PATH
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot

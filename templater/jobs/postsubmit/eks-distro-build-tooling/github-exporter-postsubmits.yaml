@@ -2,4 +2,4 @@ jobName: github-exporter-tooling-postsubmit
 runIfChanged: projects/infinityworks/github-exporter/.*
 imageBuild: true
 commands:
-- make release -C projects/infinityworks/github-exporter IMAGE_TAG=$PULL_BASE_SHA
+- make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA

@@ -2,7 +2,7 @@ jobName: alertmanager-tooling-presubmit
 runIfChanged: projects/prometheus/alertmanager/.*
 imageBuild: true
 commands:
-- make build -C projects/prometheus/alertmanager
+- make build -C $PROJECT_PATH
 resources:
   requests:
     cpu: 1024m

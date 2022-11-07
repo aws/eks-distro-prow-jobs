@@ -2,7 +2,7 @@ jobName: etcd-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/etcd-io/etcd/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
-- make build -C projects/etcd-io/etcd
+- make build -C $PROJECT_PATH
 - mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
 envVars:
 - name: RELEASE_BRANCH
