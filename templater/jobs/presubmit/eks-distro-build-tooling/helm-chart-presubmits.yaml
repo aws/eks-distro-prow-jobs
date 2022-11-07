@@ -1,7 +1,7 @@
 jobName: helm-chart-tooling-presubmit
 runIfChanged: helm-charts/.*
 commands:
-- make verify -C helm-charts
+- make verify -C $PROJECT_PATH
 resources:
   requests:
     cpu: 1024m

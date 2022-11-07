@@ -57,6 +57,9 @@ periodics:
       command:
       - bash
       - -c
+      - env:
+        - name: PROJECT_PATH
+          value: {{ .projectPath }}
       - >
         {{- if .imageBuild }}
         trap 'touch /status/done' EXIT

@@ -5,7 +5,7 @@ localRegistry: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - if [ -f eks-distro-base/Dockerfile.minimal-base-golang ]; then make golang-1.15-compiler-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
-- make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 envVars:
 - name: AL_TAG
   value: 2

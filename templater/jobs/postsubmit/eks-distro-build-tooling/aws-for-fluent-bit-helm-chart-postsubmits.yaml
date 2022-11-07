@@ -1,5 +1,5 @@
 jobName: aws-for-fluent-bit-helm-chart-tooling-postsubmit
 runIfChanged: helm-charts/scripts/.*|projects/aws/eks-charts/aws-for-fluent-bit/.*
 commands:
-- make release -C projects/aws/eks-charts/aws-for-fluent-bit
+- make release -C $PROJECT_PATH
 serviceAccountName: charts-build-account

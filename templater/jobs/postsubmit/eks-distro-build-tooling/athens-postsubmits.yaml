@@ -2,5 +2,5 @@ jobName: athens-tooling-postsubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|projects/gomods/athens/.*
 imageBuild: true
 commands:
-- make release -C projects/gomods/athens IMAGE_TAG=$PULL_BASE_SHA
+- make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
 serviceAccountName: charts-build-account

@@ -1,8 +1,8 @@
 jobName: prowjobs-lint-presubmit
 runIfChanged: jobs/aws/.*
 commands:
-- make verify-prowjobs -C templater
-- make lint -C linter
+- make verify-prowjobs -C $PROJECT_PATH
+- make lint -C $PROJECT_PATH
 resources:
   limits:
     cpu: 2048m
