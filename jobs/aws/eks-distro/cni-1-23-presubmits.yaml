@@ -41,8 +41,10 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C projects/containernetworking/plugins
+          make build -C $PROJECT_PATH
         env:
+        - name:  PROJECT_PATH
+          value: "projects/containernetworking/plugins"
         - name: RELEASE_BRANCH
           value: "1-23"
         resources:

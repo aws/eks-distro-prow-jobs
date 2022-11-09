@@ -42,6 +42,9 @@ presubmits:
         - -c
         - >
           make build
+        env:
+        - name:  PROJECT_PATH
+          value: ""
         resources:
           requests:
             memory: "2Gi"

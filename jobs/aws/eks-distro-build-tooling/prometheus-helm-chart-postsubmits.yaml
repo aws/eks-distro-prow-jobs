@@ -46,4 +46,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/prometheus-community/helm-charts
+          make release -C $PROJECT_PATH
+        env:
+        - name: PROJECT_PATH
+          value: "projects/prometheus-community/helm-charts"

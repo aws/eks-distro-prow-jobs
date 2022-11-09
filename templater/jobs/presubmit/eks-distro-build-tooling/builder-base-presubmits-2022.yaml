@@ -6,7 +6,8 @@ architecture: AMD64
 cluster: prow-postsubmits-cluster
 automountServiceAccountToken: true
 commands:
-- make build -C builder-base
+- make build -C $PROJECT_PATH
+projectPath: builder-base
 envVars:
 - name: AL_TAG
   value: 2022

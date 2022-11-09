@@ -48,6 +48,8 @@ postsubmits:
         - >
           ./release/prow-announce.sh
         env:
+        - name: PROJECT_PATH
+          value: ""
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: SNS_TOPIC_ARN

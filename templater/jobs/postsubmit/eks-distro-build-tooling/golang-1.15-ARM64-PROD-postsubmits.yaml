@@ -4,8 +4,9 @@ runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
 architecture: ARM64
 commands:
 - yum -y install make
-- make install-deps -C projects/golang/go
+- make install-deps -C $PROJECT_PATH
 - projects/golang/go/scripts/prow_release.sh
+projectPath: projects/golang/go
 resources:
   limits:
     cpu: 2560m

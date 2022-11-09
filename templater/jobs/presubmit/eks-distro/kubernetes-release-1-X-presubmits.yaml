@@ -2,7 +2,8 @@ jobName: kubernetes-release-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/release/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
-- make build -C projects/kubernetes/release
+- make build -C $PROJECT_PATH
+projectPath: projects/kubernetes/release
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}

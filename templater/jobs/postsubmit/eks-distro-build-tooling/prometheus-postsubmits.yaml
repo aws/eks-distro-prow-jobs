@@ -1,5 +1,6 @@
 jobName: prometheus-tooling-postsubmit
 runIfChanged: projects/prometheus/prometheus/.*
 commands:
-- make release -C projects/prometheus/prometheus IMAGE_TAG=$PULL_BASE_SHA
+- make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
+projectPath: projects/prometheus/prometheus
 imageBuild: true

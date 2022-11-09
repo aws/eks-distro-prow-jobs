@@ -41,7 +41,10 @@ presubmits:
         - bash
         - -c
         - >
-          make verify -C projects/grafana/helm-charts
+          make verify -C $PROJECT_PATH
+        env:
+        - name:  PROJECT_PATH
+          value: "projects/grafana/helm-charts"
         resources:
           requests:
             memory: "2Gi"

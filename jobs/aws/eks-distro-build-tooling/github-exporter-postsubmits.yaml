@@ -52,7 +52,10 @@ postsubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          make release -C projects/infinityworks/github-exporter IMAGE_TAG=$PULL_BASE_SHA
+          make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
+        env:
+        - name: PROJECT_PATH
+          value: "projects/infinityworks/github-exporter"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:

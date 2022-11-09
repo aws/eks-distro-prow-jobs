@@ -41,6 +41,9 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C docs
+          make build -C $PROJECT_PATH
           &&
           mv ./docs/site/* /logs/artifacts
+        env:
+        - name:  PROJECT_PATH
+          value: "docs"

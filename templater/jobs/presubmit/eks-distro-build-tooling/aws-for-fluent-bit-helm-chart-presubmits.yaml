@@ -1,7 +1,8 @@
 jobName: aws-for-fluent-bit-helm-chart-tooling-presubmit
 runIfChanged: helm-charts/scripts/.*|projects/aws/eks-charts/aws-for-fluent-bit/.*
 commands:
-- make verify -C projects/aws/eks-charts/aws-for-fluent-bit
+- make verify -C $PROJECT_PATH
+projectPath: projects/aws/eks-charts/aws-for-fluent-bit
 resources:
   requests:
     cpu: 1024m

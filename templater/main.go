@@ -106,6 +106,7 @@ func main() {
 					"automountServiceAccountToken": jobConfig.AutomountServiceAccountToken,
 					"cluster":                      cluster,
 					"bucket":                       bucket,
+					"projectPath":                  jobConfig.ProjectPath,
 				}
 
 				err := GenerateProwjob(fileName, template, data)

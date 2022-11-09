@@ -61,7 +61,9 @@ postsubmits:
         - bash
         - -c
         - >
-          make update-base-image-other-repos -C eks-distro-base
+          make update-base-image-other-repos -C $PROJECT_PATH
         env:
+        - name: PROJECT_PATH
+          value: "eks-distro-base"
         - name: AWS_REGION
           value: "us-east-1"

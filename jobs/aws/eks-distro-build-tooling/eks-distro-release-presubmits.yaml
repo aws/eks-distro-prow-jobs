@@ -41,8 +41,11 @@ presubmits:
         - bash
         - -c
         - >
-          make test -C release
+          make test -C $PROJECT_PATH
           &&
-          make build -C release
+          make build -C $PROJECT_PATH
           &&
           mv ./release/cover.out /logs/artifacts/filtered.cov
+        env:
+        - name:  PROJECT_PATH
+          value: "release"

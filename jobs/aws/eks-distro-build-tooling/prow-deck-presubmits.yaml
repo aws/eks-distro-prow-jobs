@@ -51,7 +51,10 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          make build -C projects/kubernetes/test-infra
+          make build -C $PROJECT_PATH
+        env:
+        - name:  PROJECT_PATH
+          value: "projects/kubernetes/test-infra"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:

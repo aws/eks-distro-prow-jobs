@@ -67,10 +67,12 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make minimal-images-base-docker-client -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make minimal-images-base-docker-client -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
-          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
+        - name:  PROJECT_PATH
+          value: "eks-distro-base"
         - name: AL_TAG
           value: "2"
         - name: IMAGE_REPO
