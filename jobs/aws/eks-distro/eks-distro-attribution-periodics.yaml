@@ -19,7 +19,7 @@
 ################################################################################
 
 periodics:
-- name: attribution-files-periodic
+- name: eks-distro-attribution-periodic
   cron: "0 8 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
@@ -54,4 +54,4 @@ periodics:
       resources:
         requests:
           memory: "16Gi"
-          cpu: "4"
+          cpu: "5"
