@@ -58,8 +58,10 @@ presubmits:
           &&
           scripts/setup_buildx.sh
           &&
-          make build -C builder-base
+          make build -C $PROJECT_PATH
         env:
+        - name:  PROJECT_PATH
+          value: "builder-base"
         - name: AL_TAG
           value: "2022"
         - name: BUILDKITD_IMAGE

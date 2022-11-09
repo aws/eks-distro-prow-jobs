@@ -47,10 +47,12 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/kubernetes-sigs/aws-iam-authenticator
+          make build -C $PROJECT_PATH
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
         env:
+        - name:  PROJECT_PATH
+          value: "projects/kubernetes-sigs/aws-iam-authenticator"
         - name: RELEASE_BRANCH
           value: "1-23"
         resources:

@@ -8,6 +8,7 @@ automountServiceAccountToken: true
 commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA.${AL_TAG}
+projectPath: builder-base
 envVars:
 - name: AL_TAG
   value: 2

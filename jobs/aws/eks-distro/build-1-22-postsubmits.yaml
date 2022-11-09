@@ -57,6 +57,8 @@ postsubmits:
           &&
           make -j2 postsubmit-conformance
         env:
+        - name: PROJECT_PATH
+          value: ""
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
         - name: ARTIFACT_BUCKET

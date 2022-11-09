@@ -2,6 +2,7 @@ jobName: grafana-helm-chart-tooling-presubmit
 runIfChanged: helm-charts/scripts/.*|projects/grafana/helm-charts/.*
 commands:
 - make verify -C $PROJECT_PATH
+projectPath: projects/grafana/helm-charts
 resources:
   requests:
     cpu: 1024m

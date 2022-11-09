@@ -5,6 +5,7 @@ prCreation: true
 commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C $PROJECT_PATH
+projectPath: projects/kubernetes/test-infra
 envVars:
 - name: IMAGE_REPO
   value: public.ecr.aws/eks-distro-build-tooling

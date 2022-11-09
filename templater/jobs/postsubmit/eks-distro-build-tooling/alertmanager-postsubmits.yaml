@@ -3,3 +3,4 @@ runIfChanged: projects/prometheus/alertmanager/.*
 imageBuild: true
 commands:
 - make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
+projectPath: projects/prometheus/alertmanager

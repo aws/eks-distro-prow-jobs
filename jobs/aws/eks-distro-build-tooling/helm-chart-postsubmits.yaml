@@ -46,4 +46,7 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C helm-charts
+          make release -C $PROJECT_PATH
+        env:
+        - name: PROJECT_PATH
+          value: "helm-charts"

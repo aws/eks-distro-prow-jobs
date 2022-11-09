@@ -5,6 +5,7 @@ commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH
 - make build -C $PROJECT_PATH
+projectPath: projects/golang/go
 resources:
   limits:
     cpu: 2560m

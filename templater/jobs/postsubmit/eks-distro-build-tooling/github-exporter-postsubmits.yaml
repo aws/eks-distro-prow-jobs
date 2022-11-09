@@ -3,3 +3,4 @@ runIfChanged: projects/infinityworks/github-exporter/.*
 imageBuild: true
 commands:
 - make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
+projectPath: projects/infinityworks/github-exporter

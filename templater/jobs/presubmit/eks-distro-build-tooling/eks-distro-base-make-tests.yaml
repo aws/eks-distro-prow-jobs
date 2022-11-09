@@ -1,7 +1,8 @@
 jobName: eks-distro-base-make-tests
 runIfChanged: eks-distro-base/.*
 commands:
-- if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests  -C eks-distro-base; fi
+- if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests -C $PROJECT_PATH; fi
+projectPath: eks-distro-base
 resources:
   requests:
     cpu: 1024m

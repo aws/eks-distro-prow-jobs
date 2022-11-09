@@ -73,10 +73,12 @@ postsubmits:
           &&
           source scripts/setup_public_ecr_push.sh
           &&
-          make release -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make release -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
-          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
+        - name: PROJECT_PATH
+          value: "eks-distro-base"
         - name: AL_TAG
           value: "2"
         - name: IMAGE_REPO

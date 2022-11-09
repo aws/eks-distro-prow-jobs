@@ -10,6 +10,7 @@ commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+projectPath: eks-distro-base
 envVars:
 - name: AL_TAG
   value: 2022

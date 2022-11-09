@@ -2,4 +2,5 @@ jobName: helm-chart-tooling-postsubmit
 runIfChanged: helm-charts/.*
 commands:
 - make release -C $PROJECT_PATH
+projectPath: helm-charts
 serviceAccountName: charts-build-account

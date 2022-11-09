@@ -3,4 +3,5 @@ runIfChanged: docs/.*
 commands:
 - make release -C $PROJECT_PATH
 - mv ./docs/site/* /logs/artifacts
+projectPath: docs
 serviceAccountName: docs-build-account

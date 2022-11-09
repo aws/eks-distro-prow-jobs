@@ -2,6 +2,7 @@ jobName: cni-plugins-{{ .releaseBranch }}-presubmit
 runIfChanged: ^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
 commands:
 - make build -C $PROJECT_PATH
+projectPath: projects/containernetworking/plugins
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}

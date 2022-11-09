@@ -73,9 +73,6 @@ postsubmits:
         command:
         - bash
         - -c
-        - env:
-          - name: PROJECT_PATH
-            value: {{ .projectPath }}
         - >
           {{- if .imageBuild }}
           trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done' EXIT
@@ -96,8 +93,10 @@ postsubmits:
           &&
           {{- end }}
 {{ .command | indent 10 }}
-        {{- if .envVars }}
         env:
+        - name: PROJECT_PATH
+          value: "{{ .projectPath }}"
+        {{- if .envVars }}
         {{- range .envVars }}
         - name: {{ .Name }}
           value: "{{ .Value }}"

@@ -47,7 +47,10 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          make build -C projects/prometheus/alertmanager
+          make build -C $PROJECT_PATH
+        env:
+        - name:  PROJECT_PATH
+          value: "projects/prometheus/alertmanager"
         resources:
           requests:
             memory: "4Gi"

@@ -2,4 +2,5 @@ jobName: grafana-helm-chart-tooling-postsubmit
 runIfChanged: helm-charts/scripts/.*|projects/grafana/helm-charts/.*
 commands:
 - make release -C $PROJECT_PATH
+projectPath: projects/grafana/helm-charts
 serviceAccountName: charts-build-account

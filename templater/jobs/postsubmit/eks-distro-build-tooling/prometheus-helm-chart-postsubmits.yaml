@@ -2,4 +2,5 @@ jobName: prometheus-helm-chart-tooling-postsubmit
 runIfChanged: helm-charts/scripts/.*|projects/prometheus-community/helm-charts/.*
 commands:
 - make release -C $PROJECT_PATH
+projectPath: projects/prometheus-community/helm-charts
 serviceAccountName: charts-build-account

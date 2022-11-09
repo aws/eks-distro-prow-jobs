@@ -3,3 +3,4 @@ runIfChanged: docs/.*
 commands:
 - make build -C $PROJECT_PATH
 - mv ./docs/site/* /logs/artifacts
+projectPath: docs

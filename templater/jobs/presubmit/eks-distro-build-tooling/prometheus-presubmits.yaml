@@ -3,6 +3,7 @@ runIfChanged: projects/prometheus/prometheus/.*
 imageBuild: true
 commands:
 - make build -C $PROJECT_PATH
+projectPath: projects/prometheus/prometheus
 resources:
   requests:
     cpu: 1024m

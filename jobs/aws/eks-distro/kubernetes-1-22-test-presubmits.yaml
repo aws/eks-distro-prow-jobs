@@ -41,8 +41,10 @@ presubmits:
         - bash
         - -c
         - >
-          make test -C projects/kubernetes/kubernetes
+          make test -C $PROJECT_PATH
         env:
+        - name:  PROJECT_PATH
+          value: "projects/kubernetes/kubernetes"
         - name: RELEASE_BRANCH
           value: "1-22"
         resources:

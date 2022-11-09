@@ -3,9 +3,10 @@ runIfChanged: EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernet
 imageBuild: true
 localRegistry: true
 commands:
-- make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
+- make build clean -C $PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
 - make build -C $PROJECT_PATH
 - mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
+projectPath: projects/kubernetes/release
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}

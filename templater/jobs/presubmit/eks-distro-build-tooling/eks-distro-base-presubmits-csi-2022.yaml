@@ -7,6 +7,7 @@ commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - make minimal-images-base-csi -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+projectPath: eks-distro-base
 envVars:
 - name: AL_TAG
   value: 2022

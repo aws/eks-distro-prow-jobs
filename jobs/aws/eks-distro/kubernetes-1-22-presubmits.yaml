@@ -50,12 +50,14 @@ presubmits:
           &&
           build/lib/local_registry_check.sh
           &&
-          make build clean -C projects/kubernetes/release IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
+          make build clean -C $PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
           &&
-          make build -C projects/kubernetes/kubernetes
+          make build -C $PROJECT_PATH
           &&
           mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
         env:
+        - name:  PROJECT_PATH
+          value: "projects/kubernetes/release"
         - name: RELEASE_BRANCH
           value: "1-22"
         - name: IMAGE_REPO

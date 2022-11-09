@@ -47,8 +47,10 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/kubernetes-csi/livenessprobe
+          make build -C $PROJECT_PATH
         env:
+        - name:  PROJECT_PATH
+          value: "projects/kubernetes-csi/livenessprobe"
         - name: RELEASE_BRANCH
           value: "1-24"
         resources:
