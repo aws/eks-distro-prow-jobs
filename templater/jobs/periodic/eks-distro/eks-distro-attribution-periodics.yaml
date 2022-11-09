@@ -1,4 +1,4 @@
-jobName: attribution-files-periodic
+jobName: eks-distro-attribution-periodic
 cronExpression: 0 8 * * 1-5
 prCreation: true
 commands:
@@ -12,6 +12,6 @@ extraRefs:
   repo: eks-distro
 resources:
   requests:
-    cpu: "4"
+    cpu: "5"
     memory: 16Gi
 timeout: 4h
