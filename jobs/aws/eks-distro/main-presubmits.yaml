@@ -43,7 +43,7 @@ presubmits:
         - >
           make build
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: ""
         resources:
           requests:

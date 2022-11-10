@@ -45,5 +45,5 @@ presubmits:
           &&
           mv ./docs/site/* /logs/artifacts
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "docs"

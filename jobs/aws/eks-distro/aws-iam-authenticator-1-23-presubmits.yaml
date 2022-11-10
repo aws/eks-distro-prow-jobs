@@ -51,7 +51,7 @@ presubmits:
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/kubernetes-sigs/aws-iam-authenticator"
         - name: RELEASE_BRANCH
           value: "1-23"

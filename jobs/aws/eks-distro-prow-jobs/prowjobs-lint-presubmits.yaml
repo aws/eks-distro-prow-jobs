@@ -45,7 +45,7 @@ presubmits:
           &&
           make lint -C $LINT_PROJECT_PATH
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "templater"
         - name: LINT_PROJECT_PATH
           value: "linter"

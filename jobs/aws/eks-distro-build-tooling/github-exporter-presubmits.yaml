@@ -49,7 +49,7 @@ presubmits:
           &&
           make build -C $PROJECT_PATH
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/infinityworks/github-exporter"
         resources:
           requests:

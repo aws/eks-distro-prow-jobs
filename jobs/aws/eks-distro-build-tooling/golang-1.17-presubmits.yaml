@@ -47,7 +47,7 @@ presubmits:
           &&
           make build -C $PROJECT_PATH
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
           value: "1.17"

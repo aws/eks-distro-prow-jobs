@@ -51,7 +51,7 @@ presubmits:
           &&
           mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/etcd-io/etcd"
         - name: RELEASE_BRANCH
           value: "1-22"

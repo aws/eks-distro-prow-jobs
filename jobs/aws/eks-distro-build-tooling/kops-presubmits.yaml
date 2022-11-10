@@ -43,7 +43,7 @@ presubmits:
         - >
           make build -C $PROJECT_PATH ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/kubernetes/kops"
         resources:
           requests:

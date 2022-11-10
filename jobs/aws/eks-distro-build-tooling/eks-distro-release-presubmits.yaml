@@ -47,5 +47,5 @@ presubmits:
           &&
           mv ./release/cover.out /logs/artifacts/filtered.cov
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "release"

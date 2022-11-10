@@ -56,7 +56,7 @@ presubmits:
           &&
           mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
         env:
-        - name:  PROJECT_PATH
+        - name: PROJECT_PATH
           value: "projects/kubernetes/release"
         - name: RELEASE_BRANCH
           value: "1-24"
