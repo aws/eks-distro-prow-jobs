@@ -1,7 +1,8 @@
 jobName: kops-tooling-presubmit
 runIfChanged: projects/kubernetes/kops/.*
 commands:
-- make build -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+- make build -C $PROJECT_PATH ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+projectPath: projects/kubernetes/kops
 resources:
   limits:
     cpu: "2560m"

@@ -79,8 +79,10 @@ periodics:
         &&
         {{- end }}
 {{ .command | indent 8 }}
-      {{- if .envVars }}
       env:
+      - name: PROJECT_PATH
+        value: "{{ .projectPath }}"
+      {{- if .envVars }}
       {{- range .envVars }}
       - name: {{ .Name }}
         value: "{{ .Value }}"

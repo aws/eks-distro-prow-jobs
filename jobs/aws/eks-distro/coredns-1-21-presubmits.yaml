@@ -47,8 +47,10 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/coredns/coredns
+          make build -C $PROJECT_PATH
         env:
+        - name: PROJECT_PATH
+          value: "projects/coredns/coredns"
         - name: RELEASE_BRANCH
           value: "1-21"
         - name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION

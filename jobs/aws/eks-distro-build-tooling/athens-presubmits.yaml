@@ -47,7 +47,10 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          make build -C projects/gomods/athens
+          make build -C $PROJECT_PATH
+        env:
+        - name: PROJECT_PATH
+          value: "projects/gomods/athens"
         resources:
           requests:
             memory: "2Gi"

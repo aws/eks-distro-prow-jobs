@@ -67,10 +67,12 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          if [ -f eks-distro-base/Dockerfile.minimal-base-compiler ]; then make compiler-base-images -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+          if [ -f eks-distro-base/Dockerfile.minimal-base-compiler ]; then make compiler-base-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
           &&
-          make create-pr -C eks-distro-base IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
+        - name: PROJECT_PATH
+          value: "eks-distro-base"
         - name: AL_TAG
           value: "2022"
         - name: IMAGE_REPO

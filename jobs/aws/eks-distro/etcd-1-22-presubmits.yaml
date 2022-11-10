@@ -47,10 +47,12 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/etcd-io/etcd
+          make build -C $PROJECT_PATH
           &&
           mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
         env:
+        - name: PROJECT_PATH
+          value: "projects/etcd-io/etcd"
         - name: RELEASE_BRANCH
           value: "1-22"
         - name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION

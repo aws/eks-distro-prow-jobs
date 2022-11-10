@@ -46,7 +46,10 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+          make release -C $PROJECT_PATH ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+        env:
+        - name: PROJECT_PATH
+          value: "projects/kubernetes/kops"
         resources:
           requests:
             memory: "2Gi"

@@ -48,10 +48,12 @@ postsubmits:
         - >
           yum -y install make
           &&
-          make install-deps -C projects/golang/go
+          make install-deps -C $PROJECT_PATH
           &&
           projects/golang/go/scripts/prow_release.sh
         env:
+        - name: PROJECT_PATH
+          value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
           value: "1.16"
         - name: SKIP_PRIVILEGED_TESTS

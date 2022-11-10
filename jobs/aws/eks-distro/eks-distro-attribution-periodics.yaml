@@ -49,6 +49,8 @@ periodics:
       - >
         make update-attribution-files
       env:
+      - name: PROJECT_PATH
+        value: ""
       - name: REPO_OWNER
         value: "aws"
       resources:

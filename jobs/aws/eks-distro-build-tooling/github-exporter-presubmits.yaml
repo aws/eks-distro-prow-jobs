@@ -47,7 +47,10 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          make build -C projects/infinityworks/github-exporter
+          make build -C $PROJECT_PATH
+        env:
+        - name: PROJECT_PATH
+          value: "projects/infinityworks/github-exporter"
         resources:
           requests:
             memory: "4Gi"

@@ -47,8 +47,10 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C projects/kubernetes-csi/external-provisioner
+          make build -C $PROJECT_PATH
         env:
+        - name: PROJECT_PATH
+          value: "projects/kubernetes-csi/external-provisioner"
         - name: RELEASE_BRANCH
           value: "1-22"
         resources:

@@ -1,7 +1,8 @@
 jobName: prometheus-helm-chart-tooling-presubmit
 runIfChanged: helm-charts/scripts/.*|projects/prometheus-community/helm-charts/.*
 commands:
-- make verify -C projects/prometheus-community/helm-charts
+- make verify -C $PROJECT_PATH
+projectPath: projects/prometheus-community/helm-charts
 resources:
   requests:
     cpu: 1024m

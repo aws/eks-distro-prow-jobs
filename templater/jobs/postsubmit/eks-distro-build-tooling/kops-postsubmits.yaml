@@ -2,7 +2,8 @@ jobName: kops-tooling-postsubmit
 runIfChanged: projects/kubernetes/kops/.*
 imageBuild: false
 commands:
-- make release -C projects/kubernetes/kops ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+- make release -C $PROJECT_PATH ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
+projectPath: projects/kubernetes/kops
 resources:
   requests:
     cpu: 1024m

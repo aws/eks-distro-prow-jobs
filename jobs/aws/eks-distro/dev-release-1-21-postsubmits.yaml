@@ -55,6 +55,8 @@ postsubmits:
           &&
           ./release/prow.sh
         env:
+        - name: PROJECT_PATH
+          value: ""
         - name: AWS_REGION
           value: "us-east-1"
         - name: ARTIFACT_BUCKET

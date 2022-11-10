@@ -46,6 +46,9 @@ postsubmits:
         - bash
         - -c
         - >
-          make release -C docs
+          make release -C $PROJECT_PATH
           &&
           mv ./docs/site/* /logs/artifacts
+        env:
+        - name: PROJECT_PATH
+          value: "docs"

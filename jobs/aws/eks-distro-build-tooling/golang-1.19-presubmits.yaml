@@ -43,10 +43,12 @@ presubmits:
         - >
           yum -y install make
           &&
-          make install-deps -C projects/golang/go
+          make install-deps -C $PROJECT_PATH
           &&
-          make build -C projects/golang/go
+          make build -C $PROJECT_PATH
         env:
+        - name: PROJECT_PATH
+          value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
           value: "1.19"
         - name: SKIP_PRIVILEGED_TESTS

@@ -25,32 +25,34 @@ type JobConfig struct {
 	Resources          *Resources     `json:"resources,omitempty"`
 	VolumeMounts       []*VolumeMount `json:"volumeMounts,omitempty"`
 	Volumes            []*Volume      `json:"volumes,omitempty"`
+	ProjectPath        string         `json:"projectPath,omitempty"`
 }
 ```
 This struct is extensible to support more fields and fine-tuned configuration.
 
 The configurable parameters are explained in the table below:
 
-| Parameter | Description | Periodic | Postsubmit | Presubmit |
-| :---: | :---: | :---: | :---: | :---: |
-| `jobName` | Name of the Prowjob | ✓ | ✓ | ✓ |
-| `runIfChanged` | Regex for the subset of files that will trigger this Prowjob when changed |  | ✓ | ✓ |
-| `skipIfOnlyChanged` | Regex for skipping the job if all paths match |  |  | ✓ |
-| `branches` | List of branches to run this Prowjob against |   | ✓ | ✓ |
-| `maxConcurrency` | Maximum instances of this Prowjob that can run concurrently | ✓ | ✓ | ✓ |
-| `cronExpression` | Cron representation of this Prowjob trigger time | ✓ |   |   |
-| `timeout` | The time after which this Prowjob will be aborted if not complete | ✓ | ✓ | ✓ |
-| `imageBuild` | Denotes if this Prowjob builds container images | ✓ | ✓ | ✓ |
-| `prCreation` | Denotes if this Prowjob runs PR creation workflows | ✓ | ✓ | ✓ |
-| `runtimeImage` | Image used as build environment for this Prowjob | ✓ | ✓ | ✓ |
-| `localRegistry` | Denotes if this job needs access to a local registry | ✓ | ✓ | ✓ |
-| `extraRefs` | List of extra repositories that need to be cloned when running this Prowjob | ✓ | ✓ | ✓ |
-| `serviceAccountName` | The service account to use to run this Prowjob | ✓ | ✓ | ✓ |
-| `envVars` | List of environment variables to set in Prowjob's main build container | ✓ | ✓ | ✓ |
-| `commands` | List of commands to be run in this Prowjob's main build container | ✓ | ✓ | ✓ |
-| `resources` | Resource requests and limits for this Prowjob's main build container | ✓ | ✓ | ✓ |
-| `volumeMounts` | List of pod volumes to mount into each container in this Prowjob | ✓ | ✓ | ✓ |
-| `volumes` | List of pod volumes that can be mounted by this Prowjob's containers | ✓ | ✓ | ✓ |
+|      Parameter       |                                                                                    Description                                                                                     | Periodic | Postsubmit | Presubmit |
+|:--------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| :---: | :---: | :---: |
+|      `jobName`       |                                                                                Name of the Prowjob                                                                                 | ✓ | ✓ | ✓ |
+|    `runIfChanged`    |                                                     Regex for the subset of files that will trigger this Prowjob when changed                                                      |  | ✓ | ✓ |
+| `skipIfOnlyChanged`  |                                                                   Regex for skipping the job if all paths match                                                                    |  |  | ✓ |
+|      `branches`      |                                                                    List of branches to run this Prowjob against                                                                    |   | ✓ | ✓ |
+|   `maxConcurrency`   |                                                            Maximum instances of this Prowjob that can run concurrently                                                             | ✓ | ✓ | ✓ |
+|   `cronExpression`   |                                                                  Cron representation of this Prowjob trigger time                                                                  | ✓ |   |   |
+|      `timeout`       |                                                         The time after which this Prowjob will be aborted if not complete                                                          | ✓ | ✓ | ✓ |
+|     `imageBuild`     |                                                                  Denotes if this Prowjob builds container images                                                                   | ✓ | ✓ | ✓ |
+|     `prCreation`     |                                                                 Denotes if this Prowjob runs PR creation workflows                                                                 | ✓ | ✓ | ✓ |
+|    `runtimeImage`    |                                                                  Image used as build environment for this Prowjob                                                                  | ✓ | ✓ | ✓ |
+|   `localRegistry`    |                                                                Denotes if this job needs access to a local registry                                                                | ✓ | ✓ | ✓ |
+|     `extraRefs`      |                                                    List of extra repositories that need to be cloned when running this Prowjob                                                     | ✓ | ✓ | ✓ |
+| `serviceAccountName` |                                                                   The service account to use to run this Prowjob                                                                   | ✓ | ✓ | ✓ |
+|      `envVars`       |                                                       List of environment variables to set in Prowjob's main build container                                                       | ✓ | ✓ | ✓ |
+|      `commands`      |                                                         List of commands to be run in this Prowjob's main build container                                                          | ✓ | ✓ | ✓ |
+|     `resources`      |                                                        Resource requests and limits for this Prowjob's main build container                                                        | ✓ | ✓ | ✓ |
+|    `volumeMounts`    |                                                          List of pod volumes to mount into each container in this Prowjob                                                          | ✓ | ✓ | ✓ |
+|      `volumes`       |                                                        List of pod volumes that can be mounted by this Prowjob's containers                                                        | ✓ | ✓ | ✓ |
+|    `projectPath`     |                                      The path corresponding to this project's build scripts, against which commands are invoked after cloning                                      | ✓ | ✓ | ✓ |
 
 Currerntly, `runIfChanged` and `skipIfOnlyChanged` cannot be used at the same time. Upstream Prow
 has put this restriction in place. See the 

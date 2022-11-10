@@ -2,7 +2,8 @@ jobName: eks-distro-base-tag-files-update-postsubmit
 runIfChanged: ^EKS_DISTRO_TAG_FILE.yaml$
 prCreation: true
 commands:
-- make update-base-image-other-repos -C eks-distro-base
+- make update-base-image-other-repos -C $PROJECT_PATH
+projectPath: eks-distro-base
 envVars:
 - name: AWS_REGION
   value: us-east-1
