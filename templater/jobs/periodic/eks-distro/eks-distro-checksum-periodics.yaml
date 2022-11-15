@@ -1,0 +1,17 @@
+jobName: eks-distro-checksum-periodic
+cronExpression: 0 8 * * 1-5
+prCreation: true
+commands:
+- make update-checksum-files
+envVars:
+- name: REPO_OWNER
+  value: aws
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro
+resources:
+  requests:
+    cpu: "5"
+    memory: 16Gi
+timeout: 4h
