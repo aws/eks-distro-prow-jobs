@@ -1,6 +1,6 @@
 jobName: golang-1.16-PROD-tooling-postsubmit
 runIfChanged: projects/golang/go/1.16/RELEASE
-runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
+runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:1.16-gcc-al2
 commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH
