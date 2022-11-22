@@ -41,7 +41,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        image: public.ecr.aws/eks-distro-build-tooling/golang:1.19-gcc-al2
         command:
         - bash
         - -c

@@ -1,6 +1,6 @@
 jobName: golang-1.18-tooling-presubmit
-runIfChanged: projects/golang/go/1.18/.*
-runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
+runIfChanged: projects/golang/go/Makefile|projects/golang/go/1.18/.*
+runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:1.18-gcc-al2
 commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH

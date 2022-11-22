@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-build-tooling:
   - name: golang-1.19-tooling-presubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/.*"
+    run_if_changed: "projects/golang/go/Makefile|projects/golang/go/1.19/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -36,7 +36,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        image: public.ecr.aws/eks-distro-build-tooling/golang:1.19-gcc-al2
         command:
         - bash
         - -c

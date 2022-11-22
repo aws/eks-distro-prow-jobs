@@ -1,6 +1,6 @@
 jobName: golang-1.15-ARM64-PROD-tooling-postsubmit
 runIfChanged: projects/golang/go/1.15/RELEASE
-runtimeImage: public.ecr.aws/amazonlinux/amazonlinux:2
+runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:1.15-gcc-al2
 architecture: ARM64
 commands:
 - yum -y install make
