@@ -5,7 +5,7 @@ localRegistry: true
 useDockerBuildX: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- if [ -f eks-distro-base/Dockerfile.minimal-base-golang ]; then make golang-1.17-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+- make golang-1.17-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 projectPath: eks-distro-base
 envVars:
@@ -13,8 +13,6 @@ envVars:
   value: 2
 - name: IMAGE_REPO
   value: localhost:5000
-- name: BUILD_DEPS
-  value: true
 - name: PLATFORMS
   value: linux/amd64
 - name: PRUNE_BUILDCTL
