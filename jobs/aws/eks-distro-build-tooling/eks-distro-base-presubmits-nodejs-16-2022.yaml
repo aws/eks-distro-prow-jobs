@@ -77,8 +77,6 @@ presubmits:
           value: "2022"
         - name: IMAGE_REPO
           value: "localhost:5000"
-        - name: BUILD_DEPS
-          value: "true"
         - name: PLATFORMS
           value: "linux/amd64"
         - name: BUILDKITD_IMAGE
