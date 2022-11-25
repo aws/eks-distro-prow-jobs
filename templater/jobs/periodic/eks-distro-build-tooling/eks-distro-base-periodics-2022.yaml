@@ -4,6 +4,7 @@ imageBuild: true
 prCreation: true
 architecture: AMD64
 useDockerBuildX: true
+useMinimalBuilderBase: true
 automountServiceAccountToken: true
 serviceAccountName: postsubmits-build-account
 commands:

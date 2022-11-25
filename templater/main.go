@@ -71,6 +71,11 @@ func main() {
 					envVars = append(envVars, &types.EnvVar{Name: "USE_BUILDX", Value: "true"})
 				}
 
+				templateBuilderBaseTag := builderBaseTag
+				if jobConfig.UseMinimalBuilderBase {
+					templateBuilderBaseTag = strings.Replace(builderBaseTag, "standard", "minimal", 1)
+				}
+
 				branches := jobConfig.Branches
 				if jobType == "postsubmit" && len(branches) == 0 {
 					branches = append(branches, "^main$")
@@ -96,7 +101,7 @@ func main() {
 					"localRegistry":                jobConfig.LocalRegistry,
 					"serviceAccountName":           serviceAccountName,
 					"command":                      strings.Join(jobConfig.Commands, "\n&&\n"),
-					"builderBaseTag":               builderBaseTag,
+					"builderBaseTag":               templateBuilderBaseTag,
 					"buildkitImageTag":             buildkitImageTag,
 					"resources":                    jobConfig.Resources,
 					"envVars":                      envVars,

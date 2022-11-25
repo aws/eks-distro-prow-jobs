@@ -3,6 +3,7 @@ runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
 useDockerBuildX: true
+useMinimalBuilderBase: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
 - make minimal-images-base-nginx -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
