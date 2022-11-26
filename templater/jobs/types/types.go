@@ -55,6 +55,7 @@ type JobConfig struct {
 	Timeout                      string         `json:"timeout,omitempty"`
 	ImageBuild                   bool           `json:"imageBuild,omitempty"`
 	UseDockerBuildX              bool           `json:"useDockerBuildX,omitempty"`
+	UseMinimalBuilderBase        bool           `json:"useMinimalBuilderBase,omitempty"`
 	PRCreation                   bool           `json:"prCreation,omitempty"`
 	RuntimeImage                 string         `json:"runtimeImage,omitempty"`
 	LocalRegistry                bool           `json:"localRegistry,omitempty"`
