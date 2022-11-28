@@ -33,6 +33,7 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -47,12 +48,16 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C $PROJECT_PATH
+          build/lib/local_registry_check.sh
+          &&
+          make build images -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-csi/livenessprobe"
         - name: RELEASE_BRANCH
           value: "1-22"
+        - name: IMAGE_REPO
+          value: "localhost:5000"
         resources:
           requests:
             memory: "4Gi"
@@ -70,3 +75,19 @@ presubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "256m"
