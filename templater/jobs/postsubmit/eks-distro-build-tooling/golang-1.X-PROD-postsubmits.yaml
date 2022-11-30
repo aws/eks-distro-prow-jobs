@@ -1,7 +1,6 @@
-jobName: golang-1.17-ARM64-PROD-tooling-postsubmit
-runIfChanged: projects/golang/go/1.17/RELEASE
-runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:1.17-gcc-al2
-architecture: ARM64
+jobName: golang-{{ .golangVersion }}-PROD-tooling-postsubmit
+runIfChanged: projects/golang/go/{{ .golangVersion }}/RELEASE
+runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:{{ .golangVersion }}-gcc-al2
 commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH
@@ -16,13 +15,11 @@ resources:
     memory: 16Gi
 envVars:
   - name: GO_SOURCE_VERSION
-    value: 1.17
+    value: {{ .golangVersion }}
   - name: SKIP_PRIVILEGED_TESTS
     value: true
   - name: ARTIFACTS_BUCKET
     value: artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2
-  - name: ARCHITECTURE
-    value: ARM64
   - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
     value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
   - name: AWS_REGION

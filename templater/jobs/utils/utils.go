@@ -20,6 +20,14 @@ var releaseBranches = []string{
 	"1-24",
 }
 
+var golangVersions = []string{
+	"1.15",
+	"1.16",
+	"1.17",
+	"1.18",
+	"1.19",
+}
+
 func GetJobsByType(repos []string, jobType string) (map[string]map[string]types.JobConfig, error) {
 	jobsListByType := map[string]map[string]types.JobConfig{}
 	for _, repo := range repos {
@@ -74,6 +82,32 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 				}
 
 				jobList[releaseBranchBasedFileName] = jobConfig
+			}
+		} else if strings.Contains(fileName, "1.X") {
+			for _, golangVersion := range golangVersions {
+				var jobConfig types.JobConfig
+				golangVersionBasedFileName := strings.ReplaceAll(fileName, "1.X", golangVersion)
+				data := map[string]interface{}{
+					"golangVersion": golangVersion,
+				}
+
+				contents, err := ioutil.ReadFile(filePath)
+				if err != nil {
+					return nil, fmt.Errorf("error reading job YAML %s: %v", filePath, err)
+				}
+
+				templatedContents, err := ExecuteTemplate(string(contents), data)
+				if err != nil {
+					return nil, fmt.Errorf("error executing template: %v", err)
+				}
+
+				err = yaml.Unmarshal(templatedContents, &jobConfig)
+				if err != nil {
+					return nil, fmt.Errorf("error unmarshaling contents of file %s: %v", filePath, err)
+				}
+
+				jobList[golangVersionBasedFileName] = jobConfig
+
 			}
 		} else {
 			var jobConfig types.JobConfig
