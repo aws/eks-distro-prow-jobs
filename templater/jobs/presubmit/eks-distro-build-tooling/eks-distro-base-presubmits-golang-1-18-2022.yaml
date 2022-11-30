@@ -16,8 +16,6 @@ envVars:
   value: localhost:5000
 - name: PLATFORMS
   value: linux/amd64
-- name: PRUNE_BUILDCTL
-  value: true
 extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
