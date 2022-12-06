@@ -79,8 +79,6 @@ presubmits:
           value: "localhost:5000"
         - name: PLATFORMS
           value: "linux/amd64"
-        - name: PRUNE_BUILDCTL
-          value: "true"
         - name: BUILDKITD_IMAGE
           value: "moby/buildkit:v0.10.5-rootless"
         - name: USE_BUILDX

@@ -6,7 +6,7 @@ useDockerBuildX: true
 useMinimalBuilderBase: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- if [ -f eks-distro-base/Dockerfile.minimal-base-nodejs ]; then make nodejs-16-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+- if [ -f eks-distro-base/Dockerfile.minimal-base-nodejs ]; then make minimal-images-base-nodejs-16 nodejs-16-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 projectPath: eks-distro-base
 envVars:
