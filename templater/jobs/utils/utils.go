@@ -55,65 +55,45 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 	for _, file := range files {
 		fileName := file.Name()
 		filePath := filepath.Join(jobDir, fileName)
-		if strings.Contains(fileName, "1-X") {
-			var data map[string]interface{}
-			var versions []string
-			if strings.Contains(fileName, "golang-1-X") {
-				versions = golangVersions
-			} else {
-				versions = releaseBranches
-			}
-
-			for i, version := range versions {
-				var jobConfig types.JobConfig
-				var versionBasedFileName string
-
-				if strings.Contains(fileName, "golang-1-X") {
-					versionBasedFileName = strings.ReplaceAll(fileName, "1-X", version)
-					goVersion := strings.Replace(version, "-", ".", 1)
-					data = map[string]interface{}{
-						"jobGoVersion":  version,
-						"golangVersion": goVersion,
-					}
-				} else {
-					versionBasedFileName = strings.ReplaceAll(fileName, "1-X", version)
-					otherReleaseBranches := append(append([]string{}, releaseBranches[:i]...),
-						releaseBranches[i+1:]...)
-					data = map[string]interface{}{
-						"releaseBranch":        version,
-						"otherReleaseBranches": strings.Join(otherReleaseBranches, "|"),
-					}
+		if strings.Contains(fileName, "golang-1-X") {
+			for _, version := range golangVersions {
+				versionBasedFileName := strings.ReplaceAll(fileName, "1-X", version)
+				goVersion := strings.Replace(version, "-", ".", 1)
+				data := map[string]interface{}{
+					"jobGoVersion":  version,
+					"golangVersion": goVersion,
 				}
 
-				contents, err := ioutil.ReadFile(filePath)
-				if err != nil {
-					return nil, fmt.Errorf("error reading job YAML %s: %v", filePath, err)
-				}
+				jobConfig, err := GenerateJobConfig(data, filePath)
 
-				templatedContents, err := ExecuteTemplate(string(contents), data)
 				if err != nil {
-					return nil, fmt.Errorf("error executing template: %v", err)
-				}
-
-				err = yaml.Unmarshal(templatedContents, &jobConfig)
-				if err != nil {
-					return nil, fmt.Errorf("error unmarshaling contents of file %s: %v", filePath, err)
+					return nil, fmt.Errorf("%v", err)
 				}
 
 				jobList[versionBasedFileName] = jobConfig
 			}
+		} else if strings.Contains(fileName, "1-X") {
+			for i, releaseBranch := range releaseBranches {
+				releaseBranchBasedFileName := strings.ReplaceAll(fileName, "1-X", releaseBranch)
+				otherReleaseBranches := append(append([]string{}, releaseBranches[:i]...),
+					releaseBranches[i+1:]...)
+				data := map[string]interface{}{
+					"releaseBranch":        releaseBranch,
+					"otherReleaseBranches": strings.Join(otherReleaseBranches, "|"),
+				}
+
+				jobConfig, err := GenerateJobConfig(data, filePath)
+				if err != nil {
+					return nil, fmt.Errorf("%v", err)
+				}
+
+				jobList[releaseBranchBasedFileName] = jobConfig
+			}
 		} else {
-			var jobConfig types.JobConfig
-			contents, err := ioutil.ReadFile(filePath)
+			jobConfig, err := GenerateJobConfig(nil, filePath)
 			if err != nil {
-				return nil, fmt.Errorf("error reading job YAML %s: %v", filePath, err)
+				return nil, fmt.Errorf("%v", err)
 			}
-
-			err = yaml.Unmarshal(contents, &jobConfig)
-			if err != nil {
-				return nil, fmt.Errorf("error unmarshaling contents of file %s: %v", filePath, err)
-			}
-
 			jobList[fileName] = jobConfig
 		}
 	}
@@ -144,4 +124,29 @@ func ExecuteTemplate(templateContent string, data interface{}) ([]byte, error) {
 		return nil, fmt.Errorf("error substituting values for template: %v", err)
 	}
 	return buf.Bytes(), nil
+}
+
+func GenerateJobConfig(data interface{}, filePath string) (types.JobConfig, error) {
+	var jobConfig types.JobConfig
+	contents, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return jobConfig, fmt.Errorf("error reading job YAML %s: %v", filePath, err)
+	}
+	var templatedContents []byte
+	if data != nil {
+		templatedContents, err = ExecuteTemplate(string(contents), data)
+		if err != nil {
+			return jobConfig, fmt.Errorf("error executing template: %v", err)
+		}
+		err = yaml.Unmarshal(templatedContents, &jobConfig)
+		if err != nil {
+			return jobConfig, fmt.Errorf("error unmarshaling contents of file %s: %v", filePath, err)
+		}
+	} else {
+		err = yaml.Unmarshal(contents, &jobConfig)
+		if err != nil {
+			return jobConfig, fmt.Errorf("error unmarshaling contents of file %s: %v", filePath, err)
+		}
+	}
+	return jobConfig, nil
 }
