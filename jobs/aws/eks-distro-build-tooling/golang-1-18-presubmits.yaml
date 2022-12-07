@@ -38,7 +38,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/golang:1.18-gcc-al2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-8026816b32209021fe189380fb51e25690f08d37.2
         command:
         - bash
         - -c
