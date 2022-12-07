@@ -74,8 +74,6 @@ postsubmits:
           value: "public.ecr.aws/eks-distro-build-tooling"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
-        - name: AWS_REGION
-          value: "us-east-1"
         resources:
           requests:
             memory: "16Gi"
