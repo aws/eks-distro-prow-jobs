@@ -2,6 +2,8 @@ jobName: golang-{{ .jobGoVersion }}-ARM64-PROD-tooling-postsubmit
 runIfChanged: projects/golang/go/{{ .golangVersion }}/RELEASE
 runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:{{ .golangVersion }}-gcc-al2
 architecture: ARM64
+imageBuild: true
+automountServiceAccountToken: true
 commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH
@@ -25,6 +27,12 @@ envVars:
     value: ARM64
   - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
     value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
+  - name: AWS_REGION
+    value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling
+  - name: ECR_PUBLIC_PUSH_ROLE_ARN
+    value: arn:aws:iam::832188789588:role/ECRPublicPushRole
   - name: AWS_REGION
     value: us-east-1
 serviceAccountName: release-build-account

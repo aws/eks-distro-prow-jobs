@@ -2,6 +2,7 @@ jobName: golang-{{ .jobGoVersion }}-ARM64-tooling-postsubmit
 runIfChanged: projects/golang/go/{{ .golangVersion }}/.*
 runtimeImage: public.ecr.aws/eks-distro-build-tooling/golang:{{ .golangVersion }}-gcc-al2
 architecture: ARM64
+imageBuild: true
 commands:
 - yum -y install make
 - make install-deps -C $PROJECT_PATH
