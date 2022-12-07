@@ -34,9 +34,11 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+    labels:
+      image-build: "true"
     spec:
       serviceaccountName: release-build-account
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
       containers:
@@ -46,6 +48,10 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
+          scripts/buildkit_check.sh
+          &&
           yum -y install make
           &&
           make install-deps -C $PROJECT_PATH
@@ -64,6 +70,12 @@ postsubmits:
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+        - name: AWS_REGION
+          value: "us-east-1"
         resources:
           requests:
             memory: "16Gi"
@@ -71,3 +83,16 @@ postsubmits:
           limits:
             memory: "16Gi"
             cpu: "2560m"
+      - name: buildkitd
+        image: moby/buildkit:v0.10.5-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
