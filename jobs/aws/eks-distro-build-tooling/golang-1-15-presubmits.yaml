@@ -47,8 +47,6 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
-          yum -y install make
-          &&
           make install-deps -C $PROJECT_PATH
           &&
           make build -C $PROJECT_PATH
