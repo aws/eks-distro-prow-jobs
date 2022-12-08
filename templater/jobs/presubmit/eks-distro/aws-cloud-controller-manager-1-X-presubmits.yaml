@@ -1,0 +1,18 @@
+jobName: aws-cloud-controller-manager-{{ .releaseBranch }}-presubmit
+runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|{{ .releaseBranch }})
+imageBuild: true
+commands:
+- make build clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
+- make build -C $PROJECT_PATH
+projectPath: projects/kubernetes/cloud-provider-aws
+envVars:
+- name: RELEASE_PROJECT_PATH
+  value: projects/kubernetes/release
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+- name: IMAGE_REPO
+  value: localhost:5000
+resources:
+  requests:
+    cpu: 1024m
+    memory: 4Gi
