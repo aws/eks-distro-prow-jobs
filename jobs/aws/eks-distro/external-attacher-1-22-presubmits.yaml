@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: external-attacher-1-22-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/(build|docker|Makefile|1-22)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/(build|docker|Makefile|1-22)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
