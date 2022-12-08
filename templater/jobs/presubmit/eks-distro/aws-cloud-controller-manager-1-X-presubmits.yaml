@@ -1,6 +1,7 @@
 jobName: aws-cloud-controller-manager-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
+localRegistry: true
 commands:
 - make build clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
 - make build -C $PROJECT_PATH

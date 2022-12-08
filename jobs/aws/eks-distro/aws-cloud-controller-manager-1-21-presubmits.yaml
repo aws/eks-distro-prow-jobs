@@ -33,6 +33,7 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -46,6 +47,8 @@ presubmits:
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
           build/lib/buildkit_check.sh
+          &&
+          build/lib/local_registry_check.sh
           &&
           make build clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
           &&
@@ -76,3 +79,19 @@ presubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "256m"
