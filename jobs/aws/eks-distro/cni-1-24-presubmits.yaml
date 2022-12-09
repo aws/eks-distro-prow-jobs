@@ -41,7 +41,7 @@ presubmits:
         - bash
         - -c
         - >
-          make build -C $PROJECT_PATH
+          make build clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/containernetworking/plugins"

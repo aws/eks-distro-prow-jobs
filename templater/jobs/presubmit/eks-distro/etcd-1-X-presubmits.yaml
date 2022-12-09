@@ -4,6 +4,7 @@ imageBuild: true
 commands:
 - make build -C $PROJECT_PATH
 - mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
+- make clean-go-cache clean -C $PROJECT_PATH
 projectPath: projects/etcd-io/etcd
 envVars:
 - name: RELEASE_BRANCH
