@@ -43,7 +43,7 @@ postsubmits:
         arch: ARM64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/golang:1.16-gcc-al2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-8026816b32209021fe189380fb51e25690f08d37.2
         command:
         - bash
         - -c
@@ -51,8 +51,6 @@ postsubmits:
           trap 'touch /status/done' EXIT
           &&
           scripts/buildkit_check.sh
-          &&
-          yum -y install make
           &&
           make install-deps -C $PROJECT_PATH
           &&
