@@ -5,7 +5,7 @@ localRegistry: true
 cluster: prow-postsubmits-cluster
 architecture: AMD64
 commands:
-- make build clean-go-cache clean images -C $PROJECT_PATH
+- make build clean-go-cache images clean -C $PROJECT_PATH
 projectPath: projects/kubernetes-csi/node-driver-registrar
 envVars:
 - name: RELEASE_BRANCH
