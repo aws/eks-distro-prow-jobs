@@ -50,6 +50,8 @@ presubmits:
           make build -C $PROJECT_PATH
           &&
           mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
+          &&
+          make clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-sigs/aws-iam-authenticator"

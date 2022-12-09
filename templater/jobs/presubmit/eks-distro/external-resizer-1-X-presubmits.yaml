@@ -2,7 +2,7 @@ jobName: external-resizer-{{ .releaseBranch }}-presubmit
 runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-resizer/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 commands:
-- make build -C $PROJECT_PATH
+- make build clean-go-cache clean -C $PROJECT_PATH
 projectPath: projects/kubernetes-csi/external-resizer
 envVars:
 - name: RELEASE_BRANCH
