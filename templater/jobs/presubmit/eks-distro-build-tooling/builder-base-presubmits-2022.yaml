@@ -20,5 +20,5 @@ extraRefs:
   repo: eks-anywhere-prow-jobs
 resources:
   requests:
-    cpu: "4"
-    memory: 16Gi
+    cpu: "1"
+    memory: 2Gi

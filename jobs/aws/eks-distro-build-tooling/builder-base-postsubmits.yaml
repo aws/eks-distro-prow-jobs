@@ -84,8 +84,8 @@ postsubmits:
           value: "true"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "4"
+            memory: "2Gi"
+            cpu: "1"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
