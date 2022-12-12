@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: golang-1-19-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/.*"
+    run_if_changed: "projects/golang/go/1.19/.*|projects/golang/go/Makefile"
     branches:
     - ^main$
     max_concurrency: 10
