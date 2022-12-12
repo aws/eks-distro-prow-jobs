@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-ARM64-tooling-postsubmit
-runIfChanged: projects/golang/go/{{ .golangVersion }}/.*
+runIfChanged: projects/golang/go/{{ .golangVersion }}/.*|projects/golang/go/Makefile
 architecture: ARM64
 imageBuild: true
 commands:

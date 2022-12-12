@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-tooling-postsubmit
-runIfChanged: projects/golang/go/{{ .golangVersion }}/.*
+runIfChanged: projects/golang/go/{{ .golangVersion }}/.*|projects/golang/go/Makefile
 imageBuild: true
 commands:
 - make install-deps -C $PROJECT_PATH
