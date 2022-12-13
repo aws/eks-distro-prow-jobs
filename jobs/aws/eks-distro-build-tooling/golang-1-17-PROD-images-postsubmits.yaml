@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-15-PROD-tooling-postsubmit
+  - name: golang-1-17-PROD-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.15/RELEASE"
+    run_if_changed: "projects/golang/go/docker/debianBase/RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
@@ -34,8 +34,10 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+    labels:
+      image-build: "true"
     spec:
-      serviceaccountName: release-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
@@ -46,22 +48,24 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
+          scripts/buildkit_check.sh
+          &&
           make install-deps -C $PROJECT_PATH
           &&
-          projects/golang/go/scripts/prow_release.sh
+          projects/golang/go/scripts/prow_release_images.sh
         env:
         - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
-          value: "1.15"
-        - name: SKIP_PRIVILEGED_TESTS
-          value: "true"
-        - name: ARTIFACTS_BUCKET
-          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
-        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+          value: "1.17"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         resources:
           requests:
             memory: "16Gi"
@@ -69,3 +73,16 @@ postsubmits:
           limits:
             memory: "16Gi"
             cpu: "2560m"
+      - name: buildkitd
+        image: moby/buildkit:v0.10.5-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
