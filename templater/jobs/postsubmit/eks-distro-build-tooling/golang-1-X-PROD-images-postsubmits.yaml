@@ -1,0 +1,26 @@
+jobName: golang-{{ .jobGoVersion }}-PROD-tooling-postsubmit
+runIfChanged: projects/golang/go/{{ .golangVersion }}/RELEASE
+imageBuild: true
+automountServiceAccountToken: true
+commands:
+- make install-deps -C $PROJECT_PATH
+- projects/golang/go/scripts/prow_release_images.sh
+projectPath: projects/golang/go
+resources:
+  limits:
+    cpu: 2560m
+    memory: 16Gi
+  requests:
+    cpu: 2560m
+    memory: 16Gi
+envVars:
+  - name: GO_SOURCE_VERSION
+    value: {{ .golangVersion }}
+  - name: SKIP_PRIVILEGED_TESTS
+    value: true
+  - name: AWS_REGION
+    value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling
+  - name: ECR_PUBLIC_PUSH_ROLE_ARN
+    value: arn:aws:iam::832188789588:role/ECRPublicPushRole
