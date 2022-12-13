@@ -75,8 +75,8 @@ presubmits:
         - -c
         - >
           trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done && rm -rf /home/prow/go/src/' EXIT
-          {{- if .imageBuild }}
           &&
+          {{- if .imageBuild }}
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh
           {{- else }}

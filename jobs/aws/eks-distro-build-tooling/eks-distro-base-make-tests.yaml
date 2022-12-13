@@ -44,6 +44,7 @@ presubmits:
         - -c
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          &&
           if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
