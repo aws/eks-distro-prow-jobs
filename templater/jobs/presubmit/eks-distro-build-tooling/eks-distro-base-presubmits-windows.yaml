@@ -1,0 +1,33 @@
+jobName: eks-distro-base-tooling-presubmits-windows
+runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
+imageBuild: true
+localRegistry: true
+useDockerBuildX: true
+useMinimalBuilderBase: true
+commands:
+- export DATE_EPOCH=$(date "+%F-%s")
+- if [ -f eks-distro-base/Dockerfile.base-windows ]; make windows-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}; fi
+- make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+projectPath: eks-distro-base
+envVars:
+- name: AL_TAG
+  value: 2
+- name: IMAGE_REPO
+  value: localhost:5000
+extraRefs:
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere
+resources:
+  requests:
+    cpu: 1024m
+    memory: 4Gi
