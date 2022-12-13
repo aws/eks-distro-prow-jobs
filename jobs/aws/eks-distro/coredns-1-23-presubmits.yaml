@@ -69,10 +69,6 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
       - command:
         - sh
         args:
