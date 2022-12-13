@@ -1,4 +1,4 @@
-jobName: golang-{{ .jobGoVersion }}-PROD-tooling-postsubmit
+jobName: golang-{{ .jobGoVersion }}-PROD-images-tooling-postsubmit
 runIfChanged: projects/golang/go/docker/debianBase/RELEASE
 imageBuild: true
 automountServiceAccountToken: true
