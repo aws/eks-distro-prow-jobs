@@ -31,6 +31,8 @@ presubmits:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+    labels:
+      disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
