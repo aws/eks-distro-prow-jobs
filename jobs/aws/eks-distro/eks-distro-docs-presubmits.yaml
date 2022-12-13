@@ -47,3 +47,9 @@ presubmits:
         env:
         - name: PROJECT_PATH
           value: "docs"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor

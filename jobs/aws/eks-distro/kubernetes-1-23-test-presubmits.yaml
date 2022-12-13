@@ -51,3 +51,9 @@ presubmits:
           requests:
             memory: "26Gi"
             cpu: "3584m"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor

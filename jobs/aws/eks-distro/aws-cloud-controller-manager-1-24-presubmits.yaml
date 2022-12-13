@@ -34,6 +34,7 @@ presubmits:
     labels:
       image-build: "true"
       local-registry: "true"
+      disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
@@ -95,3 +96,9 @@ presubmits:
           requests:
             memory: "1Gi"
             cpu: "256m"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor
