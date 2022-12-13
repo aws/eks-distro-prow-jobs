@@ -82,9 +82,6 @@ presets:
   - name: entrypoint
     readOnly: false
     mountPath: /script
-  - name: status
-    readOnly: false
-    mountPath: /status
   - name: buildkitd-data
     readOnly: false
     mountPath: /home/user/.local/share/buildkit    
@@ -104,8 +101,6 @@ presets:
       - key: buildkitd-entrypoint.sh
         path: entrypoint.sh
   - name: run-buildkit
-    emptyDir: {}
-  - name: status
     emptyDir: {}
   - name: buildkitd-data
     emptyDir: {}
@@ -127,7 +122,12 @@ presets:
       items:
       - key: BUILDER_BASE_TAG_FILE
         path: BUILDER_BASE_TAG_FILE
+  - name: status
+    emptyDir: {}
   volumeMounts:
   - name: builder-base-tag-file
     readOnly: false
     mountPath: /config
+  - name: status
+    readOnly: false
+    mountPath: /status

@@ -80,10 +80,6 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
       - name: registry
         image: public.ecr.aws/docker/library/registry:2
         command:
@@ -96,10 +92,6 @@ presubmits:
             port: 5000
           initialDelaySeconds: 5
           periodSeconds: 3
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "256m"
       - command:
         - sh
         args:
