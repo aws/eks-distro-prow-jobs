@@ -20,7 +20,7 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-16-PROD-tooling-postsubmit
+  - name: golang-1-16-PROD-images-tooling-postsubmit
     always_run: false
     run_if_changed: "projects/golang/go/docker/debianBase/RELEASE"
     branches:
