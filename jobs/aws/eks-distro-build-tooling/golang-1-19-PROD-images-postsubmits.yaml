@@ -68,11 +68,8 @@ postsubmits:
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "2560m"
-          limits:
-            memory: "16Gi"
-            cpu: "2560m"
+            memory: "2Gi"
+            cpu: "1"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:

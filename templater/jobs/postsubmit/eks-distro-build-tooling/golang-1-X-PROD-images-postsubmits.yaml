@@ -7,12 +7,9 @@ commands:
 - projects/golang/go/scripts/prow_release_images.sh
 projectPath: projects/golang/go
 resources:
-  limits:
-    cpu: 2560m
-    memory: 16Gi
   requests:
-    cpu: 2560m
-    memory: 16Gi
+    cpu: "1"
+    memory: 2Gi
 envVars:
   - name: GO_SOURCE_VERSION
     value: {{ .golangVersion }}
