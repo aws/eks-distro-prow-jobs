@@ -37,12 +37,35 @@ presets:
   - name: registry-entrypoint
     readOnly: false
     mountPath: /registry-script
+  - name: docker-registry-data
+    readOnly: false
+    mountPath: /var/lib/registry
   volumes:
   - name: registry-entrypoint
     configMap:
       name: registry-entrypoint
       items:
       - key: registry-entrypoint.sh
+        path: entrypoint.sh
+  - name: docker-registry-data
+    emptyDir: {}
+- labels:
+    disk-usage: "true"
+  volumeMounts:
+  - name: go-build-cache
+    readOnly: false
+    mountPath: /root/.cache/go-build
+  - name: disk-usage-entrypoint
+    readOnly: false
+    mountPath: /disk-usage-script
+  volumes:
+  - name: go-build-cache
+    emptyDir: {}
+  - name: disk-usage-entrypoint
+    configMap:
+      name: disk-usage-entrypoint
+      items:
+      - key: disk-usage-entrypoint.sh
         path: entrypoint.sh
 - labels:
     image-build: "true"
@@ -62,6 +85,9 @@ presets:
   - name: status
     readOnly: false
     mountPath: /status
+  - name: buildkitd-data
+    readOnly: false
+    mountPath: /home/user/.local/share/buildkit    
   volumes:
   # The files in this repo update the respective configmaps
   # via the config-updater plugin in plugins.yaml for hook
@@ -80,6 +106,8 @@ presets:
   - name: run-buildkit
     emptyDir: {}
   - name: status
+    emptyDir: {}
+  - name: buildkitd-data
     emptyDir: {}
 - env:
   - name: AWS_ROLE_SESSION_NAME

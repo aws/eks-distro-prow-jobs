@@ -56,6 +56,9 @@ presubmits:
       {{- if .prCreation }}
       pr-creation: "true"
       {{- end }}
+      {{- if .diskUsage }}
+      disk-usage: "true"
+      {{- end}}
     {{- end }}
     spec:
       serviceaccountName: {{ .serviceAccountName }}
@@ -155,6 +158,14 @@ presubmits:
           requests:
             memory: "1Gi"
             cpu: "256m"
+      {{- end }}
+      {{- if .diskUsage }}
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor
       {{- end }}
       {{- if .volumes }}
       volumes:
