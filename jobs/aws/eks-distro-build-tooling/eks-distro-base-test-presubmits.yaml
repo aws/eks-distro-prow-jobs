@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-make-tests
+  - name: eks-distro-base-test-presubmit
     always_run: false
     run_if_changed: "eks-distro-base/.*"
     max_concurrency: 10
