@@ -43,6 +43,7 @@ presubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           make build -C $PROJECT_PATH ARTIFACTS_BUCKET="eks-d-postsubmit-artifacts"
         env:
         - name: PROJECT_PATH

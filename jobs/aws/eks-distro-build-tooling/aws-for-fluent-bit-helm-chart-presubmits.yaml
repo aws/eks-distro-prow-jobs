@@ -43,6 +43,7 @@ presubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           make verify -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
