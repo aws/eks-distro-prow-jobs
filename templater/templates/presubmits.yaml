@@ -45,7 +45,7 @@ presubmits:
         bucket: {{ .bucket }}
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    {{- if or .imageBuild .localRegistry .prCreation }}
+    {{- if or .imageBuild .localRegistry .prCreation .diskUsage }}
     labels:
       {{- if .imageBuild }}
       image-build: "true"
