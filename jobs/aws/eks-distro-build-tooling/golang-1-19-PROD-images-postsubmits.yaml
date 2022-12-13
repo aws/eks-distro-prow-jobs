@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: golang-1-19-PROD-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/docker/debianBase/RELEASE"
+    run_if_changed: "projects/golang/go/docker/debianBase/RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
@@ -60,8 +60,6 @@ postsubmits:
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
           value: "1.19"
-        - name: SKIP_PRIVILEGED_TESTS
-          value: "true"
         - name: AWS_REGION
           value: "us-east-1"
         - name: IMAGE_REPO

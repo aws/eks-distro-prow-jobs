@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-PROD-tooling-postsubmit
-runIfChanged: projects/golang/go/{{ .golangVersion }}/docker/debianBase/RELEASE
+runIfChanged: projects/golang/go/docker/debianBase/RELEASE
 imageBuild: true
 automountServiceAccountToken: true
 commands:
@@ -16,8 +16,6 @@ resources:
 envVars:
   - name: GO_SOURCE_VERSION
     value: {{ .golangVersion }}
-  - name: SKIP_PRIVILEGED_TESTS
-    value: true
   - name: AWS_REGION
     value: us-east-1
   - name: IMAGE_REPO
