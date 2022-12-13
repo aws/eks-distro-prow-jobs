@@ -21,15 +21,15 @@ while [ ! -f /status/done ]; do
     
     for folder in "/root/.cache/go-build" "/home/prow/go/pkg/mod" "/home/user/.local/share/buildkit" "/var/lib/registry" "/tmp"; do
         if [ -d $folder ]; then
-            du -sh $folder
+            du -sh $folder 2> /dev/null
         fi
     done
 
     for folder in "/home/prow/go/src/github.com/aws"; do
         if [ -d $folder ]; then
             echo -e "\n--------------- $folder -------------------"
-            du -Sh $folder | sort -rh | head -10
-            du -sh $folder
+            du -Sh $folder 2> /dev/null | sort -rh | head -10 
+            du -sh $folder 2> /dev/null
             echo -e "--------------- $folder -------------------\n"
         fi
     done
