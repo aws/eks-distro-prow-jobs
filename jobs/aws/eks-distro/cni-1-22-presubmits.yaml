@@ -44,6 +44,7 @@ presubmits:
         - -c
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          &&
           make build clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
