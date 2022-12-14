@@ -25,7 +25,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"text/tabwriter"
 
 	"k8s.io/test-infra/prow/config"
 	yaml "sigs.k8s.io/yaml"
@@ -151,6 +150,9 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 		if strings.Contains(presubmitConfig.JobBase.Name, "lint") {
 			return true, 0, ""
 		}
+		if presubmitConfig.JobBase.Name == "eks-distro-base-test-presubmit" {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
@@ -184,6 +186,9 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
 			return true, 0, ""
 		}
+		if regexp.MustCompile("golang.*PROD.*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
+			return true, 0, ""
+		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
@@ -200,6 +205,44 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		}
 		return true, 0, ""
 	})
+}
+
+func PresubmitNameDuplicationCheck(jobNamesCount map[string]int) presubmitCheck {
+	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if jobNamesCount[presubmitConfig.JobBase.Name] > 1 {
+			return false, findLineNumber(fileContentsString, fmt.Sprintf("name: %s", presubmitConfig.JobBase.Name)), fmt.Sprintf(`Duplicate job name => name: %s`, presubmitConfig.JobBase.Name)
+		}
+		return true, 0, ""
+	})
+}
+
+func PostsubmitNameDuplicationCheck(jobNamesCount map[string]int) postsubmitCheck {
+	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
+		if jobNamesCount[postsubmitConfig.JobBase.Name] > 1 {
+			return false, findLineNumber(fileContentsString, fmt.Sprintf("name: %s", postsubmitConfig.JobBase.Name)), fmt.Sprintf(`Duplicate job name => name: %s`, postsubmitConfig.JobBase.Name)
+		}
+		return true, 0, ""
+	})
+}
+
+func getJobNamesMap(gitRoot string) (map[string]int, error) {
+	jobNamesCountMap := map[string]int{}
+	allJobNames := []string{}
+	yqNameEvalExpressions := map[string]string{"presubmit": ".*.*[0].name", "postsubmit": ".*.*[0].name", "periodic": ".*[0].name"}
+	for jobType, expression := range yqNameEvalExpressions {
+		jobNamesOutput, err := exec.Command("bash", "-c", fmt.Sprintf("find %s -type f -name '*%s*' -exec yq '%s' {} + | grep -v '\\-\\-\\-'", filepath.Join(gitRoot, "jobs/aws"), jobType, expression)).CombinedOutput()
+		if err != nil {
+			return nil, err
+		}
+		jobNames := strings.Fields(string(jobNamesOutput))
+		allJobNames = append(allJobNames, jobNames...)
+	}
+
+	for _, jobName := range allJobNames {
+		jobNamesCountMap[jobName]++
+	}
+
+	return jobNamesCountMap, nil
 }
 
 func getFilesChanged(gitRoot string, pullBaseSha string, pullPullSha string) ([]string, []string, error) {
@@ -222,15 +265,16 @@ func getFilesChanged(gitRoot string, pullBaseSha string, pullPullSha string) ([]
 	return presubmitFiles, postsubmitFiles, err
 }
 
-func unmarshalJobFile(filePath string, jobConfig *config.JobConfig) (*UnmarshaledJobConfig, error, error) {
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+func unmarshalJobFile(gitRoot, filePath string, jobConfig *config.JobConfig) (*UnmarshaledJobConfig, error, error) {
+	absoluteFilePath := filepath.Join(gitRoot, filePath)
+	if _, err := os.Stat(absoluteFilePath); os.IsNotExist(err) {
 		return nil, nil, nil
 	}
 	unmarshaledJobConfig := new(UnmarshaledJobConfig)
 	unmarshaledJobConfig.GithubRepo = strings.Replace(filepath.Dir(filePath), "jobs/", "", 1)
 	unmarshaledJobConfig.FileName = filepath.Base(filePath)
 
-	fileContents, fileReadError := ioutil.ReadFile(filePath)
+	fileContents, fileReadError := ioutil.ReadFile(absoluteFilePath)
 	unmarshaledJobConfig.FileContents = string(fileContents)
 
 	fileUnmarshalError := yaml.Unmarshal(fileContents, &jobConfig)
@@ -240,20 +284,17 @@ func unmarshalJobFile(filePath string, jobConfig *config.JobConfig) (*Unmarshale
 }
 
 func displayConfigErrors(fileErrorMap map[string][]string) bool {
-	w := new(tabwriter.Writer)
-	w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 	errorsExist := false
 	for file, configErrors := range fileErrorMap {
 		if len(configErrors) > 0 {
 			errorsExist = true
-			fmt.Println()
 			fmt.Printf("\n%s:\n", file)
 			for _, errorString := range configErrors {
-				fmt.Fprintln(w, errorString)
+				fmt.Println(errorString)
 			}
 		}
 	}
-	w.Flush()
+	fmt.Println()
 	return errorsExist
 }
 
@@ -276,9 +317,14 @@ func main() {
 	}
 	gitRoot := strings.Fields(string(gitRootOutput))[0]
 
+	jobNamesCount, err := getJobNamesMap(gitRoot)
+	if err != nil {
+		log.Fatalf("There was an error getting the job names count: %v", err)
+	}
+
 	presubmitFiles, postsubmitFiles, err := getFilesChanged(gitRoot, pullBaseSha, pullPullSha)
 	if err != nil {
-		log.Fatalf("There was an error running the git command!")
+		log.Fatalf("There was an error running the git command: %v", err)
 	}
 
 	presubmitCheckFunctions := []presubmitCheck{
@@ -288,16 +334,19 @@ func main() {
 		PresubmitBucketCheck(presubmitConstants),
 		PresubmitServiceAccountCheck(presubmitConstants),
 		PresubmitMakeTargetCheck(presubmitConstants),
+		PresubmitNameDuplicationCheck(jobNamesCount),
 	}
 
 	postsubmitCheckFunctions := []postsubmitCheck{
 		PostsubmitClusterCheck(postsubmitConstants),
 		PostsubmitBucketCheck(postsubmitConstants),
 		PostsubmitMakeTargetCheck(postsubmitConstants),
+		PostsubmitNameDuplicationCheck(jobNamesCount),
 	}
 
 	for _, presubmitFile := range presubmitFiles {
-		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(presubmitFile, &jobConfig)
+		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(gitRoot, presubmitFile, &jobConfig)
+
 		// Skip linting if file is not found
 		if unmarshaledJobConfig == nil {
 			continue
@@ -327,7 +376,7 @@ func main() {
 	}
 
 	for _, postsubmitFile := range postsubmitFiles {
-		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(postsubmitFile, &jobConfig)
+		unmarshaledJobConfig, fileReadError, fileUnmarshalError := unmarshalJobFile(gitRoot, postsubmitFile, &jobConfig)
 		// Skip linting if file is not found
 		if unmarshaledJobConfig == nil {
 			continue

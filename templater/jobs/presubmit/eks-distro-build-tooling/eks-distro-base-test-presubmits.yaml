@@ -1,4 +1,4 @@
-jobName: eks-distro-base-make-tests
+jobName: eks-distro-base-test-presubmit
 runIfChanged: eks-distro-base/.*
 commands:
 - if [ -f eks-distro-base/make-tests/make-dry-run ]; then make run-make-tests -C $PROJECT_PATH; fi
