@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-build-tooling:
   - name: golang-1-16-tooling-presubmit
     always_run: false
-    run_if_changed: "projects/golang/go/Makefile|projects/golang/go/1.16/.*"
+    run_if_changed: "projects/golang/go/Makefile|projects/golang/go/1.16/.*|projects/golang/go/docker/debianBase/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
