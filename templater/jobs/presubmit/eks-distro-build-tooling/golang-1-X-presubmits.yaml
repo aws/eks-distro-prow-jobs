@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-tooling-presubmit
-runIfChanged: projects/golang/go/Makefile|projects/golang/go/{{ .golangVersion }}/.*
+runIfChanged: projects/golang/go/Makefile|projects/golang/go/{{ .golangVersion }}/.*|projects/golang/go/docker/debianBase/.*
 imageBuild: true
 commands:
 - make install-deps -C $PROJECT_PATH
