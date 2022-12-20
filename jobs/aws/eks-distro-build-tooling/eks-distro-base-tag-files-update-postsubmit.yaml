@@ -61,9 +61,17 @@ postsubmits:
         - bash
         - -c
         - >
-          make update-base-image-other-repos -C $PROJECT_PATH
+          source scripts/setup_public_ecr_push.sh
+          &&
+          make -j 4 update-base-image-other-repos -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "eks-distro-base"
         - name: AWS_REGION
           value: "us-east-1"
+        - name: IMAGE_REPO
+          value: "832188789588.dkr.ecr.us-east-1.amazonaws.com"
+        - name: PUBLIC_IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
