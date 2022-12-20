@@ -22,13 +22,13 @@ presubmits:
   aws/eks-distro:
   - name: node-driver-registrar-1-24-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/(build|docker|Makefile|1-24)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_WINDOWS_BASE_.*_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/(build|docker|Makefile|1-24)"
     max_concurrency: 10
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -36,10 +36,8 @@ presubmits:
       local-registry: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
-      nodeSelector:
-        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-a8e10a52a2c5fd0d436f476c17df5ceb3c602e1d.2
