@@ -35,6 +35,7 @@ periodics:
     s3_credentials_secret: s3-credentials
   labels:
     pr-creation: "true"
+    disk-usage: "true"
   spec:
     serviceaccountName: periodics-build-account
     automountServiceAccountToken: false
@@ -47,6 +48,8 @@ periodics:
       - bash
       - -c
       - >
+        trap 'touch /status/done' EXIT
+        &&
         make update-attribution-files
       env:
       - name: PROJECT_PATH
@@ -57,3 +60,9 @@ periodics:
         requests:
           memory: "16Gi"
           cpu: "5"
+    - command:
+      - sh
+      args:
+      - /disk-usage-script/entrypoint.sh
+      image: public.ecr.aws/amazonlinux/amazonlinux:2
+      name: disk-monitor

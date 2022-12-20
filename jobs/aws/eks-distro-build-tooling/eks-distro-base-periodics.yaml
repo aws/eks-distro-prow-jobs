@@ -48,6 +48,7 @@ periodics:
   labels:
     image-build: "true"
     pr-creation: "true"
+    disk-usage: "true"
   spec:
     serviceaccountName: postsubmits-build-account
     automountServiceAccountToken: true
@@ -107,3 +108,9 @@ periodics:
         requests:
           memory: "2Gi"
           cpu: "1024m"
+    - command:
+      - sh
+      args:
+      - /disk-usage-script/entrypoint.sh
+      image: public.ecr.aws/amazonlinux/amazonlinux:2
+      name: disk-monitor

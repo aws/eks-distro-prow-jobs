@@ -36,6 +36,7 @@ postsubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      disk-usage: "true"
     spec:
       serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
@@ -69,3 +70,9 @@ postsubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor

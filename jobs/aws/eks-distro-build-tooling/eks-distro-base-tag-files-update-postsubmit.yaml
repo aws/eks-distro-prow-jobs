@@ -49,6 +49,7 @@ postsubmits:
       s3_credentials_secret: s3-credentials
     labels:
       pr-creation: "true"
+      disk-usage: "true"
     spec:
       serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
@@ -61,9 +62,17 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           make update-base-image-other-repos -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "eks-distro-base"
         - name: AWS_REGION
           value: "us-east-1"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor
