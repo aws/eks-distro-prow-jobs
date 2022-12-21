@@ -102,6 +102,9 @@ func SkipReportCheck() presubmitCheck {
 
 func PresubmitBucketCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.UtilityConfig.DecorationConfig.GCSConfiguration.Bucket != jc.Bucket {
 			return false, findLineNumber(fileContentsString, "bucket:"), fmt.Sprintf(`Incorrect bucket configuration, please configure S3 bucket as => bucket: %s`, jc.Bucket)
 		}
@@ -120,6 +123,9 @@ func PostsubmitBucketCheck(jc *JobConstants) postsubmitCheck {
 
 func PresubmitClusterCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Cluster != jc.Cluster {
 			return false, findLineNumber(fileContentsString, "cluster:"), fmt.Sprintf(`Incorrect cluster configuration, please configure cluster as => cluster: "%s"`, jc.Cluster)
 		}
@@ -138,6 +144,9 @@ func PostsubmitClusterCheck(jc *JobConstants) postsubmitCheck {
 
 func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Spec.ServiceAccountName != jc.ServiceAccountName {
 			return false, findLineNumber(fileContentsString, "serviceaccountName:"), fmt.Sprintf(`Incorrect service account configuration, please configure service account as => serviceaccountName: %s`, jc.ServiceAccountName)
 		}
@@ -153,7 +162,13 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 		if presubmitConfig.JobBase.Name == "eks-distro-base-test-presubmit" {
 			return true, 0, ""
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
+		if strings.Contains(presubmitConfig.JobBase.Name, "eks-distro-base-tooling-presubmit") {
+			return true, 0, ""
+		}
+		if regexp.MustCompile("golang.*presubmit").MatchString(presubmitConfig.JobBase.Name) {
+			return true, 0, ""
+		}
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?).*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
 		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
 		if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
@@ -186,7 +201,7 @@ func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
 			return true, 0, ""
 		}
-		if regexp.MustCompile("golang.*PROD.*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
+		if regexp.MustCompile("golang.*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
 			return true, 0, ""
 		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
