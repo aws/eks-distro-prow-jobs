@@ -53,9 +53,9 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro; fi
           &&
-          make -j2 postsubmit-conformance
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make -j2 postsubmit-conformance; fi
         env:
         - name: PROJECT_PATH
           value: ""

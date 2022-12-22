@@ -88,6 +88,12 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 					return nil, fmt.Errorf("%v", err)
 				}
 
+				if len(releaseBranches)-1 == i {
+					for j, command := range jobConfig.Commands {
+						jobConfig.Commands[j] = "if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then " + command + "; fi"
+					}
+				}
+
 				jobList[releaseBranchBasedFileName] = jobConfig
 			}
 		} else {

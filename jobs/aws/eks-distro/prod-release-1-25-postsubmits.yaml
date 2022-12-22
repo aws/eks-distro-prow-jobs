@@ -53,7 +53,7 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          ./release/prow-release.sh
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then ./release/prow-release.sh; fi
         env:
         - name: PROJECT_PATH
           value: ""

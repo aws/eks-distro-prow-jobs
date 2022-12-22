@@ -51,7 +51,7 @@ presubmits:
           &&
           build/lib/local_registry_check.sh
           &&
-          make build clean-go-cache images clean -C $PROJECT_PATH
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build clean-go-cache images clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-csi/livenessprobe"
