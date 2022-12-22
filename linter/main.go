@@ -30,18 +30,6 @@ import (
 	yaml "sigs.k8s.io/yaml"
 )
 
-var skipPresubmitMakeTargetCheck = []string{
-	"golang-1",
-	"eks-distro-base-test-presubmit",
-	"lint",
-}
-
-var skipPostSubmitMakeTargetCheck = []string{
-	"golang-1",
-	"announcement",
-	"release",
-}
-
 type JobConstants struct {
 	Bucket                          string
 	Cluster                         string
@@ -168,7 +156,10 @@ func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 
 func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
-		if arrayStringContains(skipPresubmitMakeTargetCheck, presubmitConfig.JobBase.Name) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "lint") {
+			return true, 0, ""
+		}
+		if presubmitConfig.JobBase.Name == "eks-distro-base-test-presubmit" {
 			return true, 0, ""
 		}
 		if strings.Contains(presubmitConfig.JobBase.Name, "eks-distro-base-tooling-presubmit") {
@@ -201,7 +192,10 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 
 func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
-		if arrayStringContains(skipPostSubmitMakeTargetCheck, postsubmitConfig.JobBase.Name) {
+		if strings.Contains(postsubmitConfig.JobBase.Name, "release") {
+			return true, 0, ""
+		}
+		if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
 			return true, 0, ""
 		}
 		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
@@ -434,14 +428,4 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println("✅ Validations passed!")
-}
-
-func arrayStringContains(inputArray []string, str string) bool {
-	for _, v := range inputArray {
-		if strings.Contains(v, str) {
-			return true
-		}
-	}
-
-	return false
 }
