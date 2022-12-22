@@ -31,13 +31,17 @@ import (
 )
 
 var skipPresubmitMakeTargetCheck = []string{
-	"golang-1",
+	"golang.*presubmit",
+	"golang.*presubmits",
 	"eks-distro-base-test-presubmit",
+	"eks-distro-base-tooling-presubmit",
 	"lint",
 }
 
 var skipPostSubmitMakeTargetCheck = []string{
-	"golang-1",
+	"golang.*postsubmit",
+	"golang.*postsubmits",
+	"build-1-2[1-9].*postsubmit",
 	"announcement",
 	"release",
 }
@@ -169,12 +173,7 @@ func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
 		if arrayStringContains(skipPresubmitMakeTargetCheck, presubmitConfig.JobBase.Name) {
-			return true, 0, ""
-		}
-		if strings.Contains(presubmitConfig.JobBase.Name, "eks-distro-base-tooling-presubmit") {
-			return true, 0, ""
-		}
-		if regexp.MustCompile("golang.*presubmit").MatchString(presubmitConfig.JobBase.Name) {
+			fmt.Printf("Skipping check on presubmit job %v\n", presubmitConfig.JobBase.Name)
 			return true, 0, ""
 		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?).*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
@@ -202,12 +201,7 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
 		if arrayStringContains(skipPostSubmitMakeTargetCheck, postsubmitConfig.JobBase.Name) {
-			return true, 0, ""
-		}
-		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
-			return true, 0, ""
-		}
-		if regexp.MustCompile("golang.*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
+			fmt.Printf("Skipping check on postsubmit job %v\n", postsubmitConfig.JobBase.Name)
 			return true, 0, ""
 		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
@@ -438,7 +432,7 @@ func main() {
 
 func arrayStringContains(inputArray []string, str string) bool {
 	for _, v := range inputArray {
-		if strings.Contains(v, str) {
+		if regexp.MustCompile(v).MatchString(str) {
 			return true
 		}
 	}
