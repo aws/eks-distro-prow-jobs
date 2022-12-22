@@ -88,6 +88,14 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 					return nil, fmt.Errorf("%v", err)
 				}
 
+                                 // If latest release branch, check if the release branch dir exists before executing cmd
+                                 // This allows us to experiment with adding prow jobs for new branches without failing other runs
+				if len(releaseBranches)-1 == i {
+					for j, command := range jobConfig.Commands {
+						jobConfig.Commands[j] = "if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then " + command + "; fi"
+					}
+				}
+
 				jobList[releaseBranchBasedFileName] = jobConfig
 			}
 		} else {

@@ -48,11 +48,11 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C $PROJECT_PATH
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build -C $PROJECT_PATH; fi
           &&
-          mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts; fi
           &&
-          make clean-go-cache clean -C $PROJECT_PATH
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-sigs/aws-iam-authenticator"
