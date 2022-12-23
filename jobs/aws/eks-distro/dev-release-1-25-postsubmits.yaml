@@ -57,7 +57,7 @@ postsubmits:
           if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then ./release/prow.sh; fi
         env:
         - name: PROJECT_PATH
-          value: ""
+          value: "projects/kubernetes/kubernetes"
         - name: AWS_REGION
           value: "us-east-1"
         - name: ARTIFACT_BUCKET

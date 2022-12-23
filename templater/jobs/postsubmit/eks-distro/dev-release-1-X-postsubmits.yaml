@@ -2,6 +2,7 @@ jobName: dev-release-{{ .releaseBranch }}-postsubmit
 runIfChanged: release/{{ .releaseBranch }}/development/RELEASE
 maxConcurrency: 1
 imageBuild: true
+projectPath: projects/kubernetes/kubernetes
 commands:
 - ./release/prow.sh
 envVars:
