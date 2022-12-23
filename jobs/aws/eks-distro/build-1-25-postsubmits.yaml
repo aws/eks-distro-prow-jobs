@@ -58,7 +58,7 @@ postsubmits:
           if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make -j2 postsubmit-conformance; fi
         env:
         - name: PROJECT_PATH
-          value: ""
+          value: "projects/kubernetes/kubernetes"
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
         - name: ARTIFACT_BUCKET

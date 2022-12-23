@@ -56,7 +56,7 @@ postsubmits:
           if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then ./release/prow-release.sh; fi
         env:
         - name: PROJECT_PATH
-          value: ""
+          value: "projects/kubernetes/kubernetes"
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         - name: AWS_REGION

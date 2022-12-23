@@ -58,7 +58,7 @@ postsubmits:
           make -j2 postsubmit-conformance
         env:
         - name: PROJECT_PATH
-          value: ""
+          value: "projects/kubernetes/kubernetes"
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
         - name: ARTIFACT_BUCKET
