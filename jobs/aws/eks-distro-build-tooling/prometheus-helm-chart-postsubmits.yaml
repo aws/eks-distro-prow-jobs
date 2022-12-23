@@ -34,6 +34,8 @@ postsubmits:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
+    labels:
+      disk-usage: "true"
     spec:
       serviceaccountName: charts-build-account
       automountServiceAccountToken: false
@@ -46,7 +48,15 @@ postsubmits:
         - bash
         - -c
         - >
+          trap 'touch /status/done' EXIT
+          &&
           make release -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/prometheus-community/helm-charts"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor

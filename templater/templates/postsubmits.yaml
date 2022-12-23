@@ -50,7 +50,7 @@ postsubmits:
         bucket: {{ .bucket }}
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
-    {{- if or .imageBuild .localRegistry .prCreation }}
+    {{- if or .imageBuild .localRegistry .prCreation .diskUsage }}
     labels:
       {{- if .imageBuild }}
       image-build: "true"
@@ -61,6 +61,9 @@ postsubmits:
       {{- if .prCreation }}
       pr-creation: "true"
       {{- end }}
+      {{- if .diskUsage }}
+      disk-usage: "true"
+      {{- end}}
     {{- end }}
     spec:
       serviceaccountName: {{ .serviceAccountName }}
@@ -74,9 +77,9 @@ postsubmits:
         - bash
         - -c
         - >
-          {{- if .imageBuild }}
           trap '{{- if .useDockerBuildX }}(docker buildx rm eks-d-builders || true) && {{ end }}touch /status/done' EXIT
           &&
+          {{- if .imageBuild }}
           {{- if eq .repoName "aws/eks-distro"}}
           build/lib/buildkit_check.sh
           {{- else }}
@@ -158,6 +161,14 @@ postsubmits:
           limits:
             memory: "1Gi"
             cpu: "256m"
+      {{- end }}
+      {{- if .diskUsage }}
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor
       {{- end }}
       {{- if .volumes }}
       volumes:
