@@ -1,5 +1,5 @@
 jobName: build-{{ .releaseBranch }}-postsubmit
-skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*|.*\.md|.*Help\.mk|.*ATTRIBUTION\.txt|LICENSE|NOTICE|OWNERS
+skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*|.*.md|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS
 imageBuild: true
 projectPath: projects/kubernetes/kubernetes
 commands:

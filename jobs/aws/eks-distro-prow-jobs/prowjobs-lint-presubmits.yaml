@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-prow-jobs:
   - name: prowjobs-lint-presubmit
     always_run: false
-    run_if_changed: "jobs/aws/.*"
+    run_if_changed: "jobs/aws/.*|templater/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false

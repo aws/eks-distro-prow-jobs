@@ -1,5 +1,5 @@
 jobName: prowjobs-lint-presubmit
-runIfChanged: jobs/aws/.*
+runIfChanged: jobs/aws/.*|templater/.*
 commands:
 - make verify-prowjobs -C $PROJECT_PATH
 - make lint -C $LINT_PROJECT_PATH
