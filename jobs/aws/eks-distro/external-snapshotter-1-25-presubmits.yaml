@@ -48,7 +48,7 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build clean-go-cache clean -C $PROJECT_PATH; fi
+          make build clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-csi/external-snapshotter"

@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: aws-iam-authenticator-1-25-presubmit
+  - name: external-snapshotter-1-26-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/aws-iam-authenticator/(build|docker|Makefile|1-25)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-snapshotter/(build|docker|Makefile|1-26)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -48,20 +48,16 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build -C $PROJECT_PATH
-          &&
-          mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
-          &&
-          make clean-go-cache clean -C $PROJECT_PATH
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-sigs/aws-iam-authenticator"
+          value: "projects/kubernetes-csi/external-snapshotter"
         - name: RELEASE_BRANCH
-          value: "1-25"
+          value: "1-26"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "8Gi"
+            cpu: "2048m"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:

@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: aws-iam-authenticator-1-25-presubmit
+  - name: kubernetes-1-26-test-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/aws-iam-authenticator/(build|docker|Makefile|1-25)"
+    run_if_changed: "projects/kubernetes/kubernetes/1-26/(GIT_TAG|patches)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -32,7 +32,6 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
-      image-build: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -46,31 +45,16 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          build/lib/buildkit_check.sh
-          &&
-          make build -C $PROJECT_PATH
-          &&
-          mv ./projects/kubernetes-sigs/aws-iam-authenticator/_output/tar/* /logs/artifacts
-          &&
-          make clean-go-cache clean -C $PROJECT_PATH
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make test -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-sigs/aws-iam-authenticator"
+          value: "projects/kubernetes/kubernetes"
         - name: RELEASE_BRANCH
-          value: "1-25"
+          value: "1-26"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
+            memory: "26Gi"
+            cpu: "3584m"
       - command:
         - sh
         args:
