@@ -19,7 +19,7 @@
 ################################################################################
 
 presubmits:
-  aws/eks-distro-build-tooling:
+  rcrozean/eks-distro-build-tooling:
   - name: eks-distro-base-tooling-presubmits-csi-2022
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
@@ -41,7 +41,7 @@ presubmits:
       base_ref: main
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prow-data-presubmits-devstack-prowbucket7c73355c-11dl00wefbvlc
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -53,7 +53,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
+        image: public.ecr.rcrozean/eks-distro-build-tooling/builder-base:minimal-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
         command:
         - bash
         - -c

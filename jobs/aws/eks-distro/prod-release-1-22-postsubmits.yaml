@@ -19,7 +19,7 @@
 ################################################################################
 
 postsubmits:
-  aws/eks-distro:
+  rcrozean/eks-distro:
   - name: prod-release-1-22-postsubmit
     always_run: false
     run_if_changed: "release/1-22/production/RELEASE"
@@ -32,7 +32,7 @@ postsubmits:
     decoration_config:
       timeout: 4h
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-h7e0qjaxyp8j
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -45,7 +45,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
+        image: public.ecr.rcrozean/eks-distro-build-tooling/builder-base:standard-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
         command:
         - bash
         - -c
@@ -69,7 +69,7 @@ postsubmits:
         - name: RELEASE_BRANCH
           value: "1-22"
         - name: IMAGE_REPO
-          value: "public.ecr.aws/eks-distro"
+          value: "public.ecr.rcrozean/eks-distro"
         resources:
           requests:
             memory: "16Gi"

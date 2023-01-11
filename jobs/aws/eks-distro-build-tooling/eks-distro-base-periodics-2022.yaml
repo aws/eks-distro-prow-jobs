@@ -42,7 +42,7 @@ periodics:
   decoration_config:
     timeout: 8h
     gcs_configuration:
-      bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+      bucket: s3://prow-data-devstack-prowbucket7c73355c-h7e0qjaxyp8j
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   labels:
@@ -56,7 +56,7 @@ periodics:
       arch: AMD64
     containers:
     - name: build-container
-      image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
+      image: public.ecr.rcrozean/eks-distro-build-tooling/builder-base:minimal-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
       command:
       - bash
       - -c
@@ -80,7 +80,7 @@ periodics:
       - name: AL_TAG
         value: "2022"
       - name: IMAGE_REPO
-        value: "public.ecr.aws/eks-distro-build-tooling"
+        value: "public.ecr.rcrozean/eks-distro-build-tooling"
       - name: ECR_PUBLIC_PUSH_ROLE_ARN
         value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
       - name: AWS_REGION

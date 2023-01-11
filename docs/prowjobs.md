@@ -62,7 +62,7 @@ or additional information.
 For example, if you want to create a presubmit:
 * of name `foo-bar-job`
 * stored in file `foo-bar-presubmit.yaml`
-* that only runs when the `README` is changed on the `loremipsum` branch of the `aws/eks-distro` repo
+* that only runs when the `README` is changed on the `loremipsum` branch of the `rcrozean/eks-distro` repo
 * that uses `foo/bar:baz` as the runtime image
 * that runs image build workflows
 * that runs the commands `make foo` and `docker images`,

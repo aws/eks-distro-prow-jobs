@@ -4,6 +4,7 @@
         "862665599504.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",
         "520703868821.dkr.ecr.us-east-1.amazonaws.com": "ecr-login",
         "382577505035.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",        
+        "052533767235.dkr.ecr.us-west-2.amazonaws.com": "ecr-login",        
         "public.ecr.aws": "ecr-login"
     }
 }

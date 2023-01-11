@@ -19,7 +19,7 @@
 ################################################################################
 
 postsubmits:
-  aws/eks-distro:
+  rcrozean/eks-distro:
   - name: build-1-25-postsubmit
     always_run: false
     skip_if_only_changed: "1-21|1-22|1-23|1-24|docs/.*|.*.md|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
@@ -32,7 +32,7 @@ postsubmits:
     decoration_config:
       timeout: 6h
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prow-data-devstack-prowbucket7c73355c-h7e0qjaxyp8j
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
@@ -45,7 +45,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
+        image: public.ecr.rcrozean/eks-distro-build-tooling/builder-base:standard-3d803d38ee9b8ba510de43bccee4b7f3c8c59740.2
         command:
         - bash
         - -c
@@ -54,7 +54,7 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro; fi
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then cp -r "${HOME}/.docker" /home/prow/go/src/github.com/rcrozean/eks-distro; fi
           &&
           if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make -j2 postsubmit-conformance; fi
         env:
@@ -75,7 +75,7 @@ postsubmits:
         - name: IMAGE_REPO
           value: "public.ecr.aws/h1r8a7l5"
         - name: DOCKER_CONFIG
-          value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
+          value: "/home/prow/go/src/github.com/rcrozean/eks-distro/.docker"
         resources:
           requests:
             memory: "8Gi"

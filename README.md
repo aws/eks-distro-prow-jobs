@@ -8,7 +8,7 @@ introduction](https://github.com/kubernetes/test-infra/blob/master/prow/jobs.md)
 to prow jobs.
 
 ## Creating a New EKS Distro Prow Job
-Check out [the development documentation](https://github.com/aws/eks-distro-prow-jobs/blob/main/docs/prowjobs.md) for instructions on how to create a new EKS Distro Prow Job in this repository. 
+Check out [the development documentation](https://github.com/rcrozean/eks-distro-prow-jobs/blob/main/docs/prowjobs.md) for instructions on how to create a new EKS Distro Prow Job in this repository. 
 
 ## Contributing
 
