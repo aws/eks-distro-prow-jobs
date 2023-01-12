@@ -48,11 +48,11 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build -C $PROJECT_PATH; fi
+          make build -C $PROJECT_PATH
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts; fi
+          mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make clean-go-cache clean -C $PROJECT_PATH; fi
+          make clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/etcd-io/etcd"

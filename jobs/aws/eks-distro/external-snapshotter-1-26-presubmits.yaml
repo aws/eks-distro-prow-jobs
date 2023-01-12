@@ -18,31 +18,25 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-postsubmits:
+presubmits:
   aws/eks-distro:
-  - name: dev-release-1-25-postsubmit
+  - name: external-snapshotter-1-26-presubmit
     always_run: false
-    run_if_changed: "release/1-25/development/RELEASE"
-    branches:
-    - ^main$
-    max_concurrency: 1
-    error_on_eviction: true
-    cluster: "prow-postsubmits-cluster"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-snapshotter/(build|docker|Makefile|1-26)"
+    max_concurrency: 10
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
-      timeout: 4h
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
-      nodeSelector:
-        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-7b447c5277c77f04b5a78d6b742b0f84f7f696eb.2
@@ -50,26 +44,20 @@ postsubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
           build/lib/buildkit_check.sh
           &&
-          ./release/prow.sh
+          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes/kubernetes"
-        - name: AWS_REGION
-          value: "us-east-1"
-        - name: ARTIFACT_BUCKET
-          value: "eks-d-postsubmit-artifacts"
+          value: "projects/kubernetes-csi/external-snapshotter"
         - name: RELEASE_BRANCH
-          value: "1-25"
-        - name: IMAGE_REPO
-          value: "public.ecr.aws/h1r8a7l5"
+          value: "1-26"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "4"
+            memory: "8Gi"
+            cpu: "2048m"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
@@ -79,10 +67,6 @@ postsubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
       - command:
         - sh
         args:
