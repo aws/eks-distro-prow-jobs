@@ -68,7 +68,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make python-3.9-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make minimal-images-base-python-3.9 python-3.9-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:

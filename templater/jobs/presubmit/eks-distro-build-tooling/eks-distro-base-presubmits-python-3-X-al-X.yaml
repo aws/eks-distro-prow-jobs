@@ -6,7 +6,7 @@ useDockerBuildX: true
 useMinimalBuilderBase: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- make python-{{ .pythonVersion }}-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make minimal-images-base-python-{{ .pythonVersion }} python-{{ .pythonVersion }}-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 projectPath: eks-distro-base
 envVars:
