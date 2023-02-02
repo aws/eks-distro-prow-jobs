@@ -2,7 +2,7 @@ jobName: prow-plugin-tooling-presubmit
 runIfChanged: tools/eksDistroBuildToolingOpsTools/.*
 imageBuild: true
 commands:
-- make build-eksDistroOpsProwPlugin -C $PROJECT_PATH
+- make images-eksDistroOpsProwPlugin -C $PROJECT_PATH
 projectPath: tools/eksDistroBuildToolingOpsTools
 resources:
   limits:
