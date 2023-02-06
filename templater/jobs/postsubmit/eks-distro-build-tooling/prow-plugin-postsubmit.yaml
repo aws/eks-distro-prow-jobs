@@ -1,5 +1,5 @@
 jobName: prow-plugin-postsubmit
-runIfChanged: tools/eksDistroBuildToolingOpsTools/.*
+runIfChanged: tools/eksDistroBuildToolingOpsTools/EKS_DISTRO_PROW_PLUGIN_RELEASE
 imageBuild: true
 commands:
 - make release-eksDistroOpsProwPlugin -C $PROJECT_PATH
