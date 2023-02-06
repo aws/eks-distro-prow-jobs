@@ -57,7 +57,7 @@ postsubmits:
         - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
-          value: "1.2"
+          value: "1.20"
         - name: SKIP_PRIVILEGED_TESTS
           value: "true"
         - name: ARTIFACTS_BUCKET
