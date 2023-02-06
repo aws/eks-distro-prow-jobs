@@ -60,7 +60,7 @@ postsubmits:
         - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
-          value: "1.2"
+          value: "1.20"
         - name: AWS_REGION
           value: "us-east-1"
         - name: IMAGE_REPO
