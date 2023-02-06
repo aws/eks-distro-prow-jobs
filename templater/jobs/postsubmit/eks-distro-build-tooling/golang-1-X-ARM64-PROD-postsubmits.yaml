@@ -16,7 +16,7 @@ resources:
     memory: 16Gi
 envVars:
   - name: GO_SOURCE_VERSION
-    value: {{ .golangVersion }}
+    value: "{{ .golangVersion }}"
   - name: SKIP_PRIVILEGED_TESTS
     value: true
   - name: ARTIFACTS_BUCKET
