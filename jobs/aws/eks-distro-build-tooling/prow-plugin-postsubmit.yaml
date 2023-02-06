@@ -18,25 +18,30 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-presubmits:
+postsubmits:
   aws/eks-distro-build-tooling:
-  - name: prow-plugin-tooling-presubmit
+  - name: prow-plugin-postsubmit
     always_run: false
-    run_if_changed: "tools/eksDistroBuildToolingOpsTools/.*"
+    run_if_changed: "tools/eksDistroBuildToolingOpsTools/EKS_DISTRO_PROW_PLUGIN_RELEASE"
+    branches:
+    - ^main$
     max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    error_on_eviction: true
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
+      nodeSelector:
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-efbe8f23d962acaafc9dfb500229804caa303269.2
@@ -44,16 +49,19 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap 'touch /status/done' EXIT
           &&
           scripts/buildkit_check.sh
           &&
-          make build-eksDistroOpsProwPlugin -C $PROJECT_PATH
+          make release-eksDistroOpsProwPlugin -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "tools/eksDistroBuildToolingOpsTools"
         resources:
           requests:
+            memory: "16Gi"
+            cpu: "2560m"
+          limits:
             memory: "16Gi"
             cpu: "2560m"
       - name: buildkitd
@@ -65,6 +73,10 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
       - command:
         - sh
         args:
