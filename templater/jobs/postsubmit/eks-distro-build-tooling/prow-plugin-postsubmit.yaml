@@ -1,8 +1,8 @@
-jobName: prow-plugin-tooling-presubmit
+jobName: prow-plugin-postsubmit
 runIfChanged: tools/eksDistroBuildToolingOpsTools/.*
 imageBuild: true
 commands:
-- make build-eksDistroOpsProwPlugin -C $PROJECT_PATH
+- make release-eksDistroOpsProwPlugin -C $PROJECT_PATH
 projectPath: tools/eksDistroBuildToolingOpsTools
 resources:
   limits:
