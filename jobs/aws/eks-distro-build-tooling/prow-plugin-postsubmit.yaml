@@ -53,10 +53,18 @@ postsubmits:
           &&
           scripts/buildkit_check.sh
           &&
+          source scripts/setup_public_ecr_push.sh
+          &&
           make release-eksDistroOpsProwPlugin -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "tools/eksDistroBuildToolingOpsTools"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+        - name: AWS_REGION
+          value: "us-east-1"
         resources:
           requests:
             memory: "16Gi"
