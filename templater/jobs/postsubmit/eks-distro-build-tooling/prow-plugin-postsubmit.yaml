@@ -1,7 +1,8 @@
 jobName: prow-plugin-postsubmit
-runIfChanged: tools/eksDistroBuildToolingOpsTools/EKS_DISTRO_PROW_PLUGIN_RELEASE
+runIfChanged: tools/eksDistroBuildToolingOpsTools/.*
 imageBuild: true
 commands:
+- source scripts/setup_public_ecr_push.sh
 - make release-eksDistroOpsProwPlugin -C $PROJECT_PATH
 projectPath: tools/eksDistroBuildToolingOpsTools
 resources:
@@ -11,3 +12,10 @@ resources:
   requests:
     cpu: 2560m
     memory: 16Gi
+envVars:
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: ECR_PUBLIC_PUSH_ROLE_ARN
+  value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+- name: AWS_REGION
+  value: us-east-1
