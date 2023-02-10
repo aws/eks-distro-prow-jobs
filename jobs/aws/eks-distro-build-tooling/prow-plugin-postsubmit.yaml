@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: prow-plugin-postsubmit
     always_run: false
-    run_if_changed: "tools/eksDistroBuildToolingOpsTools/.*"
+    run_if_changed: "tools/eksDistroBuildToolingOpsTools/EKS_DISTRO_PROW_PLUGIN_RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
