@@ -1,5 +1,6 @@
 jobName: golang-{{ .jobGoVersion }}-PROD-tooling-postsubmit
 runIfChanged: projects/golang/go/{{ .golangVersion }}/RELEASE
+imageBuild: true
 automountServiceAccountToken: true
 commands:
 - make install-deps -C $PROJECT_PATH
@@ -23,4 +24,8 @@ envVars:
     value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
   - name: AWS_REGION
     value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling
+  - name: ECR_PUBLIC_PUSH_ROLE_ARN
+    value: arn:aws:iam::832188789588:role/ECRPublicPushRole
 serviceAccountName: release-build-account
