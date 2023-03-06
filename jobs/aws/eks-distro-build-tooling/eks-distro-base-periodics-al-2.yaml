@@ -74,6 +74,8 @@ periodics:
         make update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         &&
         make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+        &&
+        curl -v -X POST $SLACK_WEBHOOK
       env:
       - name: PROJECT_PATH
         value: "eks-distro-base"
@@ -95,6 +97,8 @@ periodics:
         value: "moby/buildkit:v0.10.5-rootless"
       - name: USE_BUILDX
         value: "true"
+      - name: SLACK_WEBHOOK
+        value: ${{ secrets.SLACK_WEBHOOK }}
     - name: buildkitd
       image: moby/buildkit:v0.10.5-rootless
       command:
