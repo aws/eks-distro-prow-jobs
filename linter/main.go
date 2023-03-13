@@ -176,23 +176,29 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 			fmt.Printf("Skipping check on presubmit job %v\n", presubmitConfig.JobBase.Name)
 			return true, 0, ""
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?).*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
-		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?.*?)(\s|$)`).FindAllStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "), -1)
+		jobMakeTarget := jobMakeTargetMatches[0][1]
+
+		// ignore release branch check
+		if jobMakeTarget == "check-for-supported-release-branch" {
+			jobMakeTarget = jobMakeTargetMatches[1][1]
+		}
+
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
 		if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
 			if jobMakeTarget != jc.HelmMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.HelmMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.HelmMakeTarget)
 			}
 		} else if strings.Contains(presubmitConfig.JobBase.Name, "release-tooling") {
 			if jobMakeTarget != jc.ReleaseToolingMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.ReleaseToolingMakeTarget)
 			}
 		} else if strings.Contains(presubmitConfig.JobBase.Name, "test") {
 			if jobMakeTarget != jc.TestsMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.TestsMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.TestsMakeTarget)
 			}
-		} else if jobMakeTarget != jc.DefaultMakeTarget {
-			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
+		} else if !strings.HasPrefix(jobMakeTarget, jc.DefaultMakeTarget) {
+			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.DefaultMakeTarget)
 		}
 		return true, 0, ""
 	})
