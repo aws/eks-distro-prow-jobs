@@ -54,7 +54,7 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then ./release/prow-release.sh; fi
+          if $(make check-for-supported-release-branch -C $PROJECT_PATH); then ./release/prow-release.sh; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"

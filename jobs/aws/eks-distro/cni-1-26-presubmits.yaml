@@ -45,7 +45,7 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          if [ -d $PROJECT_PATH/$RELEASE_BRANCH ]; then make build clean-go-cache clean -C $PROJECT_PATH; fi
+          if $(make check-for-supported-release-branch -C $PROJECT_PATH); then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/containernetworking/plugins"
