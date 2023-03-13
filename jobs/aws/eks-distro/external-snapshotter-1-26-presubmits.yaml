@@ -48,7 +48,7 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if $(make check-for-supported-release-branch -C $PROJECT_PATH); then make build clean-go-cache clean -C $PROJECT_PATH; fi
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes-csi/external-snapshotter"
