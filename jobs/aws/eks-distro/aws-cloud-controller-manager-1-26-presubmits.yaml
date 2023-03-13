@@ -51,9 +51,9 @@ presubmits:
           &&
           build/lib/local_registry_check.sh
           &&
-          if $(make check-for-supported-release-branch -C $PROJECT_PATH); then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
           &&
-          if $(make check-for-supported-release-branch -C $PROJECT_PATH); then make build clean-go-cache clean -C $PROJECT_PATH; fi
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/cloud-provider-aws"
