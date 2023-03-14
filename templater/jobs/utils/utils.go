@@ -38,7 +38,7 @@ var pythonVersions = []string{
 
 var alVersions = []string{
 	"2",
-	"2022",
+	"2023",
 }
 
 func GetJobsByType(repos []string, jobType string) (map[string]map[string]types.JobConfig, error) {

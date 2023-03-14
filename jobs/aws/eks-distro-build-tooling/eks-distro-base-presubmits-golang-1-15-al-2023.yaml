@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-golang-1-17-al-2022
+  - name: eks-distro-base-tooling-presubmits-golang-1-15-al-2023
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -68,14 +68,14 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make golang-1.17-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make golang-1.15-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: PROJECT_PATH
           value: "eks-distro-base"
         - name: AL_TAG
-          value: "2022"
+          value: "2023"
         - name: IMAGE_REPO
           value: "localhost:5000"
         - name: PLATFORMS

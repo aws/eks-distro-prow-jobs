@@ -19,7 +19,7 @@
 ################################################################################
 
 periodics:
-- name: eks-distro-base-tooling-periodic-al-2022
+- name: eks-distro-base-tooling-periodic-al-2023
   cron: "0 19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
@@ -78,7 +78,7 @@ periodics:
       - name: PROJECT_PATH
         value: "eks-distro-base"
       - name: AL_TAG
-        value: "2022"
+        value: "2023"
       - name: IMAGE_REPO
         value: "public.ecr.aws/eks-distro-build-tooling"
       - name: ECR_PUBLIC_PUSH_ROLE_ARN
