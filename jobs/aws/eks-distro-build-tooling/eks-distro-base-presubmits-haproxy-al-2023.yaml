@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-haproxy-al-2022
+  - name: eks-distro-base-tooling-presubmits-haproxy-al-2023
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -75,7 +75,7 @@ presubmits:
         - name: PROJECT_PATH
           value: "eks-distro-base"
         - name: AL_TAG
-          value: "2022"
+          value: "2023"
         - name: IMAGE_REPO
           value: "localhost:5000"
         - name: PLATFORMS

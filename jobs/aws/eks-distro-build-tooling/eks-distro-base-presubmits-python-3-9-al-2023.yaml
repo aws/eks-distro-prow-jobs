@@ -20,35 +20,40 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: builder-base-tooling-presubmit-al-2022
+  - name: eks-distro-base-tooling-presubmits-python-3-9-al-2023
     always_run: false
-    run_if_changed: "builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh"
+    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     extra_refs:
     - org: eks-distro-pr-bot
-      repo: eks-distro-prow-jobs
+      repo: eks-distro-build-tooling
       base_ref: main
     - org: eks-distro-pr-bot
-      repo: eks-anywhere-prow-jobs
+      repo: eks-distro
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-anywhere-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-anywhere
       base_ref: main
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: true
-      nodeSelector:
-        arch: AMD64
+      serviceaccountName: presubmits-build-account
+      automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-c517f595c164590b7bc3f1ef3c458f0f733779ea.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-c517f595c164590b7bc3f1ef3c458f0f733779ea.2
         command:
         - bash
         - -c
@@ -57,22 +62,32 @@ presubmits:
           &&
           scripts/buildkit_check.sh
           &&
+          scripts/local_registry_check.sh
+          &&
           scripts/setup_buildx.sh
           &&
-          make build -C $PROJECT_PATH
+          export DATE_EPOCH=$(date "+%F-%s")
+          &&
+          make minimal-images-base-python-3.9 python-3.9-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          &&
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: PROJECT_PATH
-          value: "builder-base"
+          value: "eks-distro-base"
         - name: AL_TAG
-          value: "2022"
+          value: "2023"
+        - name: IMAGE_REPO
+          value: "localhost:5000"
+        - name: PLATFORMS
+          value: "linux/amd64"
         - name: BUILDKITD_IMAGE
           value: "moby/buildkit:v0.10.5-rootless"
         - name: USE_BUILDX
           value: "true"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1"
+            memory: "4Gi"
+            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
@@ -82,6 +97,18 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
       - command:
         - sh
         args:

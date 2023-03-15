@@ -1,4 +1,4 @@
-jobName: eks-distro-base-tooling-postsubmit-2022
+jobName: eks-distro-base-tooling-postsubmit-al-{{ .alVersion }}
 runIfChanged: ^eks-distro-base/postsubmit_trigger$
 imageBuild: true
 prCreation: true
@@ -14,7 +14,7 @@ commands:
 projectPath: eks-distro-base
 envVars:
 - name: AL_TAG
-  value: 2022
+  value: {{ .alVersion }}
 - name: IMAGE_REPO
   value: public.ecr.aws/eks-distro-build-tooling
 - name: ECR_PUBLIC_PUSH_ROLE_ARN
