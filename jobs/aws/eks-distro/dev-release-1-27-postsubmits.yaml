@@ -18,26 +18,31 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-presubmits:
+postsubmits:
   aws/eks-distro:
-  - name: kubernetes-1-26-presubmit
+  - name: dev-release-1-27-postsubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_MINIMAL_BASE_IPTABLES_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/kubernetes/(build|docker|Makefile|1-26)"
-    max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    run_if_changed: "release/1-27/development/RELEASE"
+    branches:
+    - ^main$
+    max_concurrency: 1
+    error_on_eviction: true
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
+      timeout: 4h
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
-      local-registry: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: presubmits-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
+      nodeSelector:
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-73d22e83b46d3a4c26af7dbb8cb450e7466cbc20.2
@@ -45,32 +50,26 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap 'touch /status/done' EXIT
           &&
           build/lib/buildkit_check.sh
           &&
-          build/lib/local_registry_check.sh
-          &&
-          make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
-          &&
-          make build -C $PROJECT_PATH
-          &&
-          mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
-          &&
-          make clean-go-cache clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then ./release/prow.sh; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"
-        - name: RELEASE_PROJECT_PATH
-          value: "projects/kubernetes/release"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: ARTIFACT_BUCKET
+          value: "eks-d-postsubmit-artifacts"
         - name: RELEASE_BRANCH
-          value: "1-26"
+          value: "1-27"
         - name: IMAGE_REPO
-          value: "localhost:5000"
+          value: "public.ecr.aws/h1r8a7l5"
         resources:
           requests:
-            memory: "24Gi"
-            cpu: "2560m"
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
@@ -80,18 +79,10 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-      - name: registry
-        image: public.ecr.aws/docker/library/registry:2
-        command:
-        - sh
-        args:
-        - /registry-script/entrypoint.sh
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 3
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
       - command:
         - sh
         args:
