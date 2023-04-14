@@ -17,8 +17,8 @@ envVars:
   value: localhost:5000
 resources:
   limits:
-    cpu: 2560m
-    memory: 24Gi
+    cpu: 16
+    memory: 32Gi
   requests:
-    cpu: 2560m
-    memory: 24Gi
+    cpu: 16
+    memory: 32Gi
