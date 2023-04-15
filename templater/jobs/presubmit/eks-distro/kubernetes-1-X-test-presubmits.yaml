@@ -8,8 +8,8 @@ envVars:
   value: {{ .releaseBranch }}
 resources:
   limits:
-    cpu: 3584m
-    memory: 26Gi
+    cpu: 16
+    memory: 32Gi
   requests:
-    cpu: 3584m
-    memory: 26Gi
+    cpu: 16
+    memory: 32Gi
