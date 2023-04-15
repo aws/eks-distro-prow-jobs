@@ -53,8 +53,8 @@ presubmits:
           value: "1-26"
         resources:
           requests:
-            memory: "26Gi"
-            cpu: "3584m"
+            memory: "32Gi"
+            cpu: "16"
       - command:
         - sh
         args:
