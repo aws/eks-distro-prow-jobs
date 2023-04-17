@@ -6,6 +6,19 @@ projectPath: projects/kubernetes/kubernetes
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}
+
+# The following `if` block is a temp solution while awaiting more storage in presubmits from Fargate team.
+# Once we have more space available we should move this back to the presubmit cluster
+{{if eq .releaseBranch "1-27"}} 
+cluster: prow-postsubmits-cluster
+resources:
+  limits:
+    cpu: 4
+    memory: 16Gi
+  requests:
+    cpu: 4
+    memory: 16Gi
+{{else}}
 resources:
   limits:
     cpu: 16
@@ -13,3 +26,4 @@ resources:
   requests:
     cpu: 16
     memory: 32Gi
+{{end}}
