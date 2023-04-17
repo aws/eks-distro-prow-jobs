@@ -8,6 +8,11 @@ commands:
 - mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
 - make clean-go-cache clean -C $PROJECT_PATH
 projectPath: projects/kubernetes/kubernetes
+# The following `if` block is a temp solution while awaiting more storage in presubmits from Fargate team.
+# Once we have more space available we should move this back to the presubmit cluster
+{{if eq .releaseBranch "1-27"}} 
+cluster: prow-postsubmits-cluster
+{{end}}
 envVars:
 - name: RELEASE_PROJECT_PATH
   value: projects/kubernetes/release
