@@ -142,6 +142,9 @@ func PresubmitClusterCheck(jc *JobConstants) presubmitCheck {
 		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
 			return true, 0, ""
 		}
+		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-27-test-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Cluster != jc.Cluster {
 			return false, findLineNumber(fileContentsString, "cluster:"), fmt.Sprintf(`Incorrect cluster configuration, please configure cluster as => cluster: "%s"`, jc.Cluster)
 		}
