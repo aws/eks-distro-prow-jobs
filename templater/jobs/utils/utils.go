@@ -14,8 +14,6 @@ import (
 )
 
 var releaseBranches = []string{
-	"1-21",
-	"1-22",
 	"1-23",
 	"1-24",
 	"1-25",
