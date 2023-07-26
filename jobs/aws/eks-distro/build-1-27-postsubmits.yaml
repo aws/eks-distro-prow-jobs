@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro:
   - name: build-1-27-postsubmit
     always_run: false
-    skip_if_only_changed: "1-23|1-24|1-25|1-26|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
+    skip_if_only_changed: "1-23|1-24|1-25|1-26|1-28|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
     branches:
     - ^main$
     max_concurrency: 10
@@ -54,9 +54,9 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro; fi
+          cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make -j2 postsubmit-conformance; fi
+          make -j2 postsubmit-conformance
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"

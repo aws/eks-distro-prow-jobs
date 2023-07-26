@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: node-driver-registrar-1-27-presubmit
+  - name: kubernetes-1-28-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_WINDOWS_BASE_.*_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/node-driver-registrar/(build|docker|Makefile|1-27)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_MINIMAL_BASE_IPTABLES_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/kubernetes/(build|docker|Makefile|1-28)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -51,18 +51,26 @@ presubmits:
           &&
           build/lib/local_registry_check.sh
           &&
-          make build clean-go-cache images clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build -C $PROJECT_PATH; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-csi/node-driver-registrar"
+          value: "projects/kubernetes/kubernetes"
+        - name: RELEASE_PROJECT_PATH
+          value: "projects/kubernetes/release"
         - name: RELEASE_BRANCH
-          value: "1-27"
+          value: "1-28"
         - name: IMAGE_REPO
           value: "localhost:5000"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "32Gi"
+            cpu: "16"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
         command:
