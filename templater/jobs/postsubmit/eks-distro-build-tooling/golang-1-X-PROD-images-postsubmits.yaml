@@ -5,6 +5,7 @@ automountServiceAccountToken: true
 commands:
 - make install-deps -C $PROJECT_PATH
 - projects/golang/go/scripts/prow_release_images.sh
+- projects/golang/go/scripts/release_notification.sh
 projectPath: projects/golang/go
 resources:
   requests:
@@ -19,3 +20,5 @@ envVars:
     value: public.ecr.aws/eks-distro-build-tooling
   - name: ECR_PUBLIC_PUSH_ROLE_ARN
     value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+  - name: SNS_TOPIC_ARN
+    value: "MISSING ARN" # TODO: COMPLETE AFTER SNS TOPIC IS CREATED

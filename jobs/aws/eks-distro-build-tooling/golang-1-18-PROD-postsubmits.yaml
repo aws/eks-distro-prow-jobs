@@ -56,6 +56,8 @@ postsubmits:
           make install-deps -C $PROJECT_PATH
           &&
           projects/golang/go/scripts/prow_release.sh
+          &&
+          projects/golang/go/scripts/release_notification.sh
         env:
         - name: PROJECT_PATH
           value: "projects/golang/go"
@@ -73,6 +75,8 @@ postsubmits:
           value: "public.ecr.aws/eks-distro-build-tooling"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+        - name: SNS_TOPIC_ARN
+          value: "MISSING ARN"
         resources:
           requests:
             memory: "16Gi"
