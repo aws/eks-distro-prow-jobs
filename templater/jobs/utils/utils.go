@@ -19,6 +19,7 @@ var releaseBranches = []string{
 	"1-25",
 	"1-26",
 	"1-27",
+	"1-28",
 }
 
 var golangVersions = []string{
