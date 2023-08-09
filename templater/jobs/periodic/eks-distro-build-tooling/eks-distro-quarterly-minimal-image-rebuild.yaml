@@ -22,6 +22,6 @@ extraRefs:
   repo: eks-distro-build-tooling
 resources:
   requests:
-    cpu: "5"
-    memory: 16Gi
-timeout: 4h
+    cpu: "2"
+    memory: 4Gi
+timeout: 1h
