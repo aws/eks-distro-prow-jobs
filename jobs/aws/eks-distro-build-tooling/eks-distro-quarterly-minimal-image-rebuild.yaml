@@ -31,7 +31,7 @@ periodics:
     repo: eks-distro-build-tooling
     base_ref: main
   decoration_config:
-    timeout: 4h
+    timeout: 1h
     gcs_configuration:
       bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
       path_strategy: explicit
@@ -67,8 +67,8 @@ periodics:
         value: "true"
       resources:
         requests:
-          memory: "16Gi"
-          cpu: "5"
+          memory: "4Gi"
+          cpu: "2"
     - command:
       - sh
       args:
