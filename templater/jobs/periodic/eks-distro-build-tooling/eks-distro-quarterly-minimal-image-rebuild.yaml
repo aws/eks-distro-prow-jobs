@@ -1,0 +1,27 @@
+jobName: eks-distro-quarterly-minimal-image-rebuild-periodic
+cronExpression: 0 0 1 */3 *
+prCreation: true
+architecture: AMD64
+automountServiceAccountToken: true
+commands:
+- export DATE_EPOCH=$(date "+%F-%s")
+- make rebuild-minimal-images
+- make create-rebuild-pr 
+projectPath: eks-distro-base
+envVars:
+- name: REPO_OWNER
+  value: aws
+- name: OUTPUT_DEBUG_LOG
+  value: true
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+resources:
+  requests:
+    cpu: "2"
+    memory: 4Gi
+timeout: 1h
