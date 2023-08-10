@@ -5,7 +5,7 @@ automountServiceAccountToken: true
 commands:
 - make install-deps -C $PROJECT_PATH
 - projects/golang/go/scripts/prow_release_images.sh
-- projects/golang/go/scripts/release_notification.sh
+- projects/golang/go/scripts/debian_image_release_notification.sh
 projectPath: projects/golang/go
 resources:
   requests:
@@ -21,4 +21,4 @@ envVars:
   - name: ECR_PUBLIC_PUSH_ROLE_ARN
     value: arn:aws:iam::832188789588:role/ECRPublicPushRole
   - name: SNS_TOPIC_ARN
-    value: "MISSING ARN" # TODO: COMPLETE AFTER SNS TOPIC IS CREATED
+    value: arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates
