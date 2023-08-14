@@ -5,6 +5,7 @@ automountServiceAccountToken: true
 commands:
 - make install-deps -C $PROJECT_PATH
 - projects/golang/go/scripts/prow_release.sh
+- projects/golang/go/scripts/eks_golang_release_notification.sh
 projectPath: projects/golang/go
 resources:
   limits:
@@ -28,4 +29,6 @@ envVars:
     value: public.ecr.aws/eks-distro-build-tooling
   - name: ECR_PUBLIC_PUSH_ROLE_ARN
     value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+  - name: SNS_TOPIC_ARN
+    value: arn:aws:sns:us-east-1:379412251201:eks-golang-updates
 serviceAccountName: release-build-account
