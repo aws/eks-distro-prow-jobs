@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro:
   - name: build-1-24-postsubmit
     always_run: false
-    skip_if_only_changed: "1-25|1-26|1-27|1-28|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
+    skip_if_only_changed: "1-23|1-25|1-26|1-27|1-28|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
     branches:
     - ^main$
     max_concurrency: 10
