@@ -124,6 +124,9 @@ func PresubmitBucketCheck(jc *JobConstants) presubmitCheck {
 		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-27-test-presubmit") {
 			return true, 0, ""
 		}
+		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-28-test-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.UtilityConfig.DecorationConfig.GCSConfiguration.Bucket != jc.Bucket {
 			return false, findLineNumber(fileContentsString, "bucket:"), fmt.Sprintf(`Incorrect bucket configuration, please configure S3 bucket as => bucket: %s`, jc.Bucket)
 		}
@@ -148,6 +151,9 @@ func PresubmitClusterCheck(jc *JobConstants) presubmitCheck {
 		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-27-test-presubmit") {
 			return true, 0, ""
 		}
+		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-28-test-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Cluster != jc.Cluster {
 			return false, findLineNumber(fileContentsString, "cluster:"), fmt.Sprintf(`Incorrect cluster configuration, please configure cluster as => cluster: "%s"`, jc.Cluster)
 		}
@@ -170,6 +176,9 @@ func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 			return true, 0, ""
 		}
 		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-27-test-presubmit") {
+			return true, 0, ""
+		}
+		if strings.Contains(presubmitConfig.JobBase.Name, "kubernetes-1-28-test-presubmit") {
 			return true, 0, ""
 		}
 		if presubmitConfig.JobBase.Spec.ServiceAccountName != jc.ServiceAccountName {
