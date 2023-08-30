@@ -5,6 +5,8 @@ ifndef PULL_PULL_SHA
 export PULL_PULL_SHA=$(shell git show -s --format=%H)
 endif
 
+export PATH:=/go/go1.20/bin:$(PATH)
+
 BIN_DIR := bin
 
 .PHONY: all
@@ -12,11 +14,10 @@ all: build lint
 
 .PHONY: build
 build:  ## Build linter
-build: setpath fmt vet
+build: goversion fmt vet
 	go build -o ./$(BIN_DIR)/prow-linter github.com/aws/eks-distro-prow-jobs/linter
 
-setpath:
-	export PATH=/go/go1.20/bin:$(PATH)
+goversion:
 	go version
 
 fmt: ## Run go fmt against code.
