@@ -16,7 +16,8 @@ build: version fmt vet
 	go build -o ./$(BIN_DIR)/prow-linter github.com/aws/eks-distro-prow-jobs/linter
 
 version: ## Run to get go version
-	go version 
+	which go
+	go version
 
 fmt: ## Run go fmt against code.
 	go fmt ./...
