@@ -5,8 +5,6 @@ commands:
 - make lint -C $LINT_PROJECT_PATH
 projectPath: templater
 envVars:
-  - name: GO_SOURCE_VERSION
-    value: "1.20"
   - name: LINT_PROJECT_PATH
     value: linter
 resources:
