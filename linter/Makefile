@@ -12,8 +12,11 @@ all: build lint
 
 .PHONY: build
 build:  ## Build linter
-build: fmt vet
+build: version fmt vet
 	go build -o ./$(BIN_DIR)/prow-linter github.com/aws/eks-distro-prow-jobs/linter
+
+version: ## Run to get go version
+	go version 
 
 fmt: ## Run go fmt against code.
 	go fmt ./...
