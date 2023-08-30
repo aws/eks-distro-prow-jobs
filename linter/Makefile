@@ -17,6 +17,7 @@ build: version fmt vet
 
 version: ## Run to get go version
 	which go
+	ls -al /usr/bin/go
 	go version
 
 fmt: ## Run go fmt against code.
