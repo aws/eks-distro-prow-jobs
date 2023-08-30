@@ -51,6 +51,8 @@ presubmits:
         env:
         - name: PROJECT_PATH
           value: "templater"
+        - name: GO_SOURCE_VERSION
+          value: "1.20"
         - name: LINT_PROJECT_PATH
           value: "linter"
         resources:
