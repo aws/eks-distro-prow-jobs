@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	k8s.io/test-infra v0.0.0-20230304165056-927045db4d04
+	k8s.io/test-infra v0.0.0-20230830195447-b32980305a76
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -57,6 +57,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.2.4 // indirect
 	github.com/googleapis/gax-go v2.0.2+incompatible // indirect
 	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190212212710-3befbb6ad0cc // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -68,6 +69,7 @@ require (
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-zglob v0.0.2 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
@@ -85,7 +87,7 @@ require (
 	github.com/shurcooL/githubv4 v0.0.0-20210725200734-83ba7b4c9228 // indirect
 	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f // indirect
 	github.com/sirupsen/logrus v1.9.1 // indirect
-	github.com/smartystreets/goconvey v1.7.2 // indirect
+	github.com/smarty/assertions v1.15.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tektoncd/pipeline v0.51.0 // indirect
 	github.com/trivago/tgo v1.0.7 // indirect
