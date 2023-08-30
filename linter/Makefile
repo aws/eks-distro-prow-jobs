@@ -16,7 +16,8 @@ build: setpath fmt vet
 	go build -o ./$(BIN_DIR)/prow-linter github.com/aws/eks-distro-prow-jobs/linter
 
 setpath:
-	export PATH := /go/go1.20/bin:$(PATH)
+	export PATH := /usr/bin/go/go1.20/bin:$(PATH)
+	go version
 
 fmt: ## Run go fmt against code.
 	go fmt ./...
