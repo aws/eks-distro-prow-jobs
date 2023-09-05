@@ -24,20 +24,18 @@ presubmits:
     always_run: false
     run_if_changed: "projects/kubernetes/kubernetes/1-28/(GIT_TAG|patches)"
     max_concurrency: 10
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
-      nodeSelector:
-        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-db4232c256f3148b52205cce52f15716beec4011.2
@@ -55,8 +53,8 @@ presubmits:
           value: "1-28"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "4"
+            memory: "32Gi"
+            cpu: "16"
       - command:
         - sh
         args:
