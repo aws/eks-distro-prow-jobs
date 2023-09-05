@@ -117,7 +117,7 @@ presubmits:
             memory: "{{ .resources.Requests.Memory }}"
             cpu: "{{ .resources.Requests.CPU }}"
             {{- if .resources.Requests.EphemeralStorage }}
-              ephemeralStorage: "{{ .resources.Requests.EphemeralStorage }}"
+            ephemeralStorage: "{{ .resources.Requests.EphemeralStorage }}"
             {{- end }}
           {{- end }}
         {{- end }}
