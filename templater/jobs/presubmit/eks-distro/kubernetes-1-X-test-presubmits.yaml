@@ -9,7 +9,7 @@ envVars:
 
 # The following `if` block is a temp solution while awaiting more storage in presubmits from Fargate team.
 # Once we have more space available we should move this back to the presubmit cluster
-{{if or (eq .releaseBranch "1-27") (eq .releaseBranch "1-28")}}
+{{ if eq .releaseBranch "1-27" }}
 architecture: AMD64
 cluster: prow-postsubmits-cluster
 resources:
@@ -19,7 +19,7 @@ resources:
   requests:
     cpu: 4
     memory: 16Gi
-{{else}}
+{{ else }}
 resources:
   limits:
     cpu: 16
@@ -27,4 +27,7 @@ resources:
   requests:
     cpu: 16
     memory: 32Gi
-{{end}}
+    {{ if eq .releaseBranch "1-28" }}
+    ephemeralStorage: "50Gi"
+    {{ end }}
+{{ end }}
