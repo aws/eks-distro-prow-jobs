@@ -19,7 +19,7 @@ type Resources struct {
 type ResourceConfig struct {
 	CPU              string `json:"cpu,omitempty"`
 	Memory           string `json:"memory,omitempty"`
-	EphemeralStorage string `json:"ephemeralStorage,omitempty"`
+	EphemeralStorage string `json:"ephemeral-storage,omitempty"`
 }
 
 type HostPath struct {
