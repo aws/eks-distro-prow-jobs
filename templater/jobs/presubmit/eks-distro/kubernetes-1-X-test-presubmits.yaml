@@ -28,6 +28,6 @@ resources:
     cpu: 16
     memory: 32Gi
     {{ if eq .releaseBranch "1-28" }}
-    ephemeralStorage: "50Gi"
+    ephemeral-storage: "50Gi"
     {{ end }}
 {{ end }}
