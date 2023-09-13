@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro:
-  - name: kops-build-<no value>-presubmits
+  - name: kops-build-1-27-presubmits
     always_run: false
     run_if_changed: ""
     max_concurrency: 10
@@ -58,7 +58,7 @@ presubmits:
         - name: ARTIFACT_BUCKET
           value: "eks-d-postsubmit-artifacts"
         - name: RELEASE_BRANCH
-          value: "<no value>"
+          value: "1-27"
         - name: CONTROL_PLANE_INSTANCE_PROFILE
           value: "arn:aws:iam::125833916567:instance-profile/KopsControlPlaneBuildRole"
         - name: NODE_INSTANCE_PROFILE
