@@ -53,6 +53,7 @@ presubmits:
           requests:
             memory: "16Gi"
             cpu: "2560m"
+            ephemeral-storage: "50Gi"
       - command:
         - sh
         args:
