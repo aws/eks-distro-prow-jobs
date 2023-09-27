@@ -16,4 +16,4 @@ envVars:
 resources:
   requests:
     cpu: 1024m
-    memory: 4Gi
+    memory: 8Gi
