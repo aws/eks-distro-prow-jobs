@@ -65,7 +65,7 @@ presubmits:
           value: "localhost:5000"
         resources:
           requests:
-            memory: "4Gi"
+            memory: "8Gi"
             cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.10.5-rootless
