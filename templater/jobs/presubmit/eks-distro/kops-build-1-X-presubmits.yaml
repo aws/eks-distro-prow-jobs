@@ -3,7 +3,7 @@ skipIfOnlyChanged: development/kops/.*
 imageBuild: true
 projectPath: development/kops
 commands:
-- make kops
+- make kops-prow-nobuild
 envVars:
 - name: TEST_ROLE_ARN
   value: arn:aws:iam::125833916567:role/TestBuildRole
