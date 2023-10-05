@@ -1,6 +1,6 @@
 jobName: kops-build-{{ .releaseBranch }}-presubmits
 skipIfOnlyChanged: development/kops/.*
-imageBuild: true
+imageBuild: false
 projectPath: development/kops
 commands:
   - make kops

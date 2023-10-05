@@ -33,7 +33,6 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
-      image-build: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -46,8 +45,6 @@ presubmits:
         - -c
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
-          &&
-          build/lib/buildkit_check.sh
           &&
           if make check-for-supported-release-branch -C $PROJECT_PATH; then make kops; fi
         env:
@@ -71,15 +68,6 @@ presubmits:
           requests:
             memory: "8Gi"
             cpu: "2"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
       - command:
         - sh
         args:
