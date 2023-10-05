@@ -49,7 +49,7 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make kops-prow-nobuild; fi
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make kops; fi
         env:
         - name: PROJECT_PATH
           value: "development/kops"

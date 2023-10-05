@@ -49,7 +49,7 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make kops-prow-nobuild
+          make kops
         env:
         - name: PROJECT_PATH
           value: "development/kops"
