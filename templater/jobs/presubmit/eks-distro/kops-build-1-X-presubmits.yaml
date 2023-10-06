@@ -3,7 +3,7 @@ skipIfOnlyChanged: development/kops/.*
 imageBuild: false
 projectPath: development/kops
 commands:
-  - make kops
+  - make build kops
 envVars:
   - name: ARTIFACT_BUCKET
     value: eks-d-postsubmit-artifacts
