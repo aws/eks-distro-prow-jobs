@@ -10,3 +10,4 @@ resources:
   requests:
     cpu: "2560m"
     memory: 16Gi
+    ephemeral-storage: 50Gi
