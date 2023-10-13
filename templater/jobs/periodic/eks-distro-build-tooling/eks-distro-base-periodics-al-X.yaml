@@ -1,5 +1,5 @@
 jobName: eks-distro-base-tooling-periodic-al-{{ .alVersion }}
-cronExpression: 0 19 * * 1-5
+cronExpression: 0 7,19 * * 1-5
 imageBuild: true
 prCreation: true
 architecture: AMD64
