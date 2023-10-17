@@ -38,7 +38,7 @@ postsubmits:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: release-build-account
+      serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: true
       nodeSelector:
         arch: AMD64
