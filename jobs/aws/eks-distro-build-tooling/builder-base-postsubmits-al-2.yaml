@@ -25,7 +25,7 @@ postsubmits:
     run_if_changed: "builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh"
     branches:
     - ^main$
-    max_concurrency: 10
+    max_concurrency: 1
     error_on_eviction: true
     cluster: "prow-postsubmits-cluster"
     skip_report: false
