@@ -110,6 +110,15 @@ presubmits:
           value: "{{ .Value }}"
         {{- end }}
         {{- end }}
+        {{- if or .runAsUser .runAsGroup }}
+        securityContext:
+          {{- if .runAsUser }}
+          runAsUser: {{ .runAsUser }}
+          {{- end }}
+          {{- if .runAsGroup }}
+          runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+        {{- end }}
         {{- if .resources }}
         resources:
           {{- if .resources.Requests }}

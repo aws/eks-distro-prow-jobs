@@ -71,4 +71,6 @@ type JobConfig struct {
 	Cluster                      string         `json:"cluster,omitempty"`
 	Bucket                       string         `json:"bucket,omitempty"`
 	ProjectPath                  string         `json:"projectPath,omitempty"`
+	RunAsUser                    string         `json:"runAsUser,omitempty"`
+	RunAsGroup                   string         `json:"runAsGroup,omitempty"`
 }
