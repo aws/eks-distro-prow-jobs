@@ -1,0 +1,18 @@
+jobName: cni-plugins-{{ .releaseBranch }}-test-presubmit
+runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
+commands:
+- make test -C $PROJECT_PATH
+projectPath: projects/containernetworking/plugins
+envVars:
+- name: RELEASE_BRANCH
+  value: {{ .releaseBranch }}
+resources:
+  limits:
+    cpu: 1024m
+    memory: 2Gi
+  requests:
+    cpu: 1024m
+    memory: 2Gi
+    {{ if or (eq .releaseBranch "1-25") (eq .releaseBranch "1-26") (eq .releaseBranch "1-27") (eq .releaseBranch "1-28") }}
+    ephemeral-storage: "50Gi"
+    {{ end }}
