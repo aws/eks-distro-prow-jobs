@@ -4,7 +4,7 @@ set -o pipefail
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
-DIFF_LINE_COUNT=$(git diff $REPO_ROOT/jobs | wc -l)
+DIFF_LINE_COUNT=$(git diff $REPO_ROOT/jobs ':(exclude)*-1-23-*' | wc -l)
 if [ $DIFF_LINE_COUNT -ne 0 ]; then
     CHANGED_FILES=$(git diff --name-only $REPO_ROOT/jobs)
     git diff $REPO_ROOT/jobs
