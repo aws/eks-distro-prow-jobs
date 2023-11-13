@@ -22,7 +22,6 @@ presubmits:
   aws/eks-distro:
   - name: cni-plugins-1-23-presubmit
     always_run: false
-    run_if_changed: "^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|1-23)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
