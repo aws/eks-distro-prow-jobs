@@ -1,5 +1,5 @@
 jobName: cni-plugins-{{ .releaseBranch }}-test-presubmit
-runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
+runIfChanged: ^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
 commands:
 - make test -C $PROJECT_PATH
 projectPath: projects/containernetworking/plugins
