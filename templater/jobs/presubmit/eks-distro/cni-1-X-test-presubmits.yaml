@@ -1,5 +1,5 @@
 jobName: cni-plugins-{{ .releaseBranch }}-test-presubmit
-runIfChanged: ^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|{{ .releaseBranch }})
+runIfChanged: projects/containernetworking/plugins/{{ .releaseBranch }}/(GIT_TAG|patches)
 commands:
 - make test -C $PROJECT_PATH
 projectPath: projects/containernetworking/plugins
