@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: cni-plugins-1-25-test-presubmit
     always_run: false
-    run_if_changed: "^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|1-25)"
+    run_if_changed: "projects/containernetworking/plugins/1-25/(GIT_TAG|patches|GOLANG_VERSION)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
