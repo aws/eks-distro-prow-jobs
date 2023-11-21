@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: kubernetes-1-23-test-presubmit
+  - name: aws-cloud-controller-manager-1-29-presubmit
     always_run: false
-    run_if_changed: "projects/kubernetes/kubernetes/1-23/(GIT_TAG|patches)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|1-29)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -32,6 +32,8 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
+      image-build: "true"
+      local-registry: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -45,16 +47,47 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          make test -C $PROJECT_PATH
+          build/lib/buildkit_check.sh
+          &&
+          build/lib/local_registry_check.sh
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes/kubernetes"
+          value: "projects/kubernetes/cloud-provider-aws"
+        - name: RELEASE_PROJECT_PATH
+          value: "projects/kubernetes/release"
         - name: RELEASE_BRANCH
-          value: "1-23"
+          value: "1-29"
+        - name: IMAGE_REPO
+          value: "localhost:5000"
         resources:
           requests:
-            memory: "32Gi"
-            cpu: "16"
+            memory: "8Gi"
+            cpu: "1024m"
+      - name: buildkitd
+        image: moby/buildkit:v0.10.5-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
       - command:
         - sh
         args:

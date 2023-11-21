@@ -20,19 +20,19 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-attacher-1-28-presubmit
+  - name: kops-build-1-29-presubmits
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/(build|docker|Makefile|1-28)"
+    run_if_changed: "development/kops/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
+      timeout: 6h
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
-      image-build: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -46,27 +46,20 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          build/lib/buildkit_check.sh
-          &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build kops; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-csi/external-attacher"
+          value: "development/kops"
+        - name: ARTIFACT_BUCKET
+          value: "eks-d-postsubmit-artifacts"
         - name: RELEASE_BRANCH
-          value: "1-28"
+          value: "1-29"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/h1r8a7l5"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
+            memory: "8Gi"
+            cpu: "2"
       - command:
         - sh
         args:

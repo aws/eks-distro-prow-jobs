@@ -19,6 +19,7 @@ var releaseBranches = []string{
 	"1-26",
 	"1-27",
 	"1-28",
+	"1-29",
 }
 
 var golangVersions = []string{
@@ -166,7 +167,6 @@ func RunMappers(jobsToData map[string]map[string]interface{}, mappers []func(str
 }
 
 func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
-
 	files, err := ioutil.ReadDir(jobDir)
 	if err != nil {
 		return nil, fmt.Errorf("error reading job directory %s: %v", jobDir, err)
