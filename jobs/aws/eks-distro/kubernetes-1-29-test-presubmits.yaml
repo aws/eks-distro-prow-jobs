@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-attacher-1-28-presubmit
+  - name: kubernetes-1-29-test-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/(build|docker|Makefile|1-28)"
+    run_if_changed: "projects/kubernetes/kubernetes/1-29/(GIT_TAG|patches)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -32,7 +32,6 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
-      image-build: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -46,27 +45,16 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          build/lib/buildkit_check.sh
-          &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make test -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-csi/external-attacher"
+          value: "projects/kubernetes/kubernetes"
         - name: RELEASE_BRANCH
-          value: "1-28"
+          value: "1-29"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
+            memory: "32Gi"
+            cpu: "16"
       - command:
         - sh
         args:

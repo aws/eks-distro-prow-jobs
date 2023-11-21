@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: external-attacher-1-28-presubmit
+  - name: external-provisioner-1-29-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-attacher/(build|docker|Makefile|1-28)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-provisioner/(build|docker|Makefile|1-29)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -48,12 +48,12 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-csi/external-attacher"
+          value: "projects/kubernetes-csi/external-provisioner"
         - name: RELEASE_BRANCH
-          value: "1-28"
+          value: "1-29"
         resources:
           requests:
             memory: "4Gi"
