@@ -92,11 +92,11 @@ periodics:
       - name: CREATE_BUILDER_PODS
         value: "true"
       - name: BUILDKITD_IMAGE
-        value: "moby/buildkit:v0.10.5-rootless"
+        value: "moby/buildkit:v0.12.3-rootless"
       - name: USE_BUILDX
         value: "true"
     - name: buildkitd
-      image: moby/buildkit:v0.10.5-rootless
+      image: moby/buildkit:v0.12.3-rootless
       command:
       - sh
       args:

@@ -83,7 +83,7 @@ presubmits:
         - name: PLATFORMS
           value: "linux/amd64"
         - name: BUILDKITD_IMAGE
-          value: "moby/buildkit:v0.10.5-rootless"
+          value: "moby/buildkit:v0.12.3-rootless"
         - name: USE_BUILDX
           value: "true"
         resources:
@@ -91,7 +91,7 @@ presubmits:
             memory: "4Gi"
             cpu: "1024m"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:

@@ -80,7 +80,7 @@ postsubmits:
         - name: AWS_REGION
           value: "us-east-1"
         - name: BUILDKITD_IMAGE
-          value: "moby/buildkit:v0.10.5-rootless"
+          value: "moby/buildkit:v0.12.3-rootless"
         - name: USE_BUILDX
           value: "true"
         resources:
@@ -88,7 +88,7 @@ postsubmits:
             memory: "2Gi"
             cpu: "1"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:
