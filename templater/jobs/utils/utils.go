@@ -22,6 +22,10 @@ var releaseBranches = []string{
 	"1-29",
 }
 
+var k8releaseBranches = []string{
+	"1-23",
+}
+
 var golangVersions = []string{
 	"1-19",
 	"1-20",
@@ -123,11 +127,17 @@ func AddReleaseBranch(fileName string, data map[string]interface{}) map[string]m
 	if !strings.Contains(fileName, "1-X") {
 		return jobList
 	}
+	currentReleaseBranches := releaseBranches
 
-	for i, releaseBranch := range releaseBranches {
+	if strings.Contains(fileName, "kubernetes") && !strings.Contains(fileName, "release") {
+		currentReleaseBranches = append(k8releaseBranches, releaseBranches...)
+	}
+
+	for i, releaseBranch := range currentReleaseBranches {
+
 		releaseBranchBasedFileName := strings.ReplaceAll(fileName, "1-X", releaseBranch)
-		otherReleaseBranches := append(append([]string{}, releaseBranches[:i]...),
-			releaseBranches[i+1:]...)
+		otherReleaseBranches := append(append([]string{}, currentReleaseBranches[:i]...),
+			currentReleaseBranches[i+1:]...)
 		jobList[releaseBranchBasedFileName] = AppendMap(data, map[string]interface{}{
 			"releaseBranch":        releaseBranch,
 			"otherReleaseBranches": strings.Join(otherReleaseBranches, "|"),
@@ -135,7 +145,7 @@ func AddReleaseBranch(fileName string, data map[string]interface{}) map[string]m
 
 		// If latest release branch, check if the release branch dir exists before executing cmd
 		// This allows us to experiment with adding prow jobs for new branches without failing other runs
-		if len(releaseBranches)-1 == i {
+		if len(currentReleaseBranches)-1 == i {
 			jobList[releaseBranchBasedFileName]["latestReleaseBranch"] = true
 		}
 	}
