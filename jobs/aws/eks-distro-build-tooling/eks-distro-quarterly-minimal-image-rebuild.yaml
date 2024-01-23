@@ -19,8 +19,8 @@
 ################################################################################
 
 periodics:
-- name: eks-distro-quarterly-minimal-image-rebuild-periodic
-  cron: "0 0 1 */3 *"
+- name: eks-distro-base-tooling-periodic-al-<no value>
+  cron: "0 7,19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
   extra_refs:
@@ -30,45 +30,84 @@ periodics:
   - org: eks-distro-pr-bot
     repo: eks-distro-build-tooling
     base_ref: main
+  - org: eks-distro-pr-bot
+    repo: eks-distro
+    base_ref: main
+  - org: eks-distro-pr-bot
+    repo: eks-anywhere-build-tooling
+    base_ref: main
+  - org: eks-distro-pr-bot
+    repo: eks-anywhere
+    base_ref: main
   decoration_config:
-    timeout: 1h
+    timeout: 8h
     gcs_configuration:
       bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   labels:
+    image-build: "true"
     pr-creation: "true"
     disk-usage: "true"
   spec:
-    serviceaccountName: periodics-build-account
+    serviceaccountName: postsubmits-build-account
     automountServiceAccountToken: true
     nodeSelector:
       arch: AMD64
     containers:
     - name: build-container
-      image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-e833940fcefab8ba3f0848a5da79fc7c3650404c.2
+      image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-e833940fcefab8ba3f0848a5da79fc7c3650404c.2
       command:
       - bash
       - -c
       - >
-        trap 'touch /status/done' EXIT
+        trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
+        &&
+        scripts/buildkit_check.sh
+        &&
+        scripts/setup_buildx.sh
         &&
         export DATE_EPOCH=$(date "+%F-%s")
         &&
-        make rebuild-minimal-images
+        source scripts/setup_public_ecr_push.sh
         &&
-        make create-rebuild-pr
+        make quarterly-update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+        &&
+        make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
       env:
       - name: PROJECT_PATH
         value: "eks-distro-base"
+      - name: AL_TAG
+        value: "<no value>"
+      - name: IMAGE_REPO
+        value: "public.ecr.aws/eks-distro-build-tooling"
+      - name: ECR_PUBLIC_PUSH_ROLE_ARN
+        value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+      - name: AWS_REGION
+        value: "us-east-1"
       - name: REPO_OWNER
         value: "aws"
       - name: OUTPUT_DEBUG_LOG
         value: "true"
+      - name: CREATE_BUILDER_PODS
+        value: "true"
+      - name: BUILDKITD_IMAGE
+        value: "moby/buildkit:v0.12.3-rootless"
+      - name: USE_BUILDX
+        value: "true"
+    - name: buildkitd
+      image: moby/buildkit:v0.12.3-rootless
+      command:
+      - sh
+      args:
+      - /script/entrypoint.sh
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
       resources:
         requests:
-          memory: "4Gi"
-          cpu: "2"
+          memory: "2Gi"
+          cpu: "1024m"
     - command:
       - sh
       args:
