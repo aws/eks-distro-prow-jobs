@@ -19,7 +19,7 @@
 ################################################################################
 
 periodics:
-- name: eks-distro-base-tooling-periodic-al-<no value>
+- name: eks-distro-base-tooling-quarterly-update-al-2023
   cron: "0 7,19 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
@@ -71,14 +71,14 @@ periodics:
         &&
         source scripts/setup_public_ecr_push.sh
         &&
-        make quarterly-update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+        make update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         &&
         make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
       env:
       - name: PROJECT_PATH
         value: "eks-distro-base"
       - name: AL_TAG
-        value: "<no value>"
+        value: "2023"
       - name: IMAGE_REPO
         value: "public.ecr.aws/eks-distro-build-tooling"
       - name: ECR_PUBLIC_PUSH_ROLE_ARN
