@@ -71,7 +71,7 @@ periodics:
         &&
         source scripts/setup_public_ecr_push.sh
         &&
-        make update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+        make quarterly-update -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         &&
         make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
       env:
