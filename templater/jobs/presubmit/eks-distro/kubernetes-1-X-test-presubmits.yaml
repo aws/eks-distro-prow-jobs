@@ -8,8 +8,11 @@ envVars:
   value: {{ .releaseBranch }}
 resources:
   limits:
-    cpu: 3584m
-    memory: 26Gi
+    cpu: 16
+    memory: 32Gi
   requests:
-    cpu: 3584m
-    memory: 26Gi
+    cpu: 16
+    memory: 32Gi
+    {{ if or (eq .releaseBranch "1-25") (eq .releaseBranch "1-26") (eq .releaseBranch "1-27") (eq .releaseBranch "1-28") }}
+    ephemeral-storage: "50Gi"
+    {{ end }}

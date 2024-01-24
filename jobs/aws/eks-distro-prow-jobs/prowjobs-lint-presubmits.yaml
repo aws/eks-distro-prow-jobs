@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-prow-jobs:
   - name: prowjobs-lint-presubmit
     always_run: false
-    run_if_changed: "jobs/aws/.*"
+    run_if_changed: "jobs/aws/.*|templater/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -38,7 +38,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-a8e10a52a2c5fd0d436f476c17df5ceb3c602e1d.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-e833940fcefab8ba3f0848a5da79fc7c3650404c.2
         command:
         - bash
         - -c

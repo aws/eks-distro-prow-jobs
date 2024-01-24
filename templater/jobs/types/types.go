@@ -17,8 +17,9 @@ type Resources struct {
 }
 
 type ResourceConfig struct {
-	CPU    string `json:"cpu,omitempty"`
-	Memory string `json:"memory,omitempty"`
+	CPU              string `json:"cpu,omitempty"`
+	Memory           string `json:"memory,omitempty"`
+	EphemeralStorage string `json:"ephemeral-storage,omitempty"`
 }
 
 type HostPath struct {
@@ -70,4 +71,6 @@ type JobConfig struct {
 	Cluster                      string         `json:"cluster,omitempty"`
 	Bucket                       string         `json:"bucket,omitempty"`
 	ProjectPath                  string         `json:"projectPath,omitempty"`
+	RunAsUser                    string         `json:"runAsUser,omitempty"`
+	RunAsGroup                   string         `json:"runAsGroup,omitempty"`
 }

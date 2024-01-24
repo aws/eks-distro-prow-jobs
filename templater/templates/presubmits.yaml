@@ -110,12 +110,24 @@ presubmits:
           value: "{{ .Value }}"
         {{- end }}
         {{- end }}
+        {{- if or .runAsUser .runAsGroup }}
+        securityContext:
+          {{- if .runAsUser }}
+          runAsUser: {{ .runAsUser }}
+          {{- end }}
+          {{- if .runAsGroup }}
+          runAsGroup: {{ .runAsGroup }}
+          {{- end }}
+        {{- end }}
         {{- if .resources }}
         resources:
           {{- if .resources.Requests }}
           requests:
             memory: "{{ .resources.Requests.Memory }}"
             cpu: "{{ .resources.Requests.CPU }}"
+            {{- if .resources.Requests.EphemeralStorage }}
+            ephemeral-storage: "{{ .resources.Requests.EphemeralStorage }}"
+            {{- end }}
           {{- end }}
         {{- end }}
         {{- if .volumeMounts }}

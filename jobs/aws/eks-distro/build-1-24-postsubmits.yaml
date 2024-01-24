@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro:
   - name: build-1-24-postsubmit
     always_run: false
-    skip_if_only_changed: "1-21|1-22|1-23|docs/.*"
+    skip_if_only_changed: "1-25|1-26|1-27|1-28|1-29|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
     branches:
     - ^main$
     max_concurrency: 10
@@ -37,6 +37,7 @@ postsubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      disk-usage: "true"
     spec:
       serviceaccountName: postsubmits-build-account
       automountServiceAccountToken: false
@@ -44,7 +45,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-a8e10a52a2c5fd0d436f476c17df5ceb3c602e1d.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-e833940fcefab8ba3f0848a5da79fc7c3650404c.2
         command:
         - bash
         - -c
@@ -58,7 +59,7 @@ postsubmits:
           make -j2 postsubmit-conformance
         env:
         - name: PROJECT_PATH
-          value: ""
+          value: "projects/kubernetes/kubernetes"
         - name: TEST_ROLE_ARN
           value: "arn:aws:iam::125833916567:role/TestBuildRole"
         - name: ARTIFACT_BUCKET
@@ -80,7 +81,7 @@ postsubmits:
             memory: "8Gi"
             cpu: "2"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:
@@ -92,3 +93,9 @@ postsubmits:
           requests:
             memory: "2Gi"
             cpu: "1024m"
+      - command:
+        - sh
+        args:
+        - /disk-usage-script/entrypoint.sh
+        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        name: disk-monitor

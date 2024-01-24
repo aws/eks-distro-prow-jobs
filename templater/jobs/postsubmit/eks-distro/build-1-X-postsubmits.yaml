@@ -1,6 +1,7 @@
 jobName: build-{{ .releaseBranch }}-postsubmit
-skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*
+skipIfOnlyChanged: {{ .otherReleaseBranches }}|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS
 imageBuild: true
+projectPath: projects/kubernetes/kubernetes
 commands:
 - cp -r "${HOME}/.docker" /home/prow/go/src/github.com/aws/eks-distro
 - make -j2 postsubmit-conformance

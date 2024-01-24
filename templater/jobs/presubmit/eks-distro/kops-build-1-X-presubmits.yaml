@@ -1,0 +1,18 @@
+jobName: kops-build-{{ .releaseBranch }}-presubmits
+runIfChanged: development/kops/.*
+imageBuild: false
+projectPath: development/kops
+commands:
+  - make build kops
+envVars:
+  - name: ARTIFACT_BUCKET
+    value: eks-d-postsubmit-artifacts
+  - name: RELEASE_BRANCH
+    value: "{{ .releaseBranch }}"
+  - name: IMAGE_REPO
+    value: public.ecr.aws/h1r8a7l5
+resources:
+  requests:
+    cpu: "2"
+    memory: 8Gi
+timeout: 6h

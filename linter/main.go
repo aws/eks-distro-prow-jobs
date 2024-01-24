@@ -30,6 +30,22 @@ import (
 	yaml "sigs.k8s.io/yaml"
 )
 
+var skipPresubmitMakeTargetCheck = []string{
+	"golang.*presubmit",
+	"golang.*presubmits",
+	"eks-distro-base-test-presubmit",
+	"eks-distro-base-tooling-presubmit",
+	"lint",
+}
+
+var skipPostSubmitMakeTargetCheck = []string{
+	"golang.*postsubmit",
+	"golang.*postsubmits",
+	"build-1-2[1-9].*postsubmit",
+	"announcement",
+	"release",
+}
+
 type JobConstants struct {
 	Bucket                          string
 	Cluster                         string
@@ -102,6 +118,9 @@ func SkipReportCheck() presubmitCheck {
 
 func PresubmitBucketCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.UtilityConfig.DecorationConfig.GCSConfiguration.Bucket != jc.Bucket {
 			return false, findLineNumber(fileContentsString, "bucket:"), fmt.Sprintf(`Incorrect bucket configuration, please configure S3 bucket as => bucket: %s`, jc.Bucket)
 		}
@@ -120,6 +139,9 @@ func PostsubmitBucketCheck(jc *JobConstants) postsubmitCheck {
 
 func PresubmitClusterCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Cluster != jc.Cluster {
 			return false, findLineNumber(fileContentsString, "cluster:"), fmt.Sprintf(`Incorrect cluster configuration, please configure cluster as => cluster: "%s"`, jc.Cluster)
 		}
@@ -138,6 +160,9 @@ func PostsubmitClusterCheck(jc *JobConstants) postsubmitCheck {
 
 func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
+		if strings.Contains(presubmitConfig.JobBase.Name, "builder-base-tooling-presubmit") {
+			return true, 0, ""
+		}
 		if presubmitConfig.JobBase.Spec.ServiceAccountName != jc.ServiceAccountName {
 			return false, findLineNumber(fileContentsString, "serviceaccountName:"), fmt.Sprintf(`Incorrect service account configuration, please configure service account as => serviceaccountName: %s`, jc.ServiceAccountName)
 		}
@@ -147,29 +172,33 @@ func PresubmitServiceAccountCheck(jc *JobConstants) presubmitCheck {
 
 func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 	return presubmitCheck(func(presubmitConfig config.Presubmit, fileContentsString string) (bool, int, string) {
-		if strings.Contains(presubmitConfig.JobBase.Name, "lint") {
+		if arrayStringContains(skipPresubmitMakeTargetCheck, presubmitConfig.JobBase.Name) {
+			fmt.Printf("Skipping check on presubmit job %v\n", presubmitConfig.JobBase.Name)
 			return true, 0, ""
 		}
-		if presubmitConfig.JobBase.Name == "eks-distro-base-test-presubmit" {
-			return true, 0, ""
+		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?.*?)(\s|$)`).FindAllStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "), -1)
+		jobMakeTarget := jobMakeTargetMatches[0][1]
+
+		// ignore release branch check
+		if jobMakeTarget == "check-for-supported-release-branch" {
+			jobMakeTarget = jobMakeTargetMatches[1][1]
 		}
-		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]+?) .*`).FindStringSubmatch(strings.Join(presubmitConfig.JobBase.Spec.Containers[0].Command, " "))
-		jobMakeTarget := jobMakeTargetMatches[len(jobMakeTargetMatches)-1]
+
 		makeCommandLineNo := findLineNumber(fileContentsString, "make")
 		if strings.Contains(presubmitConfig.JobBase.Name, "helm-chart") {
 			if jobMakeTarget != jc.HelmMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.HelmMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.HelmMakeTarget)
 			}
 		} else if strings.Contains(presubmitConfig.JobBase.Name, "release-tooling") {
 			if jobMakeTarget != jc.ReleaseToolingMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.ReleaseToolingMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.ReleaseToolingMakeTarget)
 			}
 		} else if strings.Contains(presubmitConfig.JobBase.Name, "test") {
 			if jobMakeTarget != jc.TestsMakeTarget {
-				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.TestsMakeTarget)
+				return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.TestsMakeTarget)
 			}
-		} else if jobMakeTarget != jc.DefaultMakeTarget {
-			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target, please use the "%s" target`, jc.DefaultMakeTarget)
+		} else if !strings.HasPrefix(jobMakeTarget, jc.DefaultMakeTarget) {
+			return false, makeCommandLineNo, fmt.Sprintf(`Invalid make target "%s", please use the "%s" target`, jobMakeTarget, jc.DefaultMakeTarget)
 		}
 		return true, 0, ""
 	})
@@ -177,16 +206,8 @@ func PresubmitMakeTargetCheck(jc *JobConstants) presubmitCheck {
 
 func PostsubmitMakeTargetCheck(jc *JobConstants) postsubmitCheck {
 	return postsubmitCheck(func(postsubmitConfig config.Postsubmit, fileContentsString string) (bool, int, string) {
-		if strings.Contains(postsubmitConfig.JobBase.Name, "release") {
-			return true, 0, ""
-		}
-		if strings.Contains(postsubmitConfig.JobBase.Name, "announcement") {
-			return true, 0, ""
-		}
-		if regexp.MustCompile("build-1-2[1-9].*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
-			return true, 0, ""
-		}
-		if regexp.MustCompile("golang.*PROD.*postsubmit").MatchString(postsubmitConfig.JobBase.Name) {
+		if arrayStringContains(skipPostSubmitMakeTargetCheck, postsubmitConfig.JobBase.Name) {
+			fmt.Printf("Skipping check on postsubmit job %v\n", postsubmitConfig.JobBase.Name)
 			return true, 0, ""
 		}
 		jobMakeTargetMatches := regexp.MustCompile(`make (\w+[-\w]*)`).FindStringSubmatch(strings.Join(postsubmitConfig.JobBase.Spec.Containers[0].Command, " "))
@@ -413,4 +434,14 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println("✅ Validations passed!")
+}
+
+func arrayStringContains(inputArray []string, str string) bool {
+	for _, v := range inputArray {
+		if regexp.MustCompile(v).MatchString(str) {
+			return true
+		}
+	}
+
+	return false
 }

@@ -1,0 +1,13 @@
+jobName: prow-plugin-tooling-presubmit
+runIfChanged: tools/eksDistroBuildToolingOpsTools/.*
+imageBuild: true
+commands:
+- make build-eksDistroOpsProwPlugin -C $PROJECT_PATH
+projectPath: tools/eksDistroBuildToolingOpsTools
+resources:
+  limits:
+    cpu: 2560m
+    memory: 16Gi
+  requests:
+    cpu: 2560m
+    memory: 16Gi

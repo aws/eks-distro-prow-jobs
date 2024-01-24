@@ -1,9 +1,7 @@
 jobName: livenessprobe-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/(build|docker|Makefile|{{ .releaseBranch }})
+runIfChanged: EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_WINDOWS_BASE_.*_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/(build|docker|Makefile|{{ .releaseBranch }})
 imageBuild: true
 localRegistry: true
-cluster: prow-postsubmits-cluster
-architecture: AMD64
 commands:
 - make build clean-go-cache images clean -C $PROJECT_PATH
 projectPath: projects/kubernetes-csi/livenessprobe
