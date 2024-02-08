@@ -23,6 +23,7 @@ var releaseBranches = []string{
 
 var k8releaseBranches = []string{
 	"1-23",
+	"1-24",
 }
 
 var golangVersions = []string{
