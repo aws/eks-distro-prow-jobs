@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-19-ARM64-tooling-postsubmit
+  - name: golang-1-22-PROD-images-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/.*|projects/golang/go/Makefile"
+    run_if_changed: "projects/golang/go/docker/debianBase/RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
@@ -39,9 +39,9 @@ postsubmits:
       disk-usage: "true"
     spec:
       serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       nodeSelector:
-        arch: ARM64
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
@@ -55,25 +55,28 @@ postsubmits:
           &&
           make install-deps -C $PROJECT_PATH
           &&
-          make release -C $PROJECT_PATH
+          projects/golang/go/scripts/prow_release_images.sh
+          &&
+          projects/golang/go/scripts/debian_image_release_notification.sh
         env:
         - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
-          value: "1.19"
-        - name: SKIP_PRIVILEGED_TESTS
-          value: "true"
-        - name: ARTIFACTS_BUCKET
-          value: "eks-d-postsubmit-artifacts"
-        - name: ARCHITECTURE
-          value: "ARM64"
+          value: "1.22"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
+        - name: SNS_TOPIC_ARN
+          value: "arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates"
+        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "2560m"
-          limits:
-            memory: "16Gi"
-            cpu: "2560m"
+            memory: "2Gi"
+            cpu: "1"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:

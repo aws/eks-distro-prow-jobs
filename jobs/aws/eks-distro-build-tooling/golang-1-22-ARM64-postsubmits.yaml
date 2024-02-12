@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-19-PROD-tooling-postsubmit
+  - name: golang-1-22-ARM64-tooling-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/RELEASE"
+    run_if_changed: "projects/golang/go/1.22/.*|projects/golang/go/Makefile"
     branches:
     - ^main$
     max_concurrency: 10
@@ -38,10 +38,10 @@ postsubmits:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: release-build-account
-      automountServiceAccountToken: true
+      serviceaccountName: postsubmits-build-account
+      automountServiceAccountToken: false
       nodeSelector:
-        arch: AMD64
+        arch: ARM64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
@@ -55,28 +55,18 @@ postsubmits:
           &&
           make install-deps -C $PROJECT_PATH
           &&
-          projects/golang/go/scripts/prow_release.sh
-          &&
-          projects/golang/go/scripts/eks_golang_release_notification.sh
+          make release -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/golang/go"
         - name: GO_SOURCE_VERSION
-          value: "1.19"
+          value: "1.22"
         - name: SKIP_PRIVILEGED_TESTS
           value: "true"
         - name: ARTIFACTS_BUCKET
-          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
-        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
-        - name: AWS_REGION
-          value: "us-east-1"
-        - name: IMAGE_REPO
-          value: "public.ecr.aws/eks-distro-build-tooling"
-        - name: ECR_PUBLIC_PUSH_ROLE_ARN
-          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
-        - name: SNS_TOPIC_ARN
-          value: "arn:aws:sns:us-east-1:379412251201:eks-golang-updates"
+          value: "eks-d-postsubmit-artifacts"
+        - name: ARCHITECTURE
+          value: "ARM64"
         resources:
           requests:
             memory: "16Gi"
