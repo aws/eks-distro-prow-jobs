@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: kubernetes-1-29-test-presubmit
     always_run: false
-    run_if_changed: "projects/kubernetes/kubernetes/1-29/(GIT_TAG|patches)"
+    run_if_changed: "projects/kubernetes/kubernetes/1-29/(GIT_TAG|patches|GOLANG_VERSION)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
