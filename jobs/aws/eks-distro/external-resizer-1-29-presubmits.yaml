@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: livenessprobe-1-24-presubmit
+  - name: external-resizer-1-29-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_WINDOWS_BASE_.*_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/livenessprobe/(build|docker|Makefile|1-24)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-csi/external-resizer/(build|docker|Makefile|1-29)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -33,14 +33,13 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
-      local-registry: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
@@ -49,22 +48,18 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          build/lib/local_registry_check.sh
-          &&
-          make build clean-go-cache images clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-csi/livenessprobe"
+          value: "projects/kubernetes-csi/external-resizer"
         - name: RELEASE_BRANCH
-          value: "1-24"
-        - name: IMAGE_REPO
-          value: "localhost:5000"
+          value: "1-29"
         resources:
           requests:
             memory: "4Gi"
             cpu: "1024m"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:
@@ -72,18 +67,6 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-      - name: registry
-        image: public.ecr.aws/docker/library/registry:2
-        command:
-        - sh
-        args:
-        - /registry-script/entrypoint.sh
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 3
       - command:
         - sh
         args:

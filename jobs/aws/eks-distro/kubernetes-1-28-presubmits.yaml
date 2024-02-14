@@ -40,7 +40,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
@@ -51,13 +51,13 @@ presubmits:
           &&
           build/lib/local_registry_check.sh
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
+          make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build -C $PROJECT_PATH; fi
+          make build -C $PROJECT_PATH
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts; fi
+          mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make clean-go-cache clean -C $PROJECT_PATH; fi
+          make clean-go-cache clean -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"
@@ -72,7 +72,7 @@ presubmits:
             memory: "32Gi"
             cpu: "16"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:

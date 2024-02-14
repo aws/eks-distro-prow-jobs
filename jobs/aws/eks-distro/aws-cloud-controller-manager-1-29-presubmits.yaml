@@ -19,26 +19,13 @@
 ################################################################################
 
 presubmits:
-  aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-golang-1-19-al-2
+  aws/eks-distro:
+  - name: aws-cloud-controller-manager-1-29-presubmit
     always_run: false
-    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|1-29)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
-    extra_refs:
-    - org: eks-distro-pr-bot
-      repo: eks-distro-build-tooling
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-distro
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-anywhere-build-tooling
-      base_ref: main
-    - org: eks-distro-pr-bot
-      repo: eks-anywhere
-      base_ref: main
     decoration_config:
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
@@ -53,43 +40,35 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
-          trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          scripts/buildkit_check.sh
+          build/lib/buildkit_check.sh
           &&
-          scripts/local_registry_check.sh
+          build/lib/local_registry_check.sh
           &&
-          scripts/setup_buildx.sh
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
           &&
-          export DATE_EPOCH=$(date "+%F-%s")
-          &&
-          make golang-1.19-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
-          &&
-          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "eks-distro-base"
-        - name: AL_TAG
-          value: "2"
+          value: "projects/kubernetes/cloud-provider-aws"
+        - name: RELEASE_PROJECT_PATH
+          value: "projects/kubernetes/release"
+        - name: RELEASE_BRANCH
+          value: "1-29"
         - name: IMAGE_REPO
           value: "localhost:5000"
-        - name: PLATFORMS
-          value: "linux/amd64"
-        - name: BUILDKITD_IMAGE
-          value: "moby/buildkit:v0.10.5-rootless"
-        - name: USE_BUILDX
-          value: "true"
         resources:
           requests:
-            memory: "4Gi"
+            memory: "8Gi"
             cpu: "1024m"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:

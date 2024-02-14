@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-golang-1-19-al-2023
+  - name: eks-distro-base-tooling-presubmits-golang-1-22-al-2
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -53,7 +53,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
@@ -68,20 +68,20 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make golang-1.19-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make golang-1.22-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: PROJECT_PATH
           value: "eks-distro-base"
         - name: AL_TAG
-          value: "2023"
+          value: "2"
         - name: IMAGE_REPO
           value: "localhost:5000"
         - name: PLATFORMS
           value: "linux/amd64"
         - name: BUILDKITD_IMAGE
-          value: "moby/buildkit:v0.10.5-rootless"
+          value: "moby/buildkit:v0.12.3-rootless"
         - name: USE_BUILDX
           value: "true"
         resources:
@@ -89,7 +89,7 @@ presubmits:
             memory: "4Gi"
             cpu: "1024m"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:

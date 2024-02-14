@@ -19,10 +19,10 @@
 ################################################################################
 
 presubmits:
-  aws/eks-distro:
-  - name: cni-plugins-1-25-test-presubmit
+  aws/eks-distro-build-tooling:
+  - name: golang-1-22-tooling-presubmit
     always_run: false
-    run_if_changed: "projects/containernetworking/plugins/1-25/(GIT_TAG|patches|GOLANG_VERSION)"
+    run_if_changed: "projects/golang/go/Makefile|projects/golang/go/1.22/.*|projects/golang/go/docker/debianBase/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -32,30 +32,47 @@ presubmits:
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
+      image-build: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          make test -C $PROJECT_PATH
+          scripts/buildkit_check.sh
+          &&
+          make install-deps -C $PROJECT_PATH
+          &&
+          make build -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
-          value: "projects/containernetworking/plugins"
-        - name: RELEASE_BRANCH
-          value: "1-25"
+          value: "projects/golang/go"
+        - name: GO_SOURCE_VERSION
+          value: "1.22"
+        - name: SKIP_PRIVILEGED_TESTS
+          value: "true"
+        - name: ARTIFACTS_BUCKET
+          value: "eks-d-postsubmit-artifacts"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1024m"
-            ephemeral-storage: "50Gi"
+            memory: "16Gi"
+            cpu: "2560m"
+      - name: buildkitd
+        image: moby/buildkit:v0.12.3-rootless
+        command:
+        - sh
+        args:
+        - /script/entrypoint.sh
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
       - command:
         - sh
         args:

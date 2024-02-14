@@ -18,48 +18,72 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-presubmits:
-  aws/eks-distro:
-  - name: metrics-server-1-24-presubmit
+postsubmits:
+  aws/eks-distro-build-tooling:
+  - name: golang-1-22-ARM64-PROD-tooling-postsubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/(build|docker|Makefile|1-24)"
+    run_if_changed: "projects/golang/go/1.22/RELEASE"
+    branches:
+    - ^main$
     max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    error_on_eviction: true
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: presubmits-build-account
-      automountServiceAccountToken: false
+      serviceaccountName: release-build-account
+      automountServiceAccountToken: true
+      nodeSelector:
+        arch: ARM64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap 'touch /status/done' EXIT
           &&
-          build/lib/buildkit_check.sh
+          scripts/buildkit_check.sh
           &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          make install-deps -C $PROJECT_PATH
+          &&
+          projects/golang/go/scripts/prow_release.sh
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-sigs/metrics-server"
-        - name: RELEASE_BRANCH
-          value: "1-24"
+          value: "projects/golang/go"
+        - name: GO_SOURCE_VERSION
+          value: "1.22"
+        - name: SKIP_PRIVILEGED_TESTS
+          value: "true"
+        - name: ARTIFACTS_BUCKET
+          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
+        - name: ARCHITECTURE
+          value: "ARM64"
+        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: ECR_PUBLIC_PUSH_ROLE_ARN
+          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "16Gi"
+            cpu: "2560m"
+          limits:
+            memory: "16Gi"
+            cpu: "2560m"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:
@@ -67,6 +91,10 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
       - command:
         - sh
         args:

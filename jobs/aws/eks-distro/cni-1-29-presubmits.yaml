@@ -18,71 +18,39 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-postsubmits:
-  aws/eks-distro-build-tooling:
-  - name: golang-1-19-ARM64-tooling-postsubmit
+presubmits:
+  aws/eks-distro:
+  - name: cni-plugins-1-29-presubmit
     always_run: false
-    run_if_changed: "projects/golang/go/1.19/.*|projects/golang/go/Makefile"
-    branches:
-    - ^main$
+    run_if_changed: "^build/lib/.*|Common.mk|projects/containernetworking/plugins/(build|Makefile|1-29)"
     max_concurrency: 10
-    error_on_eviction: true
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
-      image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
+      serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
-      nodeSelector:
-        arch: ARM64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          scripts/buildkit_check.sh
-          &&
-          make install-deps -C $PROJECT_PATH
-          &&
-          make release -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/golang/go"
-        - name: GO_SOURCE_VERSION
-          value: "1.19"
-        - name: SKIP_PRIVILEGED_TESTS
-          value: "true"
-        - name: ARTIFACTS_BUCKET
-          value: "eks-d-postsubmit-artifacts"
-        - name: ARCHITECTURE
-          value: "ARM64"
-        resources:
-          requests:
-            memory: "16Gi"
-            cpu: "2560m"
-          limits:
-            memory: "16Gi"
-            cpu: "2560m"
-      - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
-        command:
-        - sh
-        args:
-        - /script/entrypoint.sh
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
+          value: "projects/containernetworking/plugins"
+        - name: RELEASE_BRANCH
+          value: "1-29"
         resources:
           requests:
             memory: "2Gi"

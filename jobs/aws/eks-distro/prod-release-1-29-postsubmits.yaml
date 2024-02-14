@@ -19,17 +19,18 @@
 ################################################################################
 
 postsubmits:
-  aws/eks-distro-build-tooling:
-  - name: golang-1-19-PROD-images-tooling-postsubmit
+  aws/eks-distro:
+  - name: prod-release-1-29-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/docker/debianBase/RELEASE"
+    run_if_changed: "release/1-29/production/RELEASE"
     branches:
     - ^main$
-    max_concurrency: 10
+    max_concurrency: 1
     error_on_eviction: true
     cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
+      timeout: 4h
       gcs_configuration:
         bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
@@ -38,47 +39,43 @@ postsubmits:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: true
+      serviceaccountName: release-build-account
+      automountServiceAccountToken: false
       nodeSelector:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
           trap 'touch /status/done' EXIT
           &&
-          scripts/buildkit_check.sh
+          build/lib/buildkit_check.sh
           &&
-          make install-deps -C $PROJECT_PATH
-          &&
-          projects/golang/go/scripts/prow_release_images.sh
-          &&
-          projects/golang/go/scripts/debian_image_release_notification.sh
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then ./release/prow-release.sh; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/golang/go"
-        - name: GO_SOURCE_VERSION
-          value: "1.19"
-        - name: AWS_REGION
-          value: "us-east-1"
-        - name: IMAGE_REPO
-          value: "public.ecr.aws/eks-distro-build-tooling"
-        - name: ECR_PUBLIC_PUSH_ROLE_ARN
-          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
-        - name: SNS_TOPIC_ARN
-          value: "arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates"
+          value: "projects/kubernetes/kubernetes"
         - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+        - name: AWS_REGION
+          value: "us-east-1"
+        - name: RELEASE_ENVIRONMENT
+          value: "production"
+        - name: ARTIFACT_BUCKET
+          value: "artifactsstack-3794122512-artifactsbucket2aac5544-1f3dgu9wrpiz2"
+        - name: RELEASE_BRANCH
+          value: "1-29"
+        - name: IMAGE_REPO
+          value: "public.ecr.aws/eks-distro"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1"
+            memory: "16Gi"
+            cpu: "4"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:

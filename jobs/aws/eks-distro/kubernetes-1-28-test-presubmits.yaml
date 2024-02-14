@@ -38,14 +38,14 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make test -C $PROJECT_PATH; fi
+          make test -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"

@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro:
   - name: build-1-25-postsubmit
     always_run: false
-    skip_if_only_changed: "1-24|1-26|1-27|1-28|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
+    skip_if_only_changed: "1-26|1-27|1-28|1-29|docs/.*|.*.md|go.sum|go.mod|.*Help.mk|.*ATTRIBUTION.txt|LICENSE|NOTICE|OWNERS"
     branches:
     - ^main$
     max_concurrency: 10
@@ -45,7 +45,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ce29c61a8c72f1c5c15a5939a3ffe553efe8fe97.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
         command:
         - bash
         - -c
@@ -81,7 +81,7 @@ postsubmits:
             memory: "8Gi"
             cpu: "2"
       - name: buildkitd
-        image: moby/buildkit:v0.10.5-rootless
+        image: moby/buildkit:v0.12.3-rootless
         command:
         - sh
         args:
