@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: kubernetes-1-26-test-presubmit
     always_run: false
-    run_if_changed: "projects/kubernetes/kubernetes/1-26/(GIT_TAG|patches)"
+    run_if_changed: "projects/kubernetes/kubernetes/1-26/(GIT_TAG|patches|GOLANG_VERSION)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -38,7 +38,7 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-5f1fbcc32fb7a0565c29bd2090a1907d51ab630e.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-2d6e96cf6f92fe90c7f9bfa6fac36583c7eb4b0f.2
         command:
         - bash
         - -c
