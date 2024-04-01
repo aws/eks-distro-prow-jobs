@@ -41,7 +41,7 @@ var skipPresubmitMakeTargetCheck = []string{
 var skipPostSubmitMakeTargetCheck = []string{
 	"golang.*postsubmit",
 	"golang.*postsubmits",
-	"build-1-2[1-9].*postsubmit",
+	"build-1-[1-9][0-9].*postsubmit",
 	"announcement",
 	"release",
 }
@@ -65,8 +65,10 @@ type UnmarshaledJobConfig struct {
 	ProwjobConfig *config.JobConfig
 }
 
-type presubmitCheck func(presubmitConfig config.Presubmit, fileContentsString string) (passed bool, lineNo int, errorMessage string)
-type postsubmitCheck func(postsubmitConfig config.Postsubmit, fileContentsString string) (passed bool, lineNo int, errorMessage string)
+type (
+	presubmitCheck  func(presubmitConfig config.Presubmit, fileContentsString string) (passed bool, lineNo int, errorMessage string)
+	postsubmitCheck func(postsubmitConfig config.Postsubmit, fileContentsString string) (passed bool, lineNo int, errorMessage string)
+)
 
 func (jc *JobConstants) Init(jobType string) {
 	if jobType == "postsubmit" {
@@ -321,8 +323,8 @@ func displayConfigErrors(fileErrorMap map[string][]string) bool {
 
 func main() {
 	var jobConfig config.JobConfig
-	var presubmitErrors = make(map[string][]string)
-	var postsubmitErrors = make(map[string][]string)
+	presubmitErrors := make(map[string][]string)
+	postsubmitErrors := make(map[string][]string)
 
 	presubmitConstants := new(JobConstants)
 	presubmitConstants.Init("presubmit")
