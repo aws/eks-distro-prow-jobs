@@ -26,4 +26,4 @@ resources:
   requests:
     cpu: "2"
     memory: 8Gi
-timeout: 6h
+timeout: 8h
