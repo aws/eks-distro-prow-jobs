@@ -3,6 +3,7 @@ maxConcurrency: 1
 runIfChanged: docs/contents/releases/.*/release-announcement.txt
 commands:
 - ./release/prow-announce.sh
+- ./release/github_tag_doc_release.sh
 envVars:
 - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
   value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
