@@ -51,6 +51,8 @@ postsubmits:
           trap 'touch /status/done' EXIT
           &&
           ./release/prow-announce.sh
+          &&
+          ./release/github_tag_doc_release.sh
         env:
         - name: PROJECT_PATH
           value: ""
