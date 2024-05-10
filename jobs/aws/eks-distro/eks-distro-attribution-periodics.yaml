@@ -49,8 +49,8 @@ periodics:
       - -c
       - >
         trap 'touch /status/done' EXIT
-	&& 
-	git config --global gc.auto 0
+        &&
+        git config --global gc.auto 0
         &&
         make update-attribution-files
       env:
