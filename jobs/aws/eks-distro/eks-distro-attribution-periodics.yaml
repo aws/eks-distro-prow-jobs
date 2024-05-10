@@ -50,6 +50,8 @@ periodics:
       - >
         trap 'touch /status/done' EXIT
         &&
+        git config --global gc.auto 0
+        &&
         make update-attribution-files
       env:
       - name: PROJECT_PATH

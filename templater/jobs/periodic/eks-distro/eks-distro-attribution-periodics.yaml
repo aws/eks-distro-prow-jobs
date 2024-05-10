@@ -2,6 +2,7 @@ jobName: eks-distro-attribution-periodic
 cronExpression: 0 8 * * 1-5
 prCreation: true
 commands:
+- git config --global gc.auto 0
 - make update-attribution-files
 envVars:
 - name: REPO_OWNER
