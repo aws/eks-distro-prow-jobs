@@ -83,7 +83,7 @@ postsubmits:
         - name: AL_TAG
           value: "2"
         - name: IMAGE_REPO
-          value: "public.ecr.aws/eks-distro-build-tooling"
+          value: "832188789588.dkr.ecr.us-east-1.amazonaws.com"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: AWS_REGION
