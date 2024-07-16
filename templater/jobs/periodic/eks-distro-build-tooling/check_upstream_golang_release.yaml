@@ -1,0 +1,46 @@
+jobName: check-upstream-golang-release
+cronExpression: 0 7,14 * * 1-5
+imageBuild: true
+prCreation: true
+architecture: AMD64
+useDockerBuildX: true
+useMinimalBuilderBase: true
+automountServiceAccountToken: true
+serviceAccountName: postsubmits-build-account
+commands:
+- export DATE_EPOCH=$(date "+%F-%s")
+- source scripts/setup_public_ecr_push.sh
+- make check-golang-release -C builder-base
+- make check-golang-release -C eks-distro-base 
+- make create-golang-release-pr -C eks-distro-base
+projectPath: eks-distro-base
+envVars:
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: ECR_PUBLIC_PUSH_ROLE_ARN
+  value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+- name: AWS_REGION
+  value: us-east-1
+- name: REPO_OWNER
+  value: aws
+- name: OUTPUT_DEBUG_LOG
+  value: true
+- name: CREATE_BUILDER_PODS
+  value: true
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-anywhere
+timeout: 8h
