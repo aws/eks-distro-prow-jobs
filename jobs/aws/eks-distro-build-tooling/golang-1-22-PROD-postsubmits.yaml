@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: golang-1-22-PROD-tooling-postsubmit
     always_run: false
-    run_if_changed: "builder-base/versions.yaml"
+    run_if_changed: "projects/golang/go/1.22/RELEASE"
     branches:
     - ^main$
     max_concurrency: 10
