@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-PROD-tooling-postsubmit
-runIfChanged: projects/golang/go/{{ .golangVersion }}/RELEASE
+runIfChanged: builder-base/versions.yaml
 imageBuild: true
 automountServiceAccountToken: true
 commands:
