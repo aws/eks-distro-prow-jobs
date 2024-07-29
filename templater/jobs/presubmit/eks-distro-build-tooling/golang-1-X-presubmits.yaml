@@ -3,7 +3,7 @@ runIfChanged: projects/golang/go/Makefile|projects/golang/go/{{ .golangVersion }
 imageBuild: true
 commands:
 - make install-deps -C $PROJECT_PATH
-- make build -C $PROJECT_PATH
+- projects/golang/go/scripts/prow_release_images.sh
 projectPath: projects/golang/go
 resources:
   limits:
@@ -17,5 +17,15 @@ envVars:
     value: "{{ .golangVersion }}"
   - name: SKIP_PRIVILEGED_TESTS
     value: true
-  - name: ARTIFACTS_BUCKET
-    value: eks-d-postsubmit-artifacts
+  - name: PUSH_IMAGES
+    value: false
+  - name: AWS_REGION
+    value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling
+  - name: ECR_PUBLIC_PUSH_ROLE_ARN
+    value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+  - name: SNS_TOPIC_ARN
+    value: arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates
+  - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+    value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole
