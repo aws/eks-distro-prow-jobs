@@ -1,5 +1,5 @@
 jobName: golang-{{ .jobGoVersion }}-PROD-images-tooling-postsubmit
-runIfChanged: projects/golang/go/docker/debianBase/RELEASE
+runIfChanged: eks-distro-base/golang_versions.yaml
 imageBuild: true
 automountServiceAccountToken: true
 commands:
