@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: metrics-server-1-30-presubmit
+  - name: etcd-1-31-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes-sigs/metrics-server/(build|docker|Makefile|1-30)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/etcd-io/etcd/(build|docker|Makefile|1-31)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -48,12 +48,18 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build -C $PROJECT_PATH; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then mv ./projects/etcd-io/etcd/_output/tar/* /logs/artifacts; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes-sigs/metrics-server"
+          value: "projects/etcd-io/etcd"
         - name: RELEASE_BRANCH
-          value: "1-30"
+          value: "1-31"
+        - name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION
+          value: "true"
         resources:
           requests:
             memory: "4Gi"
