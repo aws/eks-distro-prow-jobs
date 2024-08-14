@@ -22,6 +22,10 @@ envVars:
   value: public.ecr.aws/h1r8a7l5
 - name: DOCKER_CONFIG
   value: /home/prow/go/src/github.com/aws/eks-distro/.docker
+{{ if (eq .releaseBranch "1-31") }}
+- name: KOPS_RUN_TOO_NEW_VERSION
+  value: 1
+{{ end }}
 resources:
   requests:
     cpu: "2"

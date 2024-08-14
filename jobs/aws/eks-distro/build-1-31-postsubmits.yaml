@@ -76,6 +76,8 @@ postsubmits:
           value: "public.ecr.aws/h1r8a7l5"
         - name: DOCKER_CONFIG
           value: "/home/prow/go/src/github.com/aws/eks-distro/.docker"
+        - name: KOPS_RUN_TOO_NEW_VERSION
+          value: "1"
         resources:
           requests:
             memory: "8Gi"
