@@ -31,6 +31,7 @@ var k8releaseBranches = []string{
 var golangVersions = []string{
 	"1-21",
 	"1-22",
+	"1-23",
 }
 
 var pythonVersions = []string{
