@@ -45,7 +45,7 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          make test -C $PROJECT_PATH
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make test -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"
