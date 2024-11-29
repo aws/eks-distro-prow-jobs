@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro:
-  - name: dev-release-1-31-postsubmit
+  - name: dev-release-1-32-postsubmit
     always_run: false
-    run_if_changed: "release/1-31/development/RELEASE"
+    run_if_changed: "release/1-32/development/RELEASE"
     branches:
     - ^main$
     max_concurrency: 1
@@ -54,7 +54,7 @@ postsubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          ./release/prow.sh
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then ./release/prow.sh; fi
         env:
         - name: PROJECT_PATH
           value: "projects/kubernetes/kubernetes"
@@ -63,7 +63,7 @@ postsubmits:
         - name: ARTIFACT_BUCKET
           value: "eks-d-postsubmit-artifacts"
         - name: RELEASE_BRANCH
-          value: "1-31"
+          value: "1-32"
         - name: IMAGE_REPO
           value: "public.ecr.aws/h1r8a7l5"
         resources:
