@@ -20,7 +20,7 @@
 
 periodics:
 - name: check-upstream-golang-release
-  cron: "0 7,14 * * 1-5"
+  cron: "0 7 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
   extra_refs:
