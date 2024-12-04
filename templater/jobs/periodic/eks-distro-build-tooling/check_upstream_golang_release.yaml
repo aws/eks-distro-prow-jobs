@@ -1,5 +1,5 @@
 jobName: check-upstream-golang-release
-cronExpression: 0 7,14 * * 1-5
+cronExpression: 0 5 * * 1-5
 imageBuild: true
 prCreation: true
 architecture: AMD64
