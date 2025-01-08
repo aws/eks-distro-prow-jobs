@@ -34,9 +34,6 @@ periodics:
     repo: eks-distro
     base_ref: main
   - org: eks-distro-pr-bot
-    repo: eks-anywhere-build-tooling
-    base_ref: main
-  - org: eks-distro-pr-bot
     repo: eks-anywhere
     base_ref: main
   decoration_config:

@@ -34,9 +34,6 @@ extraRefs:
   repo: eks-distro
 - baseRef: main
   org: eks-distro-pr-bot
-  repo: eks-anywhere-build-tooling
-- baseRef: main
-  org: eks-distro-pr-bot
   repo: eks-anywhere
 resources:
   requests:
