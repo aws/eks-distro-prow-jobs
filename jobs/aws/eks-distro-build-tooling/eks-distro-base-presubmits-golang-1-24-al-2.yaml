@@ -18,65 +18,73 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-postsubmits:
+presubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-22-PROD-images-tooling-postsubmit
+  - name: eks-distro-base-tooling-presubmits-golang-1-24-al-2
     always_run: false
-    run_if_changed: "eks-distro-base/golang_versions.yaml"
-    branches:
-    - ^main$
+    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
-    error_on_eviction: true
-    cluster: "prow-postsubmits-cluster"
+    cluster: "prow-presubmits-cluster"
     skip_report: false
+    extra_refs:
+    - org: eks-distro-pr-bot
+      repo: eks-distro-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-distro
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-anywhere
+      base_ref: main
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
+        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: postsubmits-build-account
-      automountServiceAccountToken: true
-      nodeSelector:
-        arch: AMD64
+      serviceaccountName: presubmits-build-account
+      automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-4be62fc9e2e39382119781c8d605f8780c6d43bd.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-4be62fc9e2e39382119781c8d605f8780c6d43bd.2
         command:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
           scripts/buildkit_check.sh
           &&
-          make install-deps -C $PROJECT_PATH
+          scripts/local_registry_check.sh
           &&
-          projects/golang/go/scripts/prow_release_images.sh
+          scripts/setup_buildx.sh
           &&
-          projects/golang/go/scripts/debian_image_release_notification.sh
+          export DATE_EPOCH=$(date "+%F-%s")
+          &&
+          make golang-1.24-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          &&
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: PROJECT_PATH
-          value: "projects/golang/go"
-        - name: GO_SOURCE_VERSION
-          value: "1.22"
-        - name: AWS_REGION
-          value: "us-east-1"
+          value: "eks-distro-base"
+        - name: AL_TAG
+          value: "2"
         - name: IMAGE_REPO
-          value: "public.ecr.aws/eks-distro-build-tooling"
-        - name: ECR_PUBLIC_PUSH_ROLE_ARN
-          value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
-        - name: SNS_TOPIC_ARN
-          value: "arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates"
-        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+          value: "localhost:5000"
+        - name: PLATFORMS
+          value: "linux/amd64"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.12.3-rootless"
+        - name: USE_BUILDX
+          value: "true"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1"
+            memory: "4Gi"
+            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:
@@ -86,10 +94,18 @@ postsubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1024m"
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
       - command:
         - sh
         args:
