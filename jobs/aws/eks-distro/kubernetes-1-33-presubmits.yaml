@@ -20,9 +20,9 @@
 
 presubmits:
   aws/eks-distro:
-  - name: coredns-1-32-presubmit
+  - name: kubernetes-1-33-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|^build/lib/.*|Common.mk|projects/coredns/coredns/(build|docker|Makefile|1-32)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_MINIMAL_BASE_IPTABLES_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/kubernetes/(build|docker|Makefile|1-33)"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
@@ -33,6 +33,7 @@ presubmits:
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
+      local-registry: "true"
       disk-usage: "true"
     spec:
       serviceaccountName: presubmits-build-account
@@ -48,18 +49,28 @@ presubmits:
           &&
           build/lib/buildkit_check.sh
           &&
-          make build clean-go-cache clean -C $PROJECT_PATH
+          build/lib/local_registry_check.sh
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build -C $PROJECT_PATH; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts; fi
+          &&
+          if make check-for-supported-release-branch -C $PROJECT_PATH; then make clean-go-cache clean -C $PROJECT_PATH; fi
         env:
         - name: PROJECT_PATH
-          value: "projects/coredns/coredns"
+          value: "projects/kubernetes/kubernetes"
+        - name: RELEASE_PROJECT_PATH
+          value: "projects/kubernetes/release"
         - name: RELEASE_BRANCH
-          value: "1-32"
-        - name: FAKE_ARM_ARTIFACTS_FOR_VALIDATION
-          value: "true"
+          value: "1-33"
+        - name: IMAGE_REPO
+          value: "localhost:5000"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "32Gi"
+            cpu: "16"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:
@@ -69,6 +80,18 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+      - name: registry
+        image: public.ecr.aws/docker/library/registry:2
+        command:
+        - sh
+        args:
+        - /registry-script/entrypoint.sh
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 3
       - command:
         - sh
         args:
