@@ -28,3 +28,4 @@ resources:
   requests:
     cpu: 1024m
     memory: 4Gi
+    ephemeral-storage: "50Gi"
