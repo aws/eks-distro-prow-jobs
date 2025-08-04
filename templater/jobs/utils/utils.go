@@ -20,6 +20,7 @@ var releaseBranches = []string{
 	"1-31",
 	"1-32",
 	"1-33",
+	"1-34",
 }
 
 var k8releaseBranches = []string{
