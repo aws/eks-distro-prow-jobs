@@ -56,7 +56,7 @@ postsubmits:
         arch: AMD64
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-0dde2a0497a622237fb082f6651800dd152e5341.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-8a64cb659557ad66edc71ea4a904883eaeadae61.2
         command:
         - bash
         - -c
