@@ -19,13 +19,23 @@
 ################################################################################
 
 presubmits:
-  aws/eks-distro:
-  - name: kubernetes-1-23-presubmit
+  aws/eks-distro-build-tooling:
+  - name: eks-distro-base-tooling-presubmits-golang-1-25-al-2023
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_TAG_FILE|EKS_DISTRO_MINIMAL_BASE_IPTABLES_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/kubernetes/(build|docker|Makefile|1-23)"
+    run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
+    extra_refs:
+    - org: eks-distro-pr-bot
+      repo: eks-distro-build-tooling
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-distro
+      base_ref: main
+    - org: eks-distro-pr-bot
+      repo: eks-anywhere
+      base_ref: main
     decoration_config:
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
@@ -40,37 +50,41 @@ presubmits:
       automountServiceAccountToken: false
       containers:
       - name: build-container
-        image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-8a64cb659557ad66edc71ea4a904883eaeadae61.2
+        image: public.ecr.aws/eks-distro-build-tooling/builder-base:minimal-8a64cb659557ad66edc71ea4a904883eaeadae61.2
         command:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          build/lib/buildkit_check.sh
+          scripts/buildkit_check.sh
           &&
-          build/lib/local_registry_check.sh
+          scripts/local_registry_check.sh
           &&
-          make build clean-go-cache clean -C $RELEASE_PROJECT_PATH IMAGE_OUTPUT_TYPE=image IMAGE_OUTPUT=push=true
+          scripts/setup_buildx.sh
           &&
-          make build -C $PROJECT_PATH
+          export DATE_EPOCH=$(date "+%F-%s")
           &&
-          mv ./projects/kubernetes/kubernetes/_output/${RELEASE_BRANCH}/* /logs/artifacts
+          make golang-1.25-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
-          make clean-go-cache clean -C $PROJECT_PATH
+          make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
         - name: PROJECT_PATH
-          value: "projects/kubernetes/kubernetes"
-        - name: RELEASE_PROJECT_PATH
-          value: "projects/kubernetes/release"
-        - name: RELEASE_BRANCH
-          value: "1-23"
+          value: "eks-distro-base"
+        - name: AL_TAG
+          value: "2023"
         - name: IMAGE_REPO
           value: "localhost:5000"
+        - name: PLATFORMS
+          value: "linux/amd64"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.12.3-rootless"
+        - name: USE_BUILDX
+          value: "true"
         resources:
           requests:
-            memory: "32Gi"
-            cpu: "16"
+            memory: "4Gi"
+            cpu: "1024m"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:
