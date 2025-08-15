@@ -1,13 +1,18 @@
 BIN_DIR := bin
 SCRIPTS_DIR := scripts
 
+export PATH:=/go/go1.23/bin:$(PATH)
+
 .PHONY: all
 all: build prowjobs
 
 .PHONY: build
 build:  ## Build templater binary
-build: fmt generate vet
+build: goversion fmt generate vet
 	go build -o ./$(BIN_DIR)/generate-prowjobs github.com/aws/eks-distro-prow-jobs/templater
+
+goversion:
+	go version
 
 fmt: ## Run go fmt against code.
 	go fmt ./...

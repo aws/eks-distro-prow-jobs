@@ -1,6 +1,8 @@
 module github.com/aws/eks-distro-prow-jobs
 
-go 1.23
+go 1.23.0
+
+toolchain go1.23.12
 
 require (
 	github.com/ghodss/yaml v1.0.0
