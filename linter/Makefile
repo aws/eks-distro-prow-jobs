@@ -5,7 +5,7 @@ ifndef PULL_PULL_SHA
 export PULL_PULL_SHA=$(shell git show -s --format=%H)
 endif
 
-export PATH:=/go/go1.24/bin:$(PATH)
+export PATH:=/go/go1.23/bin:$(PATH)
 
 BIN_DIR := bin
 
