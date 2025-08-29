@@ -23,10 +23,6 @@ var releaseBranches = []string{
 	"1-34",
 }
 
-var k8releaseBranches = []string{
-	"1-27",
-}
-
 var golangVersions = []string{
 	"1-24",
 	"1-25",
@@ -128,10 +124,6 @@ func AddReleaseBranch(fileName string, data map[string]interface{}) map[string]m
 		return jobList
 	}
 	currentReleaseBranches := releaseBranches
-
-	if strings.Contains(fileName, "kubernetes") && !strings.Contains(fileName, "release") {
-		currentReleaseBranches = append(k8releaseBranches, releaseBranches...)
-	}
 
 	for i, releaseBranch := range currentReleaseBranches {
 
