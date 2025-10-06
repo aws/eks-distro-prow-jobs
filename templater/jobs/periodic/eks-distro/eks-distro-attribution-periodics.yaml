@@ -1,4 +1,5 @@
 jobName: eks-distro-attribution-periodic
+imageBuild: true
 cronExpression: 0 8 * * 1-5
 prCreation: true
 commands:
