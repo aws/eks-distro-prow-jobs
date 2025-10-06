@@ -34,6 +34,7 @@ periodics:
       path_strategy: explicit
     s3_credentials_secret: s3-credentials
   labels:
+    image-build: "true"
     pr-creation: "true"
     disk-usage: "true"
   spec:
@@ -50,6 +51,8 @@ periodics:
       - >
         trap 'touch /status/done' EXIT
         &&
+        build/lib/buildkit_check.sh
+        &&
         git config --global gc.auto 0
         &&
         make update-attribution-files
@@ -62,6 +65,19 @@ periodics:
         requests:
           memory: "16Gi"
           cpu: "5"
+    - name: buildkitd
+      image: moby/buildkit:v0.12.3-rootless
+      command:
+      - sh
+      args:
+      - /script/entrypoint.sh
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      resources:
+        requests:
+          memory: "2Gi"
+          cpu: "1024m"
     - command:
       - sh
       args:
