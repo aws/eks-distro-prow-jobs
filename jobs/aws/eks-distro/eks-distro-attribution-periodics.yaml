@@ -35,7 +35,6 @@ periodics:
     s3_credentials_secret: s3-credentials
   labels:
     image-build: "true"
-    local-registry: "true"
     pr-creation: "true"
     disk-usage: "true"
   spec:
@@ -63,7 +62,7 @@ periodics:
       - name: REPO_OWNER
         value: "aws"
       - name: IMAGE_REPO
-        value: "localhost:5000"
+        value: "public.ecr.aws/h1r8a7l5"
       resources:
         requests:
           memory: "16Gi"
@@ -81,25 +80,6 @@ periodics:
         requests:
           memory: "2Gi"
           cpu: "1024m"
-    - name: registry
-      image: registry:2
-      command:
-      - sh
-      args:
-      - /registry-script/entrypoint.sh
-      readinessProbe:
-        httpGet:
-          path: /
-          port: 5000
-        initialDelaySeconds: 5
-        periodSeconds: 3
-      resources:
-        requests:
-          memory: "1Gi"
-          cpu: "256m"
-        limits:
-          memory: "1Gi"
-          cpu: "256m"
     - command:
       - sh
       args:
