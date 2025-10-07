@@ -1,5 +1,6 @@
 jobName: eks-distro-attribution-periodic
 imageBuild: true
+localRegistry: true
 cronExpression: 0 8 * * 1-5
 prCreation: true
 commands:
@@ -8,6 +9,8 @@ commands:
 envVars:
 - name: REPO_OWNER
   value: aws
+- name: IMAGE_REPO
+  value: localhost:5000
 extraRefs:
 - baseRef: main
   org: aws
