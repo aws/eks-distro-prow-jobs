@@ -46,7 +46,7 @@ presubmits:
         - >
           trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
           &&
-          if make check-for-supported-release-branch -C $PROJECT_PATH; then make build kops; fi
+          make build kops
         env:
         - name: PROJECT_PATH
           value: "development/kops"
