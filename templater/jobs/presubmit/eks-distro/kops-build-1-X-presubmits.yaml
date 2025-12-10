@@ -2,6 +2,7 @@ jobName: kops-build-{{ .releaseBranch }}-presubmits
 runIfChanged: development/kops/.*
 imageBuild: false
 projectPath: development/kops
+skipReleaseBranchCheck: true
 commands:
   - make build kops
 envVars:

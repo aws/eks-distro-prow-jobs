@@ -197,8 +197,10 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 		}
 
 		if latest, ok := data["latestReleaseBranch"]; ok && latest.(bool) {
-			for j, command := range jobConfig.Commands {
-				jobConfig.Commands[j] = "if make check-for-supported-release-branch -C $PROJECT_PATH; then " + command + "; fi"
+			if !jobConfig.SkipReleaseBranchCheck {
+				for j, command := range jobConfig.Commands {
+					jobConfig.Commands[j] = "if make check-for-supported-release-branch -C $PROJECT_PATH; then " + command + "; fi"
+				}
 			}
 		}
 
