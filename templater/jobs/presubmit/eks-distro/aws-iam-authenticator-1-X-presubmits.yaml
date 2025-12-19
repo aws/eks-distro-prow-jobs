@@ -9,6 +9,8 @@ projectPath: projects/kubernetes-sigs/aws-iam-authenticator
 envVars:
 - name: RELEASE_BRANCH
   value: {{ .releaseBranch }}
+- name: IMAGE_REPO
+  value: "localhost:5000"
 resources:
   requests:
     cpu: 1024m

@@ -58,6 +58,8 @@ presubmits:
           value: "projects/kubernetes-sigs/aws-iam-authenticator"
         - name: RELEASE_BRANCH
           value: "1-35"
+        - name: IMAGE_REPO
+          value: "localhost:5000"
         resources:
           requests:
             memory: "4Gi"
