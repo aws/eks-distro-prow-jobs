@@ -1,0 +1,22 @@
+jobName: go-runner-images-postsubmit-al-{{ .alVersion }}
+runIfChanged: ^EKS_DISTRO_TAG_FILE.yaml$|^projects/go-runner/.*
+imageBuild: true
+automountServiceAccountToken: true
+commands:
+- projects/go-runner/scripts/prow_release_images.sh
+projectPath: projects/go-runner
+resources:
+  requests:
+    cpu: "1"
+    memory: 2Gi
+envVars:
+- name: AL_TAG
+  value: {{ .alVersion }}
+- name: AWS_REGION
+  value: us-east-1
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: ECR_PUBLIC_PUSH_ROLE_ARN
+  value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+- name: PUSH_IMAGES
+  value: true
