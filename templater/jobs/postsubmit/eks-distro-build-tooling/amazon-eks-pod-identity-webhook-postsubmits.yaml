@@ -1,6 +1,0 @@
-jobName: amazon-eks-pod-identity-webhook-tooling-postsubmit
-runIfChanged: projects/aws/amazon-eks-pod-identity-webhook/.*
-imageBuild: true
-commands:
-- make release -C $PROJECT_PATH IMAGE_TAG=$PULL_BASE_SHA
-projectPath: projects/aws/amazon-eks-pod-identity-webhook
