@@ -1,10 +1,10 @@
-jobName: athens-tooling-postsubmit
-runIfChanged: EKS_DISTRO_TAG_FILE.yaml|projects/gomods/athens/.*
+jobName: binfmt-misc-tooling-postsubmit
+runIfChanged: projects/tonistiigi/binfmt|scripts/setup_public_ecr_push.sh
 imageBuild: true
 commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C $PROJECT_PATH
-projectPath: projects/gomods/athens
+projectPath: projects/tonistiigi/binfmt
 envVars:
 - name: IMAGE_REPO
   value: public.ecr.aws/eks-distro-build-tooling
@@ -16,3 +16,7 @@ extraRefs:
 - baseRef: main
   org: eks-distro-pr-bot
   repo: eks-distro-build-tooling
+resources:
+  requests:
+    cpu: "2048m"
+    memory: 8Gi

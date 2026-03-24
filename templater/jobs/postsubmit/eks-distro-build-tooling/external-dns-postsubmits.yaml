@@ -1,10 +1,10 @@
-jobName: athens-tooling-postsubmit
-runIfChanged: EKS_DISTRO_TAG_FILE.yaml|projects/gomods/athens/.*
+jobName: external-dns-tooling-postsubmit
+runIfChanged: projects/kubernetes-sigs/external-dns/.*
 imageBuild: true
 commands:
 - source scripts/setup_public_ecr_push.sh
 - make release -C $PROJECT_PATH
-projectPath: projects/gomods/athens
+projectPath: projects/kubernetes-sigs/external-dns
 envVars:
 - name: IMAGE_REPO
   value: public.ecr.aws/eks-distro-build-tooling
