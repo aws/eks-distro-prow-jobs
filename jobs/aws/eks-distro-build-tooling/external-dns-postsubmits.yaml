@@ -20,9 +20,9 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: athens-tooling-postsubmit
+  - name: external-dns-tooling-postsubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_TAG_FILE.yaml|projects/gomods/athens/.*"
+    run_if_changed: "projects/kubernetes-sigs/external-dns/.*"
     branches:
     - ^main$
     max_concurrency: 10
@@ -62,7 +62,7 @@ postsubmits:
           make release -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
-          value: "projects/gomods/athens"
+          value: "projects/kubernetes-sigs/external-dns"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN

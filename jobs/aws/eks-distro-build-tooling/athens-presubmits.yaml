@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-build-tooling:
   - name: athens-tooling-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_BASE_TAG_FILE|projects/gomods/athens/.*"
+    run_if_changed: "EKS_DISTRO_TAG_FILE.yaml|projects/gomods/athens/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
