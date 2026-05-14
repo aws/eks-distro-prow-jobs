@@ -1,5 +1,5 @@
 jobName: go-runner-images-postsubmit-al-{{ .alVersion }}
-runIfChanged: ^EKS_DISTRO_TAG_FILE.yaml$|^projects/go-runner/.*
+cronExpression: 0 20 * * 1-5
 imageBuild: true
 automountServiceAccountToken: true
 commands:
