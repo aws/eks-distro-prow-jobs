@@ -19,10 +19,14 @@
 ################################################################################
 
 periodics:
-- name: go-runner-images-postsubmit-al-2023
-  cron: "0 20 * * 1-5"
+- name: go-runner-images-periodic-al-2023
+  cron: "0 23 * * 1-5"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
+  extra_refs:
+  - org: aws
+    repo: eks-distro-build-tooling
+    base_ref: main
   decoration_config:
     gcs_configuration:
       bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
@@ -32,7 +36,7 @@ periodics:
     image-build: "true"
     disk-usage: "true"
   spec:
-    serviceaccountName: periodics-build-account
+    serviceaccountName: postsubmits-build-account
     automountServiceAccountToken: true
     nodeSelector:
       arch: AMD64
@@ -43,9 +47,11 @@ periodics:
       - bash
       - -c
       - >
-        trap 'touch /status/done' EXIT
+        trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
         &&
         scripts/buildkit_check.sh
+        &&
+        scripts/setup_buildx.sh
         &&
         projects/go-runner/scripts/prow_release_images.sh
       env:
@@ -60,6 +66,10 @@ periodics:
       - name: ECR_PUBLIC_PUSH_ROLE_ARN
         value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
       - name: PUSH_IMAGES
+        value: "true"
+      - name: BUILDKITD_IMAGE
+        value: "moby/buildkit:v0.12.3-rootless"
+      - name: USE_BUILDX
         value: "true"
       resources:
         requests:
