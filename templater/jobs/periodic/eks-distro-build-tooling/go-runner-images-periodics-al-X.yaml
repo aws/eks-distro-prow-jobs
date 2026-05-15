@@ -1,7 +1,9 @@
-jobName: go-runner-images-postsubmit-al-{{ .alVersion }}
-cronExpression: 0 20 * * 1-5
+jobName: go-runner-images-periodic-al-{{ .alVersion }}
+cronExpression: 0 23 * * 1-5
 imageBuild: true
+useDockerBuildX: true
 automountServiceAccountToken: true
+serviceAccountName: postsubmits-build-account
 commands:
 - projects/go-runner/scripts/prow_release_images.sh
 projectPath: projects/go-runner
@@ -20,3 +22,7 @@ envVars:
   value: arn:aws:iam::832188789588:role/ECRPublicPushRole
 - name: PUSH_IMAGES
   value: true
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro-build-tooling
