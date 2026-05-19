@@ -1,5 +1,5 @@
 jobName: eks-distro-base-tooling-postsubmit-al-{{ .alVersion }}
-runIfChanged: ^eks-distro-base/postsubmit_trigger$
+runIfChanged: ^eks-distro-base/(postsubmit_trigger|golang_versions.yaml)$
 imageBuild: true
 prCreation: true
 architecture: AMD64
