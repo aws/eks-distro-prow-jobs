@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: eks-distro-base-tooling-postsubmit-al-2023
     always_run: false
-    run_if_changed: "^eks-distro-base/postsubmit_trigger$"
+    run_if_changed: "^eks-distro-base/(postsubmit_trigger|golang_versions.yaml)$"
     branches:
     - ^main$
     max_concurrency: 10
