@@ -1,0 +1,24 @@
+jobName: check-upstream-helm-chart-images
+cronExpression: 0 7 1,15 * *
+prCreation: true
+automountServiceAccountToken: true
+serviceAccountName: postsubmits-build-account
+commands:
+- make check-prow-release -C projects/kubernetes/test-infra
+- make check-athens-release -C projects/gomods/athens
+- make check-external-dns-release -C projects/kubernetes-sigs/external-dns
+- ./pr-scripts/create_pr.sh eks-distro-build-tooling helm-chart-image-tag helm-chart-image-release
+projectPath: projects/kubernetes/test-infra
+envVars:
+- name: REPO_OWNER
+  value: aws
+- name: OUTPUT_DEBUG_LOG
+  value: true
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro-build-tooling
+- baseRef: main
+  org: eks-distro-pr-bot
+  repo: eks-distro-build-tooling
+timeout: 1h
