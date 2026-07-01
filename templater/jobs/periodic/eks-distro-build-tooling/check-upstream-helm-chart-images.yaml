@@ -7,6 +7,7 @@ commands:
 - make check-prow-release -C projects/kubernetes/test-infra
 - make check-athens-release -C projects/gomods/athens
 - make check-external-dns-release -C projects/kubernetes-sigs/external-dns
+- ./pr-scripts/update_local_branch.sh eks-distro-build-tooling helm-chart-image-release
 - ./pr-scripts/create_pr.sh eks-distro-build-tooling helm-chart-image-tag helm-chart-image-release
 projectPath: projects/kubernetes/test-infra
 envVars:

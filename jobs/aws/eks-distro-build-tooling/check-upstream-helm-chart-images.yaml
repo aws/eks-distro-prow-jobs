@@ -59,6 +59,8 @@ periodics:
         &&
         make check-external-dns-release -C projects/kubernetes-sigs/external-dns
         &&
+        ./pr-scripts/update_local_branch.sh eks-distro-build-tooling helm-chart-image-release
+        &&
         ./pr-scripts/create_pr.sh eks-distro-build-tooling helm-chart-image-tag helm-chart-image-release
       env:
       - name: PROJECT_PATH
