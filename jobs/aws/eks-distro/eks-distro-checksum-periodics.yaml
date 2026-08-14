@@ -43,7 +43,7 @@ periodics:
       arch: AMD64
     containers:
     - name: build-container
-      image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ec39a22a692a667411d582405edec7f191486e52.2
+      image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-c5ee06b9eacefe98992ad3b1c934fffcbdc52a4a.2
       command:
       - bash
       - -c
