@@ -1,5 +1,5 @@
 jobName: agnhost-tooling-postsubmit
-runIfChanged: EKS_DISTRO_TAG_FILE.yaml|projects/kubernetes/agnhost/.*
+runIfChanged: projects/kubernetes/agnhost/.*
 imageBuild: true
 commands:
 - source scripts/setup_public_ecr_push.sh

@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro-build-tooling:
   - name: agnhost-tooling-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_TAG_FILE.yaml|projects/kubernetes/agnhost/.*"
+    run_if_changed: "projects/kubernetes/agnhost/.*"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false

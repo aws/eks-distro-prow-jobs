@@ -1,5 +1,5 @@
 jobName: agnhost-tooling-presubmit
-runIfChanged: EKS_DISTRO_TAG_FILE.yaml|projects/kubernetes/agnhost/.*
+runIfChanged: projects/kubernetes/agnhost/.*
 imageBuild: true
 commands:
 - make build -C $PROJECT_PATH

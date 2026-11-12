@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: agnhost-tooling-postsubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_TAG_FILE.yaml|projects/kubernetes/agnhost/.*"
+    run_if_changed: "projects/kubernetes/agnhost/.*"
     branches:
     - ^main$
     max_concurrency: 10
