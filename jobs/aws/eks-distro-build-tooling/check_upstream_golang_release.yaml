@@ -20,9 +20,10 @@
 
 periodics:
 - name: check-upstream-golang-release
-  cron: "0 7 * * 1-5"
+  cron: "0 * * * *"
   cluster: "prow-postsubmits-cluster"
   error_on_eviction: true
+  max_concurrency: 1
   extra_refs:
   - org: aws
     repo: eks-distro-build-tooling

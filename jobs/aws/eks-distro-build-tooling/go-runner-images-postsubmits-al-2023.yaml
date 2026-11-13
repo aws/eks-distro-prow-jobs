@@ -20,12 +20,12 @@
 
 postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-25-PROD-images-tooling-postsubmit
+  - name: go-runner-images-postsubmit-al-2023
     always_run: false
-    run_if_changed: "eks-distro-base/golang_versions.yaml"
+    run_if_changed: "eks-distro-base/golang_versions.yaml|builder-base/checksums/go-go.*|builder-base/scripts/download_golang.sh|EKS_DISTRO_TAG_FILE.yaml|projects/go-runner/.*|scripts/(image_build_inputs|common|simple_create_binaries|gather_licenses).sh"
     branches:
     - ^main$
-    max_concurrency: 10
+    max_concurrency: 1
     error_on_eviction: true
     cluster: "prow-postsubmits-cluster"
     skip_report: false
@@ -49,30 +49,34 @@ postsubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done' EXIT
+          trap '(docker buildx rm eks-d-builders || true) && touch /status/done' EXIT
           &&
           scripts/buildkit_check.sh
           &&
-          make install-deps -C $PROJECT_PATH
+          scripts/setup_buildx.sh
           &&
-          projects/golang/go/scripts/prow_release_images.sh
+          source scripts/setup_public_ecr_push.sh
           &&
-          projects/golang/go/scripts/debian_image_release_notification.sh
+          make release -C $PROJECT_PATH
         env:
         - name: PROJECT_PATH
-          value: "projects/golang/go"
-        - name: GO_SOURCE_VERSION
-          value: "1.25"
+          value: "projects/go-runner"
+        - name: AL_TAG
+          value: "2023"
         - name: AWS_REGION
           value: "us-east-1"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: PRIVATE_IMAGE_REPO
+          value: "832188789588.dkr.ecr.us-east-1.amazonaws.com"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
-        - name: SNS_TOPIC_ARN
-          value: "arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates"
-        - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
-          value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
+        - name: PUSH_IMAGES
+          value: "true"
+        - name: BUILDKITD_IMAGE
+          value: "moby/buildkit:v0.12.3-rootless"
+        - name: USE_BUILDX
+          value: "true"
         resources:
           requests:
             memory: "2Gi"

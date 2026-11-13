@@ -1,0 +1,27 @@
+jobName: golang-debian-images-postsubmit
+runIfChanged: builder-base/checksums/go-go.*|eks-distro-base/golang_versions.yaml|projects/golang/go/Makefile|projects/golang/go/1[.][0-9]+/RELEASE|projects/golang/go/docker/debianBase/.*|projects/golang/go/scripts/(prow_release_images|get_upstream_golang).sh|scripts/image_build_inputs.sh
+maxConcurrency: 1
+imageBuild: true
+automountServiceAccountToken: true
+commands:
+- projects/golang/go/scripts/prow_release_images.sh || RELEASE_FAILED=true
+- while read -r version tag release debian_release; do projects/golang/go/scripts/debian_image_release_notification.sh $version $tag $release $debian_release || NOTIFY_FAILED=true; done < projects/golang/go/_output/released-versions
+- '[ "${RELEASE_FAILED:-false}" != "true" ] && [ "${NOTIFY_FAILED:-false}" != "true" ]'
+projectPath: projects/golang/go
+resources:
+  requests:
+    cpu: "1"
+    memory: 2Gi
+envVars:
+  - name: AWS_REGION
+    value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling
+  - name: PRIVATE_IMAGE_REPO
+    value: 832188789588.dkr.ecr.us-east-1.amazonaws.com
+  - name: ECR_PUBLIC_PUSH_ROLE_ARN
+    value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+  - name: SNS_TOPIC_ARN
+    value: arn:aws:sns:us-east-1:379412251201:eks-golang-image-updates
+  - name: ARTIFACT_DEPLOYMENT_ROLE_ARN
+    value: arn:aws:iam::379412251201:role/ArtifactDeploymentRole

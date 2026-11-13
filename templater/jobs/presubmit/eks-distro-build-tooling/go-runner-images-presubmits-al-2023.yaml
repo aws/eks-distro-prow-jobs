@@ -1,0 +1,19 @@
+jobName: go-runner-images-presubmit-al-2023
+runIfChanged: eks-distro-base/golang_versions.yaml|builder-base/checksums/go-go.*|builder-base/scripts/download_golang.sh|EKS_DISTRO_TAG_FILE.yaml|projects/go-runner/.*|scripts/(image_build_inputs|common|simple_create_binaries|gather_licenses).sh
+architecture: AMD64
+imageBuild: true
+useDockerBuildX: true
+commands:
+- make build -C $PROJECT_PATH
+projectPath: projects/go-runner
+resources:
+  requests:
+    cpu: "1"
+    memory: 2Gi
+envVars:
+- name: AL_TAG
+  value: 2023
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: PUSH_IMAGES
+  value: false

@@ -18,25 +18,30 @@
 # how to add a new Prowjob or update an existing Prowjob.
 ################################################################################
 
-presubmits:
+postsubmits:
   aws/eks-distro-build-tooling:
-  - name: golang-1-26-tooling-presubmit
+  - name: golang-debian-images-postsubmit
     always_run: false
-    run_if_changed: "projects/golang/go/Makefile|projects/golang/go/1.26/.*|projects/golang/go/docker/debianBase/.*"
-    max_concurrency: 10
-    cluster: "prow-presubmits-cluster"
+    run_if_changed: "builder-base/checksums/go-go.*|eks-distro-base/golang_versions.yaml|projects/golang/go/Makefile|projects/golang/go/1[.][0-9]+/RELEASE|projects/golang/go/docker/debianBase/.*|projects/golang/go/scripts/(prow_release_images|get_upstream_golang).sh|scripts/image_build_inputs.sh"
+    branches:
+    - ^main$
+    max_concurrency: 1
+    error_on_eviction: true
+    cluster: "prow-postsubmits-cluster"
     skip_report: false
     decoration_config:
       gcs_configuration:
-        bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
+        bucket: s3://prowdataclusterstack-316434458-prowbucket7c73355c-1n9f9v93wpjcm
         path_strategy: explicit
       s3_credentials_secret: s3-credentials
     labels:
       image-build: "true"
       disk-usage: "true"
     spec:
-      serviceaccountName: presubmits-build-account
-      automountServiceAccountToken: false
+      serviceaccountName: postsubmits-build-account
+      automountServiceAccountToken: true
+      nodeSelector:
+        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ec50cfdc6ada51b61ffd2e6cc14afeaffcf71a37.2023
@@ -44,26 +49,24 @@ presubmits:
         - bash
         - -c
         - >
-          trap 'touch /status/done && rm -rf /home/prow/go/src/' EXIT
+          trap 'touch /status/done' EXIT
           &&
           scripts/buildkit_check.sh
           &&
-          make install-deps -C $PROJECT_PATH
+          projects/golang/go/scripts/prow_release_images.sh || RELEASE_FAILED=true
           &&
-          projects/golang/go/scripts/prow_release_images.sh
+          while read -r version tag release debian_release; do projects/golang/go/scripts/debian_image_release_notification.sh $version $tag $release $debian_release || NOTIFY_FAILED=true; done < projects/golang/go/_output/released-versions
+          &&
+          [ "${RELEASE_FAILED:-false}" != "true" ] && [ "${NOTIFY_FAILED:-false}" != "true" ]
         env:
         - name: PROJECT_PATH
           value: "projects/golang/go"
-        - name: GO_SOURCE_VERSION
-          value: "1.26"
-        - name: SKIP_PRIVILEGED_TESTS
-          value: "true"
-        - name: PUSH_IMAGES
-          value: "false"
         - name: AWS_REGION
           value: "us-east-1"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
+        - name: PRIVATE_IMAGE_REPO
+          value: "832188789588.dkr.ecr.us-east-1.amazonaws.com"
         - name: ECR_PUBLIC_PUSH_ROLE_ARN
           value: "arn:aws:iam::832188789588:role/ECRPublicPushRole"
         - name: SNS_TOPIC_ARN
@@ -72,8 +75,8 @@ presubmits:
           value: "arn:aws:iam::379412251201:role/ArtifactDeploymentRole"
         resources:
           requests:
-            memory: "16Gi"
-            cpu: "2560m"
+            memory: "2Gi"
+            cpu: "1"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:
@@ -83,6 +86,10 @@ presubmits:
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1024m"
       - command:
         - sh
         args:
