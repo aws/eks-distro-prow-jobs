@@ -1,0 +1,21 @@
+jobName: golang-debian-images-presubmit
+runIfChanged: builder-base/checksums/go-go.*|eks-distro-base/golang_versions.yaml|projects/golang/go/Makefile|projects/golang/go/1[.][0-9]+/RELEASE|projects/golang/go/docker/debianBase/.*|projects/golang/go/scripts/(prow_release_images|get_upstream_golang).sh|scripts/image_build_inputs.sh
+architecture: AMD64
+imageBuild: true
+commands:
+- make prod-release-images-upstream-bins-all -C $PROJECT_PATH
+projectPath: projects/golang/go
+resources:
+  limits:
+    cpu: 2560m
+    memory: 16Gi
+  requests:
+    cpu: 2560m
+    memory: 16Gi
+envVars:
+  - name: PUSH_IMAGES
+    value: false
+  - name: AWS_REGION
+    value: us-east-1
+  - name: IMAGE_REPO
+    value: public.ecr.aws/eks-distro-build-tooling

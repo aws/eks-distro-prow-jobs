@@ -1,0 +1,28 @@
+jobName: go-runner-images-postsubmit-al-2023
+runIfChanged: eks-distro-base/golang_versions.yaml|builder-base/checksums/go-go.*|builder-base/scripts/download_golang.sh|EKS_DISTRO_TAG_FILE.yaml|projects/go-runner/.*|scripts/(image_build_inputs|common|simple_create_binaries|gather_licenses).sh
+maxConcurrency: 1
+imageBuild: true
+useDockerBuildX: true
+automountServiceAccountToken: true
+serviceAccountName: postsubmits-build-account
+commands:
+- source scripts/setup_public_ecr_push.sh
+- make release -C $PROJECT_PATH
+projectPath: projects/go-runner
+resources:
+  requests:
+    cpu: "1"
+    memory: 2Gi
+envVars:
+- name: AL_TAG
+  value: 2023
+- name: AWS_REGION
+  value: us-east-1
+- name: IMAGE_REPO
+  value: public.ecr.aws/eks-distro-build-tooling
+- name: PRIVATE_IMAGE_REPO
+  value: 832188789588.dkr.ecr.us-east-1.amazonaws.com
+- name: ECR_PUBLIC_PUSH_ROLE_ARN
+  value: arn:aws:iam::832188789588:role/ECRPublicPushRole
+- name: PUSH_IMAGES
+  value: true

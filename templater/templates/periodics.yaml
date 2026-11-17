@@ -20,6 +20,9 @@ periodics:
   cron: "{{ .cronExpression }}"
   cluster: "{{ .cluster }}"
   error_on_eviction: true
+  {{- if .maxConcurrency }}
+  max_concurrency: {{ .maxConcurrency }}
+  {{- end }}
   {{- if .extraRefs }}
   extra_refs:
   {{- range .extraRefs }}
