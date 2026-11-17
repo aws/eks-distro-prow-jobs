@@ -37,8 +37,6 @@ presubmits:
     spec:
       serviceaccountName: presubmits-build-account
       automountServiceAccountToken: false
-      nodeSelector:
-        arch: AMD64
       containers:
       - name: build-container
         image: public.ecr.aws/eks-distro-build-tooling/builder-base:standard-ec50cfdc6ada51b61ffd2e6cc14afeaffcf71a37.2023
