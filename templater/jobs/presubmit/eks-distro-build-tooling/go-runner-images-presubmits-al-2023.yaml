@@ -1,6 +1,5 @@
 jobName: go-runner-images-presubmit-al-2023
 runIfChanged: eks-distro-base/golang_versions.yaml|builder-base/checksums/go-go.*|builder-base/scripts/download_golang.sh|EKS_DISTRO_TAG_FILE.yaml|projects/go-runner/.*|scripts/(image_build_inputs|common|simple_create_binaries|gather_licenses).sh
-architecture: AMD64
 imageBuild: true
 useDockerBuildX: true
 commands:

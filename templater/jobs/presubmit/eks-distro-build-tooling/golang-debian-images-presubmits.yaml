@@ -1,6 +1,5 @@
 jobName: golang-debian-images-presubmit
 runIfChanged: builder-base/checksums/go-go.*|eks-distro-base/golang_versions.yaml|projects/golang/go/Makefile|projects/golang/go/1[.][0-9]+/RELEASE|projects/golang/go/docker/debianBase/.*|projects/golang/go/scripts/(prow_release_images|get_upstream_golang).sh|scripts/image_build_inputs.sh
-architecture: AMD64
 imageBuild: true
 commands:
 - make prod-release-images-upstream-bins-all -C $PROJECT_PATH
