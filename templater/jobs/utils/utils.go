@@ -34,7 +34,6 @@ var pythonVersions = []string{
 }
 
 var alVersions = []string{
-	"2",
 	"2023",
 }
 
