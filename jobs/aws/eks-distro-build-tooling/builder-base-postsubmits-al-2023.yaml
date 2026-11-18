@@ -22,7 +22,7 @@ postsubmits:
   aws/eks-distro-build-tooling:
   - name: builder-base-tooling-postsubmit-al-2023
     always_run: false
-    run_if_changed: "builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh"
+    run_if_changed: "builder-base/.*|generate-attribution/.*|scripts/setup_public_ecr_push.sh|eks-distro-base/golang_versions.yaml"
     branches:
     - ^main$
     max_concurrency: 1

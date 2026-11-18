@@ -23,11 +23,6 @@ var releaseBranches = []string{
 	"1-37",
 }
 
-var golangVersions = []string{
-	"1-25",
-	"1-26",
-}
-
 var pythonVersions = []string{
 	"3-7",
 	"3-9",
@@ -75,24 +70,6 @@ func AddALVersion(fileName string, data map[string]interface{}) map[string]map[s
 		alVersionFileName := strings.ReplaceAll(fileName, "al-X", "al-"+version)
 		jobList[alVersionFileName] = AppendMap(data, map[string]interface{}{
 			"alVersion": version,
-		})
-	}
-
-	return jobList
-}
-
-func AddGolangVersion(fileName string, data map[string]interface{}) map[string]map[string]interface{} {
-	jobList := map[string]map[string]interface{}{}
-	if !strings.Contains(fileName, "golang-1-X") {
-		return jobList
-	}
-
-	for _, version := range golangVersions {
-		golangVersionFileName := strings.ReplaceAll(fileName, "golang-1-X", "golang-"+version)
-		goVersion := strings.Replace(version, "-", ".", 1)
-		jobList[golangVersionFileName] = AppendMap(data, map[string]interface{}{
-			"jobGoVersion":  version,
-			"golangVersion": goVersion,
 		})
 	}
 
@@ -174,7 +151,7 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 	}
 
 	var mappers []func(string, map[string]interface{}) map[string]map[string]interface{}
-	mappers = append(mappers, AddALVersion, AddGolangVersion, AddPythonVersion, AddReleaseBranch)
+	mappers = append(mappers, AddALVersion, AddPythonVersion, AddReleaseBranch)
 
 	jobsToData := map[string]map[string]interface{}{}
 	for _, file := range files {
