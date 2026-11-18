@@ -11,7 +11,7 @@ commands:
 projectPath: eks-distro-base
 envVars:
 - name: AL_TAG
-  value: 2
+  value: 2023
 - name: IMAGE_REPO
   value: localhost:5000
 extraRefs:
