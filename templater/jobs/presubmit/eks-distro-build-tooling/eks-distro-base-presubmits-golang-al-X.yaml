@@ -1,4 +1,4 @@
-jobName: eks-distro-base-tooling-presubmits-golang-{{ .jobGoVersion }}-al-{{ .alVersion }}
+jobName: eks-distro-base-tooling-presubmits-golang-al-{{ .alVersion }}
 runIfChanged: eks-distro-base/.*|scripts/setup_public_ecr_push.sh
 imageBuild: true
 localRegistry: true
@@ -6,7 +6,7 @@ useDockerBuildX: true
 useMinimalBuilderBase: true
 commands:
 - export DATE_EPOCH=$(date "+%F-%s")
-- make golang-{{ .golangVersion }}-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+- make golang-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 - make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
 projectPath: eks-distro-base
 envVars:
@@ -28,6 +28,7 @@ extraRefs:
   repo: eks-anywhere
 resources:
   requests:
-    cpu: 1024m
-    memory: 4Gi
+    cpu: "4"
+    memory: 16Gi
     ephemeral-storage: "50Gi"
+timeout: 8h

@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-golang-1-26-al-2023
+  - name: eks-distro-base-tooling-presubmits-golang-al-2023
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -37,6 +37,7 @@ presubmits:
       repo: eks-anywhere
       base_ref: main
     decoration_config:
+      timeout: 8h
       gcs_configuration:
         bucket: s3://prowpresubmitsdataclusterstack-prowbucket7c73355c-vfwwxd2eb4gp
         path_strategy: explicit
@@ -65,7 +66,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make golang-1.26-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make golang-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
@@ -83,8 +84,8 @@ presubmits:
           value: "true"
         resources:
           requests:
-            memory: "4Gi"
-            cpu: "1024m"
+            memory: "16Gi"
+            cpu: "4"
             ephemeral-storage: "50Gi"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
