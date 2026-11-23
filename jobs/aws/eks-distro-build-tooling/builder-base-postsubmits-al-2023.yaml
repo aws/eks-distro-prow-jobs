@@ -73,6 +73,10 @@ postsubmits:
           value: "2023"
         - name: CREATE_BUILDER_PODS
           value: "true"
+        - name: BUILDER_POD_CPU_REQUEST
+          value: "4"
+        - name: BUILDER_POD_MEMORY_REQUEST
+          value: "8Gi"
         - name: IMAGE_REPO
           value: "public.ecr.aws/eks-distro-build-tooling"
         - name: PRIVATE_IMAGE_REPO
