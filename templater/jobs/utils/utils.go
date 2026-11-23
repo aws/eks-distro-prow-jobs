@@ -24,8 +24,8 @@ var releaseBranches = []string{
 }
 
 var pythonVersions = []string{
-	"3-7",
 	"3-9",
+	"3-11",
 }
 
 var alVersions = []string{
