@@ -24,8 +24,15 @@ var releaseBranches = []string{
 }
 
 var pythonVersions = []string{
-	"3-9",
 	"3-11",
+	"3-12",
+	"3-13",
+	"3-14",
+}
+
+var nodejsVersions = []string{
+	"24",
+	"26",
 }
 
 var alVersions = []string{
@@ -94,6 +101,22 @@ func AddPythonVersion(fileName string, data map[string]interface{}) map[string]m
 	return jobList
 }
 
+func AddNodejsVersion(fileName string, data map[string]interface{}) map[string]map[string]interface{} {
+	jobList := map[string]map[string]interface{}{}
+	if !strings.Contains(fileName, "nodejs-X") {
+		return jobList
+	}
+
+	for _, version := range nodejsVersions {
+		nodejsVersionFileName := strings.ReplaceAll(fileName, "nodejs-X", "nodejs-"+version)
+		jobList[nodejsVersionFileName] = AppendMap(data, map[string]interface{}{
+			"nodejsVersion": version,
+		})
+	}
+
+	return jobList
+}
+
 func AddReleaseBranch(fileName string, data map[string]interface{}) map[string]map[string]interface{} {
 	jobList := map[string]map[string]interface{}{}
 	if !strings.Contains(fileName, "1-X") {
@@ -151,7 +174,7 @@ func UnmarshalJobs(jobDir string) (map[string]types.JobConfig, error) {
 	}
 
 	var mappers []func(string, map[string]interface{}) map[string]map[string]interface{}
-	mappers = append(mappers, AddALVersion, AddPythonVersion, AddReleaseBranch)
+	mappers = append(mappers, AddALVersion, AddPythonVersion, AddNodejsVersion, AddReleaseBranch)
 
 	jobsToData := map[string]map[string]interface{}{}
 	for _, file := range files {

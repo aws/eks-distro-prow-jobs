@@ -20,7 +20,7 @@
 
 presubmits:
   aws/eks-distro-build-tooling:
-  - name: eks-distro-base-tooling-presubmits-nodejs-16-al-2023
+  - name: eks-distro-base-tooling-presubmits-python-3-13-al-2023
     always_run: false
     run_if_changed: "eks-distro-base/.*|scripts/setup_public_ecr_push.sh"
     max_concurrency: 10
@@ -65,7 +65,7 @@ presubmits:
           &&
           export DATE_EPOCH=$(date "+%F-%s")
           &&
-          make minimal-images-base-nodejs-16 nodejs-16-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
+          make minimal-images-base-python-3.13 python-3.13-compiler-images -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
           &&
           make create-pr -C $PROJECT_PATH IMAGE_TAG=${DATE_EPOCH}.${AL_TAG}
         env:
@@ -85,6 +85,7 @@ presubmits:
           requests:
             memory: "4Gi"
             cpu: "1024m"
+            ephemeral-storage: "50Gi"
       - name: buildkitd
         image: moby/buildkit:v0.12.3-rootless
         command:
