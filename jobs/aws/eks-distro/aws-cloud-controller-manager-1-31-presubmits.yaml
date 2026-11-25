@@ -22,7 +22,7 @@ presubmits:
   aws/eks-distro:
   - name: aws-cloud-controller-manager-1-31-presubmit
     always_run: false
-    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_AL2023_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|1-31)"
+    run_if_changed: "EKS_DISTRO_MINIMAL_BASE_AL2023_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|1-31)|release/1-31/development/PLATFORM_VERSION"
     max_concurrency: 10
     cluster: "prow-presubmits-cluster"
     skip_report: false
