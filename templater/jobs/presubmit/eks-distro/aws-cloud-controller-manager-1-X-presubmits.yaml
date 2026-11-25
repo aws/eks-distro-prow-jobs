@@ -1,5 +1,5 @@
 jobName: aws-cloud-controller-manager-{{ .releaseBranch }}-presubmit
-runIfChanged: EKS_DISTRO_MINIMAL_BASE_AL2023_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|{{ .releaseBranch }})
+runIfChanged: EKS_DISTRO_MINIMAL_BASE_AL2023_TAG_FILE|^build/lib/.*|Common.mk|projects/kubernetes/cloud-provider-aws/(build|docker|Makefile|{{ .releaseBranch }})|release/{{ .releaseBranch }}/development/PLATFORM_VERSION
 imageBuild: true
 localRegistry: true
 commands:
