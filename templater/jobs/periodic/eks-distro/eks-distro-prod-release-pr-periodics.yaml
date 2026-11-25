@@ -1,0 +1,17 @@
+jobName: eks-distro-prod-release-pr-periodic
+cronExpression: 0 */2 * * *
+prCreation: true
+commands:
+- make update-prod-release-prs
+envVars:
+- name: REPO_OWNER
+  value: aws
+extraRefs:
+- baseRef: main
+  org: aws
+  repo: eks-distro
+resources:
+  requests:
+    cpu: 1024m
+    memory: 2Gi
+timeout: 30m
