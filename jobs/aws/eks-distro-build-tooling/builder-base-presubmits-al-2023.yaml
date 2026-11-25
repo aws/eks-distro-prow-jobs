@@ -86,5 +86,5 @@ presubmits:
         - sh
         args:
         - /disk-usage-script/entrypoint.sh
-        image: public.ecr.aws/amazonlinux/amazonlinux:2
+        image: public.ecr.aws/amazonlinux/amazonlinux:2023
         name: disk-monitor
